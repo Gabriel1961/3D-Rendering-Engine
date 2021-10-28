@@ -18,6 +18,7 @@ int main(void)
 	if (!glfwInit())
 		return -1;
 	/* Create a windowed mode window and its OpenGL context */
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	window = glfwCreateWindow(Window_Width, Window_Height, "OpenGLPractice", NULL, NULL);
 	if (!window)
 	{
@@ -31,7 +32,7 @@ int main(void)
 			std::cout << "Failed to initilize glew\n" << endl;
 			ASSERT(false);
 		}
-		Imgui_Start(window);
+		//Imgui_Start(window);
 		/// ///////////////////////////////////////////
 		double lastTime = glfwGetTime();
 		int nbFrames = 0;
@@ -54,11 +55,11 @@ int main(void)
 			}
 #pragma endregion
 			Renderer::Clear();
-			Imgui_NewFrame();
+			//Imgui_NewFrame();
 			/* Render here */
 			PROJECT::Render();
 
-			Imgui_Render();
+			//Imgui_Render();
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);
 
@@ -67,7 +68,7 @@ int main(void)
 		}
 		PROJECT::Terminate();
 	}
-	Imgui_Close();
+	//Imgui_Close();
 
 	glfwTerminate();
 	return 0;

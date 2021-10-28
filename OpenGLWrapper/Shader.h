@@ -1,6 +1,7 @@
 #pragma once
 #include "Common.h"
 #include <unordered_map>
+#include <map>
 #include <vector>
 #include <UniformBlockList.h>
 class Shader
@@ -10,6 +11,7 @@ protected:
 	std::string m_FilePath;
 	std::unordered_map<std::string, int>m_UniformLocationCache;
 public:
+	static std::map<int, Shader*> shaderList;
 	std::unordered_map<std::string, UniformBlock*> uniformBlocks;
 	int programID;
 	Shader() {}

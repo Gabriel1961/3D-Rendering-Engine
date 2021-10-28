@@ -38,6 +38,13 @@ CubeModel::CubeModel(std::string shader)
 	sh = new Shader(shader);
 }
 
+CubeModel::~CubeModel()
+{
+	delete va;
+	delete vb;
+	delete ib;
+}
+
 void CubeModel::Draw(const Camera& cam)
 {
 	sh->SetUniformMat4f("u_MVP", cam.GetMVP(modelMat, viewMat));

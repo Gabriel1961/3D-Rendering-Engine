@@ -5,6 +5,7 @@
 #include "string"
 #include <filesystem>
 using namespace std;
+std::map<int, Shader*> Shader::shaderList;
 void ShaderCompilationErrorCheck(unsigned int shaderID, const std::string& name)
 {
 	int CompileStatus;
@@ -93,11 +94,13 @@ Shader::Shader(const std::string& filepath) : m_RendererID(0), m_FilePath(filepa
 	m_RendererID = CreateProgam(filepath);
 	gc(glUseProgram(m_RendererID));
 	programID = m_RendererID;
+	shaderList.insert({ m_RendererID, this });
 }
 
 
 Shader::~Shader()
 {
+	shaderList.erase(m_RendererID);
 	for (auto x : uniformBlocks)
 		delete x.second;
 	gc(glDeleteProgram(m_RendererID));

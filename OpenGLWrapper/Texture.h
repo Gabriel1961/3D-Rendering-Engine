@@ -11,8 +11,9 @@ private:
 	int m_Height, m_Width, m_BPP;
 public:
 	std::string type;
-	Texture(std::string _FilePath);
-	Texture();
+
+	Texture(const std::string& _FilePath);
+	Texture() {}
 	Texture(uint heigth, uint witdth, GLenum antiAliasing = GL_NEAREST, GLenum format = GL_RGBA32F);
 	Texture(ARGBColor* buffer, GLenum antiAliasing = GL_NEAREST);
 	~Texture();

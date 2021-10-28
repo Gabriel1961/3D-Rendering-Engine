@@ -93,6 +93,12 @@
     <ClCompile Include="RenderingEngine\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLWrapper\vendor\irrXML\irrXML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenSize.h">
@@ -1058,6 +1064,48 @@
     <ClInclude Include="RenderingEngine\Models\PreBuilt\CubeModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\CXMLReaderImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\fast_atof.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\heapsort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLWrapper\vendor\irrXML\irrXML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLWrapper\vendor\irrXML\CXMLReaderImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLWrapper\vendor\irrXML\fast_atof.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLWrapper\vendor\irrXML\heapsort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLWrapper\vendor\irrXML\irrArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLWrapper\vendor\irrXML\irrString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLWrapper\vendor\irrXML\irrTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\GLEW\doc\advanced.html" />
@@ -1485,5 +1533,6 @@
     <None Include="OpenGLWrapper\Quad.shader" />
     <None Include="OpenGLWrapper\PixelDisplay.shader" />
     <None Include="OpenGLWrapper\Line.shader" />
+    <None Include="Dependencies\assimp\Debug\assimp-vc143-mtd.dll" />
   </ItemGroup>
 </Project>

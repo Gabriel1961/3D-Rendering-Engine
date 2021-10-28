@@ -1,26 +1,58 @@
 #include "Mesh.h"
 #include <Common.h>
 #include <Renderer.h>
+#include <Logger.h>
 using namespace std;
 using namespace glm;
-Mesh::Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture*>& textures)
-	: vertexes(vertexes), indexes(indexes), textures(textures)
+#define SAMPLER_DIFFUSE_NAME string("texture_diffuse")
+#define SAMPLER_SPECULAR_NAME string("texture_specular")
+///  Mesh  ///
+
+Mesh::Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures,Shader* shader)
+	: vertexes(vertexes), indexes(indexes), textures(textures),sh(shader)
 {
+	SetupMesh();
 }
 
-void Mesh::Draw()
+void Mesh::Draw(const Camera& camera)
 {
+	uint diffuseStartIndex = 1, specularStartIndex = 1, slot = 1;
+	sh->Bind();
+	for (int i = 0; i < textures.size(); i++)
+	{
+		if (textures[i].type == SAMPLER_DIFFUSE_NAME)
+		{
+			textures[i].Unbind();
+			textures[i].Bind(slot);
+			sh->SetUniform1i(SAMPLER_DIFFUSE_NAME + to_string(diffuseStartIndex), slot);
+			diffuseStartIndex++;
+			slot++;
+		}
+		else if (textures[i].type == SAMPLER_SPECULAR_NAME)
+		{
+			textures[i].Bind(slot);
+			sh->SetUniform1i(SAMPLER_SPECULAR_NAME + to_string(specularStartIndex), slot);
+			specularStartIndex++;
+			slot++;
+		}
+	}
+	sh->SetUniformMat4f("u_MVP", camera.GetMVP(modelMat, viewMat));
+	sh->SetUniform3f("u_camPos", camera.position);
+	Renderer::Draw(*va, *ib, *sh);
 }
 
 Mesh::~Mesh()
 {
-	delete vb;
-	delete ib;
-	delete va;
+	//delete vb;
+	//delete ib; // TODO FIx memory leak
+	//delete va;
 }
 
 void Mesh::SetupMesh()
 {
+	//delete vb;
+	//delete ib; // TODO FIx memory leak
+	//delete va;
 	vb = new VertexBuffer(sizeof(Vertex) * vertexes.size(), &vertexes[0]);
 	ib = new IndexBuffer(indexes.size(), &indexes[0], GL_UNSIGNED_INT, GL_STATIC_DRAW);
 	VertexBufferLayout vbl;
@@ -30,4 +62,109 @@ void Mesh::SetupMesh()
 	va = new VertexArray();
 	va->AddLayout(*vb, vbl);
 	va->Bind();
+}
+
+///  Model  ///
+
+Model::Model(const char* path,Shader* shader)
+{
+	print("Loading Started");
+	LoadModel(path,shader);
+	print("Loading Complete");
+}
+
+void Model::Draw(const Camera& camera)
+{
+	for (auto& mesh : meshes)
+	{
+		mesh.Draw(camera);
+	}
+}
+
+void Model::LoadModel(const std::string& path,Shader* shader)
+{
+	static Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		cout << "[ERROR] ASSIMP::" << importer.GetErrorString() << endl;
+		return;
+	}
+	directory = path.substr(0, path.find_last_of('/'));
+	ProcessNode(scene->mRootNode, scene,shader);
+}
+
+void Model::ProcessNode(aiNode* node, const aiScene* scene,Shader* shader)
+{
+	for (int i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		meshes.push_back(ProcessMesh(mesh, scene, shader));
+	}
+
+	for (int i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessNode(node->mChildren[i], scene,shader);
+	}
+}
+
+Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene,Shader* shader)
+{
+	vector <Vertex> vertexes(mesh->mNumVertices);
+	vector <uint> indexes;
+	vector <Texture> textures;
+
+	for (int i = 0; i < mesh->mNumVertices; i++)
+	{
+		Vertex& vert = vertexes[i];
+		vert.position = {
+			mesh->mVertices[i].x,
+			mesh->mVertices[i].y,
+			mesh->mVertices[i].z
+		};
+
+		if(mesh->mNormals)
+			vert.normal = {
+				mesh->mNormals[i].x,
+				mesh->mNormals[i].y,
+				mesh->mNormals[i].z
+			};
+
+		if (mesh->mTextureCoords[0])
+		{
+			vert.texCoord = { mesh->mTextureCoords[0][i].x,mesh->mTextureCoords[0][i].y }; // TODO use all the other uv textures (8 in total)
+		}
+		else vert.texCoord = { 0,0 };
+	}
+
+	for (int i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace& face = mesh->mFaces[i];
+		for (int j = 0; j < face.mNumIndices; j++)
+			indexes.push_back(face.mIndices[j]);
+	}
+
+	if (mesh->mMaterialIndex >= 0)
+	{
+		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+		vector<Texture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, SAMPLER_DIFFUSE_NAME);
+		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+		vector<Texture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, SAMPLER_SPECULAR_NAME);
+		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+	}
+	return Mesh(vertexes, indexes, textures,shader);
+}
+
+vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const string& typeName)
+{
+	vector<Texture> textures;
+	for (int i = 0; i < mat->GetTextureCount(type); i++)
+	{
+		aiString name;
+		mat->GetTexture(type, i, &name);
+		Texture texture(directory + "/" + name.C_Str());
+		texture.type = typeName;
+		textures.push_back(texture);
+	}
+	return textures;
 }

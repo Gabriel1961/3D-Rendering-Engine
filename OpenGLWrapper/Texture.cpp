@@ -1,11 +1,12 @@
 #include "Texture.h"
 #include "Common.h"
+#include "Shader.h"
 #include "vendor/stb_image/stb_image.h"
 /// <summary>
 /// format GL_RGBA8
 /// </summary>
 /// <param name="_FilePath"></param>
-Texture::Texture(std::string _FilePath)
+Texture::Texture(const std::string& _FilePath)
 	:m_FilePath(_FilePath), m_Height(0), m_RendererID(0), m_Width(0), m_BPP(0), m_LocalBuffer(nullptr)
 {
 	if (_FilePath.find(".bmp") == _FilePath.npos)
@@ -69,7 +70,7 @@ Texture::Texture(ARGBColor* buffer, GLenum antiAliasing)
 
 Texture::~Texture()
 {
-	gc(glDeleteTextures(1, &m_RendererID));
+	//gc(glDeleteTextures(1, &m_RendererID));
 }
 
 void Texture::Bind(unsigned int slot) const

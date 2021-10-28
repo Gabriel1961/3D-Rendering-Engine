@@ -13,5 +13,6 @@ public:
 	IndexBuffer* ib;
 	Shader* sh;
 	CubeModel(std::string shader = SHADER_PATH "DefaultMesh.shader");
+	~CubeModel();
 	void Draw(const Camera& cam);
 };

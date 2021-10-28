@@ -5,6 +5,7 @@
 #include <fstream>
 #include <thread>
 #include <Input/Input.h>
+#include <Mesh.h>
 #include <Camera.h>
 #include <Models/PreBuilt/CubeModel.h>
 using namespace std;
@@ -64,7 +65,8 @@ void SetupInput()
 			cam->rotation.y = -pi / 2;
 	};
 }
-
+Model* model;
+Shader* sh;
 void RenderingEngine::Start(GLFWwindow* win)
 {
 	window = win;
@@ -75,13 +77,18 @@ void RenderingEngine::Start(GLFWwindow* win)
 	float fov = pi / 4;
 	cam = new Camera(glm::perspective(fov, ((float)Window_Width / Window_Height), near, far), glm::vec3(0, 0, -10));
 	cube = new CubeModel();
+
+	sh = new Shader(SHADER_PATH "DefaultMesh.shader");
+	model = new Model(MODEL_PATH "Monkey2/Monkey2.obj",sh);
+
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 }
 
 void RenderingEngine::Render()
 {
-	cube->Draw(*cam);
+	//cube->Draw(*cam);
+	model->Draw(*cam);
 }
 
 void RenderingEngine::Update()

@@ -12,7 +12,7 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, Shader& shader
 {
 	shader.Bind();
 	shader.SetUniform1i(SamplerNameAndSlot.first, SamplerNameAndSlot.second);
-	tex.Bind();
+	tex.Bind(SamplerNameAndSlot.second);
 	va.Bind();
 	ib.Bind();
 	gc(glDrawElements(DrawMode, ib.GetCount(), ib.GetType(), nullptr));
