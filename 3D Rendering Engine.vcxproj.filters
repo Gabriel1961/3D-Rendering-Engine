@@ -1534,5 +1534,6 @@
     <None Include="OpenGLWrapper\PixelDisplay.shader" />
     <None Include="OpenGLWrapper\Line.shader" />
     <None Include="Dependencies\assimp\Debug\assimp-vc143-mtd.dll" />
+    <None Include="RenderingEngine\Shaders\PrebuiltCube.shader" />
   </ItemGroup>
 </Project>

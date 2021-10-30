@@ -12,7 +12,7 @@ public:
 	VertexBuffer* vb;
 	IndexBuffer* ib;
 	Shader* sh;
-	CubeModel(std::string shader = SHADER_PATH "DefaultMesh.shader");
+	CubeModel(const std::string& shader = SHADER_PATH "PrebuiltCube.shader");
 	~CubeModel();
 	void Draw(const Camera& cam);
 };

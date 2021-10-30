@@ -1,4 +1,4 @@
-#include "VertexArray.h"
+ #include "VertexArray.h"
 #include "VertexBufferLayout.h"
 #define INT2VOIDP(i) (void*)(uintptr_t)(i)
 VertexArray::VertexArray()

@@ -2,7 +2,7 @@
 
 Camera::Camera(const glm::mat4& projMat, const glm::vec3& position) : projMat(projMat), position(position) {}
 
-glm::mat4 Camera::GetMVP(const glm::mat4& model, const glm::mat4& view) const
+glm::mat4 Camera::GetCamMat() const
 {
 	using namespace glm;
 	mat4 camRot(1);
@@ -21,5 +21,5 @@ glm::mat4 Camera::GetMVP(const glm::mat4& model, const glm::mat4& view) const
 		);
 		camRot = mat4(camRotY * camRotX);
 	}
-	return projMat * camRot * view * model;
+	return camRot;
 }

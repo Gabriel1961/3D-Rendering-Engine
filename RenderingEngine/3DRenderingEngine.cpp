@@ -17,6 +17,11 @@ thread* inputThread;
 Camera* cam;
 GLFWwindow* window;
 CubeModel* cube;
+
+bool isMouseLocked = false;
+vec3 lightPos = {0,2.5,-5};
+float shininess = 32;
+float specularStrength = 1;
 void SetupInput()
 {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // seteaza cursorul lockat pe window
@@ -25,9 +30,16 @@ void SetupInput()
 		while (!glfwWindowShouldClose(window))
 		{
 			if (glfwGetKey(window, GLFW_KEY_SPACE))
-				cam->position.y -= camSpeed;
-			if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL))
+			{
+				if (isMouseLocked == false)
+					glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED), isMouseLocked = true;
+				else
+					glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL), isMouseLocked = false;
+			}
+			if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
 				cam->position.y += camSpeed;
+			if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL))
+				cam->position.y -= camSpeed;
 			if (glfwGetKey(window, GLFW_KEY_A))
 			{
 				cam->position.x -= cos(cam->rotation.x) * camSpeed;
@@ -77,18 +89,34 @@ void RenderingEngine::Start(GLFWwindow* win)
 	float fov = pi / 4;
 	cam = new Camera(glm::perspective(fov, ((float)Window_Width / Window_Height), near, far), glm::vec3(0, 0, -10));
 	cube = new CubeModel();
+	cube->color = vec4(1);
 
 	sh = new Shader(SHADER_PATH "DefaultMesh.shader");
-	model = new Model(MODEL_PATH "Monkey2/Monkey2.obj",sh);
-
+	model = new Model(MODEL_PATH "Monkey3/Monkey.obj",sh);
+	model->meshes[0].viewMat = rotate(mat4(1),(float) pi / 2.0f, vec3(0,1,0));
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+
+}
+
+void GuiRender()
+{
+	ImGui::SliderFloat3("Light Position", &lightPos.x, -5, 5);
+	ImGui::SliderFloat("Shininess", &shininess, 0, 200);
+	ImGui::SliderFloat("SpecularStrength", &specularStrength, 0, 1);
 }
 
 void RenderingEngine::Render()
 {
-	//cube->Draw(*cam);
+	lightPos = mat3(rotate(mat4(1), (float)pi / 160, vec3(0, 1, 0))) * lightPos;
+	cube->viewMat = translate(mat4(1), lightPos);
+	cube->Draw(*cam);
+	sh->SetUniform3f("u_lightPos", lightPos);
+	sh->SetUniform1f("u_shininess", shininess);
+	sh->SetUniform1f("u_specularStrength", specularStrength);
 	model->Draw(*cam);
+
+	GuiRender();
 }
 
 void RenderingEngine::Update()

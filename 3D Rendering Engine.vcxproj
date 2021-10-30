@@ -673,6 +673,7 @@
     <None Include="OpenGLWrapper\Line.shader" />
     <None Include="OpenGLWrapper\PixelDisplay.shader" />
     <None Include="OpenGLWrapper\Quad.shader" />
+    <None Include="RenderingEngine\Shaders\PrebuiltCube.shader" />
     <None Include="RenderingEngine\Shaders\Sun.shader" />
     <None Include="RenderingEngine\Shaders\Teapot.shader" />
     <None Include="RenderingEngine\Shaders\DefaultMesh.shader" />

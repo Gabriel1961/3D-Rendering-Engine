@@ -7,5 +7,5 @@ public:
 	glm::mat4 projMat;
 	glm::vec3 rotation = glm::vec3(0);
 	glm::vec3 position;
-	glm::mat4 GetMVP(const glm::mat4& model, const glm::mat4& view) const;
+	glm::mat4 GetCamMat() const;
 };

@@ -16,7 +16,7 @@ Mesh::Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes
 
 void Mesh::Draw(const Camera& camera)
 {
-	uint diffuseStartIndex = 1, specularStartIndex = 1, slot = 1;
+	uint diffuseStartIndex = 1, specularStartIndex = 1, slot = 0;
 	sh->Bind();
 	for (int i = 0; i < textures.size(); i++)
 	{
@@ -36,7 +36,11 @@ void Mesh::Draw(const Camera& camera)
 			slot++;
 		}
 	}
-	sh->SetUniformMat4f("u_MVP", camera.GetMVP(modelMat, viewMat));
+	sh->SetUniformMat4f("u_model", modelMat);
+	sh->SetUniformMat4f("u_view", viewMat);
+	sh->SetUniformMat4f("u_projection", camera.projMat);
+	sh->SetUniformMat4f("u_camMat", camera.GetCamMat());
+	sh->SetUniformMat3f("u_normalMVMat", transpose(inverse(mat3(viewMat*modelMat))));
 	sh->SetUniform3f("u_camPos", camera.position);
 	Renderer::Draw(*va, *ib, *sh);
 }
