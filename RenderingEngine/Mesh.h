@@ -30,8 +30,8 @@ public:
 
 	Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures, Shader* shader);
 	void Draw(const Camera& camera);
+	Mesh(Mesh&& o) noexcept;
 	~Mesh();
-
 protected:
 	void SetupMesh();
 };

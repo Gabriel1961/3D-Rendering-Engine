@@ -2,30 +2,61 @@
 #include "Common.h"
 #include "Shader.h"
 #include "vendor/stb_image/stb_image.h"
+
+//#define TEXTURE_DEBUG
+#ifdef TEXTURE_DEBUG
+#define DBG(x) x
+#else
+#define DBG(x)
+#endif // DEBUG
+
+static std::unordered_map<std::string, TextureRef> textures;
+
+using std::cout;
 /// <summary>
 /// format GL_RGBA8
 /// </summary>
 /// <param name="_FilePath"></param>
 Texture::Texture(const std::string& _FilePath)
-	:m_FilePath(_FilePath), m_Height(0), m_RendererID(0), m_Width(0), m_BPP(0), m_LocalBuffer(nullptr)
 {
-	if (_FilePath.find(".bmp") == _FilePath.npos)
-		stbi_set_flip_vertically_on_load(1);
-	m_LocalBuffer = stbi_load(_FilePath.c_str(), &m_Width, &m_Height, &m_BPP, 4);
-	gc(glGenTextures(1, &m_RendererID));
-	gc(glBindTexture(GL_TEXTURE_2D, m_RendererID));
-
-	gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-	gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-	gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-
-	gc(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer));
-	gc(glBindTexture(GL_TEXTURE_2D, 0));
-	if (m_LocalBuffer)
+	if (textures.find(_FilePath) != textures.end())
 	{
-		stbi_image_free(m_LocalBuffer);
+		auto& ref = textures[_FilePath];
+		*this = ref.ref; // Ref count increased in copy constructor
+		return;
 	}
+	else
+	{ // Do normal init
+		m_FilePath = _FilePath;
+		DBG(std::cout << "Loaded " << m_FilePath << " " << m_RendererID << endl);
+		if (_FilePath.find(".bmp") == _FilePath.npos)
+			stbi_set_flip_vertically_on_load(1);
+		uchar* tempBuf = stbi_load(_FilePath.c_str(), &m_Width, &m_Height, &m_BPP, 4);
+		gc(glGenTextures(1, &m_RendererID));
+		gc(glBindTexture(GL_TEXTURE_2D, m_RendererID));
+
+		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+
+		gc(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempBuf));
+		gc(glBindTexture(GL_TEXTURE_2D, 0));
+		if (tempBuf)
+		{
+			stbi_image_free(tempBuf);
+		}
+
+		textures[_FilePath].refCount = 0;
+		textures[_FilePath].ref = *this;
+	}
+}
+
+Texture::Texture(const Texture& o)
+	: m_Height(o.m_Height), m_Width(o.m_Width), m_RendererID(o.m_RendererID), m_BPP(o.m_BPP), m_FilePath(o.m_FilePath),type(o.type)
+{
+	textures[m_FilePath].refCount++;
+	DBG(cout << "Cache hit " << m_FilePath << " " << m_RendererID << endl);
 }
 
 /// <summary>
@@ -55,7 +86,7 @@ Texture::Texture(ARGBColor* buffer, GLenum antiAliasing)
 {
 	m_Height = Window_Height;
 	m_Width = Window_Width;
-	m_LocalBuffer = (unsigned char*)buffer;
+	uchar* tempBuffer = (unsigned char*)buffer;
 	gc(glGenTextures(1, &m_RendererID));
 	gc(glBindTexture(GL_TEXTURE_2D, m_RendererID));
 
@@ -64,13 +95,26 @@ Texture::Texture(ARGBColor* buffer, GLenum antiAliasing)
 	gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
-	gc(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer));
+	gc(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempBuffer));
 	gc(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
 Texture::~Texture()
 {
-	//gc(glDeleteTextures(1, &m_RendererID));
+	if (m_FilePath.empty() == false)
+	{
+		TextureRef::Decrement(m_FilePath);
+	}
+}
+
+Texture& Texture::operator=(const Texture& o)
+{
+	if (m_FilePath.empty() == false)
+		TextureRef::Decrement(m_FilePath);
+	m_Height = (o.m_Height), m_Width = (o.m_Width), m_RendererID = (o.m_RendererID), m_BPP = (o.m_BPP), m_FilePath = (o.m_FilePath), type = (o.type);
+	textures[m_FilePath].refCount++;
+	DBG(cout << "Cache hit " << m_FilePath << " " << m_RendererID << endl);
+	return *this;
 }
 
 void Texture::Bind(unsigned int slot) const
@@ -82,4 +126,18 @@ void Texture::Bind(unsigned int slot) const
 void Texture::Unbind() const
 {
 	gc(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
+inline void TextureRef::Decrement(const std::string& path)
+{
+	if (glfwWindowShouldClose) // To avoid searching zombi hash_table when it gets destroyed
+		return;
+	std::unordered_map<std::string, TextureRef>::iterator xref;
+	xref = textures.find(path);
+	if (--(*xref).second.refCount == 0)
+	{
+		gc(glDeleteTextures(1, &(*xref).second.ref.m_RendererID));
+		DBG(std::cout << "Erased " << (*xref).second.ref.m_FilePath << " " << (*xref).second.ref.m_RendererID << endl);
+		textures.erase(xref);
+	}
 }

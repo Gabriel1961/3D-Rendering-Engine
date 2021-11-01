@@ -4,6 +4,14 @@
 #include <Logger.h>
 using namespace std;
 using namespace glm;
+using std::move;
+//#define MESH_DEBUG
+#ifdef MESH_DEBUG
+#define DBG(x) x
+#else
+#define DBG(x)
+#endif // DEBUG
+
 #define SAMPLER_DIFFUSE_NAME string("texture_diffuse")
 #define SAMPLER_SPECULAR_NAME string("texture_specular")
 ///  Mesh  ///
@@ -22,7 +30,6 @@ void Mesh::Draw(const Camera& camera)
 	{
 		if (textures[i].type == SAMPLER_DIFFUSE_NAME)
 		{
-			textures[i].Unbind();
 			textures[i].Bind(slot);
 			sh->SetUniform1i(SAMPLER_DIFFUSE_NAME + to_string(diffuseStartIndex), slot);
 			diffuseStartIndex++;
@@ -30,10 +37,10 @@ void Mesh::Draw(const Camera& camera)
 		}
 		else if (textures[i].type == SAMPLER_SPECULAR_NAME)
 		{
-			textures[i].Bind(slot);
-			sh->SetUniform1i(SAMPLER_SPECULAR_NAME + to_string(specularStartIndex), slot);
-			specularStartIndex++;
-			slot++;
+			//textures[i].Bind(slot);
+			//sh->SetUniform1i(SAMPLER_SPECULAR_NAME + to_string(specularStartIndex), //slot);
+			//specularStartIndex++;
+			//slot++;
 		}
 	}
 	sh->SetUniformMat4f("u_model", modelMat);
@@ -45,11 +52,32 @@ void Mesh::Draw(const Camera& camera)
 	Renderer::Draw(*va, *ib, *sh);
 }
 
+Mesh::Mesh(Mesh&& o)noexcept
+{
+	vb = o.vb;
+	va = o.va;
+	ib = o.ib;
+	sh = o.sh;
+
+	vertexes = move(o.vertexes);
+	indexes = move(o.indexes);
+	textures = move(o.textures);
+	
+	modelMat = o.modelMat;
+	viewMat = o.viewMat;
+
+	o.va = 0;
+	o.vb = 0;
+	o.ib = 0;
+	o.sh = 0;
+}
+
 Mesh::~Mesh()
 {
-	//delete vb;
-	//delete ib; // TODO FIx memory leak
-	//delete va;
+	DBG(print("Deleted mesh"));
+	delete vb;
+	delete ib; // TODO FIx memory leak
+	delete va;
 }
 
 void Mesh::SetupMesh()

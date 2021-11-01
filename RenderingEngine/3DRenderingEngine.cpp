@@ -84,16 +84,16 @@ void RenderingEngine::Start(GLFWwindow* win)
 	window = win;
 	SetupInput();
 
-	float far = 1000;
+	float far = 100;
 	float near = 0.1;
 	float fov = pi / 4;
 	cam = new Camera(glm::perspective(fov, ((float)Window_Width / Window_Height), near, far), glm::vec3(0, 0, -10));
+
 	cube = new CubeModel();
 	cube->color = vec4(1);
 
 	sh = new Shader(SHADER_PATH "DefaultMesh.shader");
-	model = new Model(MODEL_PATH "Monkey3/Monkey.obj",sh);
-	model->meshes[0].viewMat = rotate(mat4(1),(float) pi / 2.0f, vec3(0,1,0));
+	model = new Model(MODEL_PATH "Backpack/backpack.obj",sh);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
@@ -114,6 +114,7 @@ void RenderingEngine::Render()
 	sh->SetUniform3f("u_lightPos", lightPos);
 	sh->SetUniform1f("u_shininess", shininess);
 	sh->SetUniform1f("u_specularStrength", specularStrength);
+	
 	model->Draw(*cam);
 
 	GuiRender();
@@ -126,4 +127,5 @@ void RenderingEngine::Update()
 void RenderingEngine::Terminate()
 {
 	inputThread->join();
+
 }
