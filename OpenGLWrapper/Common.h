@@ -3,7 +3,7 @@
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
-#include<GL/glew.h>
+#include <GL/glew.h>
 #include <glfw3.h>
 #include <GL/glm/glm.hpp>
 #include <GL/glm/gtc/matrix_transform.hpp>

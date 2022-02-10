@@ -94,8 +94,8 @@ void RenderingEngine::Start(GLFWwindow* win)
 
 	sh = new Shader(SHADER_PATH "DefaultMesh.shader");
 	model = new Model(MODEL_PATH "Backpack/backpack.obj",sh);
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	gc(glEnable(GL_DEPTH_TEST));
+	gc(glDepthFunc(GL_LESS));
 
 }
 
@@ -109,6 +109,7 @@ void GuiRender()
 void RenderingEngine::Render()
 {
 	lightPos = mat3(rotate(mat4(1), (float)pi / 160, vec3(0, 1, 0))) * lightPos;
+	
 	cube->viewMat = translate(mat4(1), lightPos);
 	cube->Draw(*cam);
 	sh->SetUniform3f("u_lightPos", lightPos);

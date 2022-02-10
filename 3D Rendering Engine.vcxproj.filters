@@ -99,6 +99,12 @@
     <ClCompile Include="OpenGLWrapper\vendor\irrXML\irrXML.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGLWrapper\FrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLWrapper\CubeMap\CubeMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenSize.h">
@@ -1106,6 +1112,12 @@
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\irrTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OpenGLWrapper\FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLWrapper\CubeMap\CubeMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\GLEW\doc\advanced.html" />
@@ -1535,5 +1547,26 @@
     <None Include="OpenGLWrapper\Line.shader" />
     <None Include="Dependencies\assimp\Debug\assimp-vc143-mtd.dll" />
     <None Include="RenderingEngine\Shaders\PrebuiltCube.shader" />
+    <None Include="OpenGLWrapper\CubeMap\CubeMap.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="OpenGLWrapper\CubeMap\posz.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="OpenGLWrapper\CubeMap\negx.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="OpenGLWrapper\CubeMap\negy.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="OpenGLWrapper\CubeMap\negz.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="OpenGLWrapper\CubeMap\posx.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="OpenGLWrapper\CubeMap\posy.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

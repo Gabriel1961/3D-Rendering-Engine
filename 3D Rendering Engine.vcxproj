@@ -156,6 +156,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.cpp" />
+    <ClCompile Include="OpenGLWrapper\CubeMap\CubeMap.cpp" />
+    <ClCompile Include="OpenGLWrapper\FrameBuffer.cpp" />
     <ClCompile Include="OpenGLWrapper\vendor\irrXML\irrXML.cpp" />
     <ClCompile Include="RenderingEngine\Models\PreBuilt\CubeModel.cpp" />
     <ClCompile Include="RenderingEngine\Camera.cpp" />
@@ -192,6 +194,8 @@
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrString.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrTypes.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.h" />
+    <ClInclude Include="OpenGLWrapper\CubeMap\CubeMap.h" />
+    <ClInclude Include="OpenGLWrapper\FrameBuffer.h" />
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\CXMLReaderImpl.h" />
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\fast_atof.h" />
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\heapsort.h" />
@@ -670,6 +674,7 @@
     <None Include="Dependencies\GLEW\include\GL\glm\gtx\vector_query.inl" />
     <None Include="Dependencies\GLEW\include\GL\glm\gtx\wrap.inl" />
     <None Include="imgui.ini" />
+    <None Include="OpenGLWrapper\CubeMap\CubeMap.shader" />
     <None Include="OpenGLWrapper\Line.shader" />
     <None Include="OpenGLWrapper\PixelDisplay.shader" />
     <None Include="OpenGLWrapper\Quad.shader" />
@@ -677,6 +682,14 @@
     <None Include="RenderingEngine\Shaders\Sun.shader" />
     <None Include="RenderingEngine\Shaders\Teapot.shader" />
     <None Include="RenderingEngine\Shaders\DefaultMesh.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="OpenGLWrapper\CubeMap\negx.jpg" />
+    <Image Include="OpenGLWrapper\CubeMap\negy.jpg" />
+    <Image Include="OpenGLWrapper\CubeMap\negz.jpg" />
+    <Image Include="OpenGLWrapper\CubeMap\posx.jpg" />
+    <Image Include="OpenGLWrapper\CubeMap\posy.jpg" />
+    <Image Include="OpenGLWrapper\CubeMap\posz.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
