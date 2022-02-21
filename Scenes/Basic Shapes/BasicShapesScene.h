@@ -9,4 +9,7 @@ public:
 	void Render() override;
 	void Update() override;
 	void Terminate() override;
+
+	Camera* cam;
+	CubeModel* cube;
 };

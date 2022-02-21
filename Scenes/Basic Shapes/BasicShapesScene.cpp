@@ -1,16 +1,6 @@
 #include "BasicShapesScene.h"
-#include "Common.h"
-#include "../ScreenSize.h"
-#include "../../OpenGLWrapper/vendor/imgui/ImguiLib.h"
-#include <Input/Input.h>
-#include <Mesh.h>
-#include <Camera.h>
-#include <Models/PreBuilt/CubeModel.h>
-#include "./CubeMap/CubeMap.h"
-#include "../Scenes/Scene.h"
-
-Camera* cam;
-CubeModel* cube;
+/// TODO change the event for mouse move with a loop in the update **(Smoother cursor)
+BasicShapesScene basicShapeScene;
 void BasicShapesScene::Start(GLFWwindow* win)
 {
 	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // seteaza cursorul lockat pe window
@@ -24,10 +14,12 @@ void BasicShapesScene::Start(GLFWwindow* win)
 
 void BasicShapesScene::Render()
 {
+	cube->Draw(*cam);
 }
 
 void BasicShapesScene::Update()
 {
+	cam->UpdateInput(); 
 }
 
 void BasicShapesScene::Terminate()

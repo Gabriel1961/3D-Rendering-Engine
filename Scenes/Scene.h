@@ -3,6 +3,7 @@
 #include <vector>
 #include "Common.h"
 #include "../Action/Action.h"
+#include "./3DRenderingEngineModules.h"
 using namespace std;
 using namespace glm;
 using namespace EventSystem;

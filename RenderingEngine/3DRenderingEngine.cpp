@@ -1,8 +1,4 @@
 #include "3DRenderingEngine.h"
-#include "../OpenGLWrapper/Common.h"
-#include "../ScreenSize.h"
-#include "../../OpenGLWrapper/vendor/imgui/ImguiLib.h"
-#include <Input/Input.h>
 #include "../Scenes/Scene.h"
 using namespace std;
 using namespace glm;

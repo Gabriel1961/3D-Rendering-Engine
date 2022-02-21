@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "./ShowCaseScene.h"
 Scene* Scene::activeScene = 0;
 vector<Scene*>* Scene::availableScenes = 0;
 

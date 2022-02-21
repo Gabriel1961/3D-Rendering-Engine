@@ -1,27 +1,8 @@
 #include "./ShowCaseScene.h"
-#include "../OpenGLWrapper/Common.h"
-#include "../ScreenSize.h"
-#include "../../OpenGLWrapper/vendor/imgui/ImguiLib.h"
-#include <fstream>
-#include <thread>
-#include <Input/Input.h>
-#include <Mesh.h>
-#include <Camera.h>
-#include <Models/PreBuilt/CubeModel.h>
-#include "./CubeMap/CubeMap.h"
-#include "../Scenes/Scene.h"
 using namespace std;
 using namespace glm;
 ShowCaseScene showCaseScene;
-Camera* cam;
-CubeMap* cubeMap;
-CubeModel* cube;
 
-vec3 lightPos = { 0,2.5,-5 };
-float shininess = 32;
-float specularStrength = 1;
-Model* model;
-Shader* sh;
 void ShowCaseScene::Start(GLFWwindow* win)
 {
 	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // seteaza cursorul lockat pe window
@@ -43,7 +24,7 @@ void ShowCaseScene::Update()
 {
 }
 
-void GuiRender()
+void ShowCaseScene::GuiRender()
 {
 	ImGui::SliderFloat3("Light Position", &lightPos.x, -5, 5);
 	ImGui::SliderFloat("Shininess", &shininess, 0, 200);

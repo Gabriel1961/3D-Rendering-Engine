@@ -197,6 +197,7 @@
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrString.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrTypes.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.h" />
+    <ClInclude Include="RenderingEngine\3DRenderingEngineModules.h" />
     <ClInclude Include="Scenes\Basic Shapes\BasicShapesScene.h" />
     <ClInclude Include="Dependencies\Nameof\Nameof.hpp" />
     <ClInclude Include="RenderingEngine\CubeMap\CubeMap.h" />

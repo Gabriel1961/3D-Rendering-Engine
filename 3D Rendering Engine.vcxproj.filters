@@ -1139,6 +1139,9 @@
     <ClInclude Include="Scenes\Basic Shapes\BasicShapesScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RenderingEngine\3DRenderingEngineModules.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\GLEW\doc\advanced.html" />
