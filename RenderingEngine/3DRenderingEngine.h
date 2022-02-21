@@ -12,8 +12,7 @@ class RenderingEngine
 {
 public:
 	static void Start(GLFWwindow* window);
-	static void PreRender() {}
+	static void Update(); // gets called before the render
 	static void Render();
-	static void Update();
 	static void Terminate();
 };

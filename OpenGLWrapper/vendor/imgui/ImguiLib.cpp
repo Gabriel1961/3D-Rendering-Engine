@@ -26,6 +26,6 @@ void Imgui_NewFrame()
 
 void Imgui_Render()
 {
-	ImGui::Render();
+	ImGui::Draw();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

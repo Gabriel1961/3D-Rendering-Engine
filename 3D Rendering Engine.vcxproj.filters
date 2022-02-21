@@ -102,7 +102,16 @@
     <ClCompile Include="OpenGLWrapper\FrameBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OpenGLWrapper\CubeMap\CubeMap.cpp">
+    <ClCompile Include="RenderingEngine\CubeMap\CubeMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\ShowCaseScene\ShowCaseScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Basic Shapes\BasicShapesScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1115,7 +1124,19 @@
     <ClInclude Include="OpenGLWrapper\FrameBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGLWrapper\CubeMap\CubeMap.h">
+    <ClInclude Include="RenderingEngine\CubeMap\CubeMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ShowCaseScene\ShowCaseScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Nameof\Nameof.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Basic Shapes\BasicShapesScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1547,25 +1568,25 @@
     <None Include="OpenGLWrapper\Line.shader" />
     <None Include="Dependencies\assimp\Debug\assimp-vc143-mtd.dll" />
     <None Include="RenderingEngine\Shaders\PrebuiltCube.shader" />
-    <None Include="OpenGLWrapper\CubeMap\CubeMap.shader" />
+    <None Include="RenderingEngine\Shaders\CubeMap.shader" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="OpenGLWrapper\CubeMap\posz.jpg">
+    <Image Include="RenderingEngine\CubeMap\posz.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="OpenGLWrapper\CubeMap\negx.jpg">
+    <Image Include="RenderingEngine\CubeMap\negx.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="OpenGLWrapper\CubeMap\negy.jpg">
+    <Image Include="RenderingEngine\CubeMap\negy.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="OpenGLWrapper\CubeMap\negz.jpg">
+    <Image Include="RenderingEngine\CubeMap\negz.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="OpenGLWrapper\CubeMap\posx.jpg">
+    <Image Include="RenderingEngine\CubeMap\posx.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="OpenGLWrapper\CubeMap\posy.jpg">
+    <Image Include="RenderingEngine\CubeMap\posy.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -2,13 +2,12 @@
 #version 330 core
 layout(location = 0) in vec3 position;
 out vec3 texCoords;
-uniform mat4 projection;
-uniform mat4 view;
+uniform mat4 camMat;
 
 void main()
 {
 	texCoords = position;
-	gl_Position = projection*view*vec4(position,1.);
+	gl_Position = camMat * vec4( position, 1.);
 }
 
 #Fragment Shader
@@ -16,9 +15,9 @@ void main()
 
 in vec3 texCoords;
 out vec4 fragColor;
-sampler samplerCube cubeMap;
+uniform samplerCube cubeMapSamp;
 
 void main()
 {
-	fragColor = texture(cubeMap, texCoords);
+	fragColor = texture(cubeMapSamp, texCoords);
 }

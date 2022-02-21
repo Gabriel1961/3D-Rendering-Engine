@@ -18,7 +18,7 @@ public:
 
 	}
 
-	void Render() override
+	void Draw() override
 	{
 		delete tex;
 		tex = new Texture(&screen[0][0]);

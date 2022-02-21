@@ -8,7 +8,7 @@ private:
 	IndexBuffer ib = IndexBuffer(2, ibData);
 	static std::vector<DebugLine*>* lines;
 	VertexArray* va = 0;
-	void Render()
+	void Draw()
 	{
 		float vbData[]{ start.x,start.y,end.x,end.y };
 		VertexBufferLayout vbl;
@@ -26,7 +26,7 @@ public:
 	static void RenderLines()
 	{
 		for (auto x : *lines)
-			x->Render();
+			x->Draw();
 	}
 	glm::vec2 start = { 0,0 }, end = { 0,0 };
 	DebugLine(glm::vec2 start, glm::vec2 end, glm::vec4 color = { 1,1,1,1 })

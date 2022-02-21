@@ -46,7 +46,7 @@ void Mesh::Draw(const Camera& camera)
 	sh->SetUniformMat4f("u_model", modelMat);
 	sh->SetUniformMat4f("u_view", viewMat);
 	sh->SetUniformMat4f("u_projection", camera.projMat);
-	sh->SetUniformMat4f("u_camMat", camera.GetCamMat());
+	sh->SetUniformMat4f("u_camMat", camera.GetCamRotMat());
 	sh->SetUniformMat3f("u_normalMVMat", transpose(inverse(mat3(viewMat*modelMat))));
 	sh->SetUniform3f("u_camPos", camera.position);
 	Renderer::Draw(*va, *ib, *sh);

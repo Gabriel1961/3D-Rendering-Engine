@@ -43,7 +43,7 @@ int main(void)
 		PROJECT::Start(window);
 		while (!glfwWindowShouldClose(window))
 		{
-			PROJECT::PreRender();
+			PROJECT::Update();
 #pragma region FrameCounter
 			double currentTime = glfwGetTime();
 			nbFrames++;

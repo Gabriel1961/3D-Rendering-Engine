@@ -1,6 +1,5 @@
+#include "3DRenderingEngine.h"
 #include "CubeMap.h"
-
-static const char* SHADER_PATH = "OpenGLWrapper/PixelDisplay.shader";
 
 const std::vector<std::string> CubeMap::defaultCubeMapPaths = {
 	"posx.jpg",
@@ -11,7 +10,7 @@ const std::vector<std::string> CubeMap::defaultCubeMapPaths = {
 	"negz.jpg"
 };
 
-CubeMap::CubeMap(const std::vector<std::string>& textures = defaultCubeMapPaths,const std::string& shaderPath = SHADER_PATH)
+CubeMap::CubeMap(const std::vector<std::string>& textures,const std::string& shaderPath)
 {	
 	gc(glGenTextures(1, &renderId));
 	gc(glBindTexture(GL_TEXTURE_CUBE_MAP, renderId));
@@ -19,7 +18,7 @@ CubeMap::CubeMap(const std::vector<std::string>& textures = defaultCubeMapPaths,
 	unsigned char* data;
 	for (unsigned int i = 0; i < textures.size(); i++)
 	{
-		data = stbi_load(textures[i].c_str(), &width, &height, &nrChannels, 0);
+		data = stbi_load((BASE_PATH + std::string("CubeMap/") + textures[i]).c_str(), &width, &height, &nrChannels, 0);
 		gc(glTexImage2D(
 			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 			0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
@@ -35,13 +34,19 @@ CubeMap::CubeMap(const std::vector<std::string>& textures = defaultCubeMapPaths,
 
 	/// Load the shader
 	shader = new Shader(shaderPath);
+	cube = new CubeModel("");
+	cube->sh = shader;
 }
 
-void CubeMap::Render()
+void CubeMap::Draw(const Camera& cam)
 {
 	
 	gc(glDepthMask(false));
+	gc(glBindTexture(GL_TEXTURE_CUBE_MAP, renderId));
 	
+	shader->SetUniformMat4f("camMat", cam.projMat * cam.GetCamRotMat());
+	Renderer::Draw(*cube->va, *cube->ib, *cube->sh);
+	glDepthMask(GL_TRUE);
 }
 
 CubeMap::~CubeMap()

@@ -71,7 +71,7 @@ public:
 		this->shader = new Shader(shader);
 	}
 
-	virtual void Render()
+	virtual void Draw()
 	{
 		_Render();
 	}

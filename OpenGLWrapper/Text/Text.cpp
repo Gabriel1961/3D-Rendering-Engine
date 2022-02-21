@@ -94,7 +94,7 @@ Text::~Text()
 			textInstances.erase(textInstances.begin() + i);
 }
 
-void Text::Render()
+void Text::Draw()
 {
 	for (auto text : textInstances)
 	{

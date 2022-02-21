@@ -49,7 +49,7 @@ namespace EventSystem
 			Call(p0);
 		}
 
-		void operator +=(void(*func)(T0))
+		void operator +=(std::function<void(T0)> func)
 		{
 			pointers.push_back(func);
 		}
@@ -77,7 +77,7 @@ namespace EventSystem
 			Call(p0, p1);
 		}
 
-		void operator +=(void(*func)(T0, T1))
+		void operator +=(std::function<void(T0, T1)> func)
 		{
 			pointers.push_back(func);
 		}
@@ -106,7 +106,7 @@ namespace EventSystem
 			Call(p0, p1, p2);
 		}
 
-		void operator +=(void(*func)(T0, T1, T2))
+		void operator +=(std::function<void(T0, T1, T2)> func)
 		{
 			pointers.push_back(func);
 		}

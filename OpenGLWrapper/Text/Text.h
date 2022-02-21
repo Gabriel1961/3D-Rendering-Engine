@@ -29,5 +29,5 @@ public:
 
 	Text(std::string str, ImageFont font = ImageFont("OpenGLWrapper/Text/Text.png", { 252,108 }, { 6,18 }));
 	~Text();
-	static void Render();
+	static void Draw();
 };
