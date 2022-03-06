@@ -4,7 +4,7 @@
 class ShowCaseScene : public Scene
 {
 public:
-	ShowCaseScene() :Scene((string)NAMEOF_TYPE(ShowCaseScene)) {}
+	ShowCaseScene() :Scene((string)NAMEOF_SHORT_TYPE(ShowCaseScene)) {}
 	void Start(GLFWwindow*) override;
 	void Render() override;
 	void Update() override;

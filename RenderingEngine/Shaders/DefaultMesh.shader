@@ -17,7 +17,7 @@ void main()
 	v_normal = -u_normalMVMat * normal;
 	v_fragPos = (u_view*u_model*vec4(position,1)).xyz;
 	v_uvCoords = uvCoords;
-	gl_Position = u_projection* u_camMat *vec4((u_view * u_model * vec4(position,1)).xyz + u_camPos,1);
+	gl_Position = u_projection* u_camMat *vec4((u_view * u_model * vec4(position,1)).xyz - u_camPos,1);
 }
 
 #Fragment Shader
@@ -49,7 +49,7 @@ void main()
 	float ambientStrength = 0.1;
 	float roughness = 0.2;
 	vec3 ambientColor = u_lightColor * ambientStrength;
-	vec3 fragToCam = normalize(v_fragPos - u_camPos);
+	vec3 fragToCam = normalize(u_camPos - v_fragPos);
 
 	vec3 diffuseColor = max(dot(-fragToCam,v_normal),0.0f) * u_lightColor;
 

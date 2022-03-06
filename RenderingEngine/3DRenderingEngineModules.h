@@ -18,5 +18,6 @@
 // Engine modules
 #include "Camera.h"
 #include "Models/PreBuilt/CubeModel.h"
+#include "Models/PreBuilt/IcoSphereModel.h"
 #include "Mesh.h"
 #include "CubeMap/CubeMap.h"

@@ -76,15 +76,12 @@ Mesh::~Mesh()
 {
 	DBG(print("Deleted mesh"));
 	delete vb;
-	delete ib; // TODO FIx memory leak
+	delete ib; 
 	delete va;
 }
 
 void Mesh::SetupMesh()
 {
-	//delete vb;
-	//delete ib; // TODO FIx memory leak
-	//delete va;
 	vb = new VertexBuffer(sizeof(Vertex) * vertexes.size(), &vertexes[0]);
 	ib = new IndexBuffer(indexes.size(), &indexes[0], GL_UNSIGNED_INT, GL_STATIC_DRAW);
 	VertexBufferLayout vbl;

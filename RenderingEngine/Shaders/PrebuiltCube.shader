@@ -10,7 +10,7 @@ uniform mat4 u_camMat;
 uniform vec3 u_camPos;
 void main()
 {
-	gl_Position = u_projection * u_camMat * vec4((u_view * u_model * vec4(position, 1)).xyz + u_camPos, 1);
+	gl_Position = u_projection * u_camMat * vec4((u_view * u_model * vec4(position, 1)).xyz - u_camPos, 1);
 }
 
 #Fragment Shader

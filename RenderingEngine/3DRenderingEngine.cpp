@@ -9,7 +9,7 @@ void RenderingEngine::Start(GLFWwindow* win)
 	gc(glEnable(GL_DEPTH_TEST));
 	gc(glDepthFunc(GL_LESS));
 	Input::Init(win);
-	Scene::SetActiveScene((* Scene::availableScenes)[0], win);
+	Scene::SetActiveScene("BasicShapesScene", win);
 	Scene::StartActiveScene(window);
 }
 

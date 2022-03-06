@@ -10,14 +10,16 @@ using namespace EventSystem;
 class Scene
 {
 	static Scene* activeScene;
+	void SetWindowPtr(GLFWwindow* ptr);
 public:
 	static vector<Scene*>* availableScenes;
+	GLFWwindow* window{}; // after the scene has started it will be initialized to the correct window
 	string name;
 
 	Scene(const string& name);
 	/// <param name="scene"> if scene is null the current loaded scene will be disposed </param>
 	static void SetActiveScene(Scene* scene, GLFWwindow* window);
-
+	static void SetActiveScene(const std::string& sceneName,GLFWwindow* window);
 	static void StartActiveScene(GLFWwindow* window);
 	static void UpdateActiveScene();
 	static void RenderActiveScene();

@@ -111,7 +111,10 @@
     <ClCompile Include="Scenes\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\Basic Shapes\BasicShapesScene.cpp">
+    <ClCompile Include="Scenes\BasicShapesScene\BasicShapesScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1136,10 +1139,13 @@
     <ClInclude Include="Dependencies\Nameof\Nameof.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scenes\Basic Shapes\BasicShapesScene.h">
+    <ClInclude Include="Scenes\BasicShapesScene\BasicShapesScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderingEngine\3DRenderingEngineModules.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1572,6 +1578,7 @@
     <None Include="Dependencies\assimp\Debug\assimp-vc143-mtd.dll" />
     <None Include="RenderingEngine\Shaders\PrebuiltCube.shader" />
     <None Include="RenderingEngine\Shaders\CubeMap.shader" />
+    <None Include="RenderingEngine\Shaders\Viewport.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="RenderingEngine\CubeMap\posz.jpg">

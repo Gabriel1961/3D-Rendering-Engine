@@ -156,7 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.cpp" />
-    <ClCompile Include="Scenes\Basic Shapes\BasicShapesScene.cpp" />
+    <ClCompile Include="Scenes\BasicShapesScene\BasicShapesScene.cpp" />
     <ClCompile Include="RenderingEngine\CubeMap\CubeMap.cpp" />
     <ClCompile Include="OpenGLWrapper\FrameBuffer.cpp" />
     <ClCompile Include="OpenGLWrapper\vendor\irrXML\irrXML.cpp" />
@@ -188,6 +188,7 @@
     <ClCompile Include="RenderingEngine\Mesh.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Scenes\ShowCaseScene\ShowCaseScene.cpp" />
+    <ClCompile Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\CXMLReaderImpl.h" />
@@ -198,7 +199,7 @@
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrTypes.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.h" />
     <ClInclude Include="RenderingEngine\3DRenderingEngineModules.h" />
-    <ClInclude Include="Scenes\Basic Shapes\BasicShapesScene.h" />
+    <ClInclude Include="Scenes\BasicShapesScene\BasicShapesScene.h" />
     <ClInclude Include="Dependencies\Nameof\Nameof.hpp" />
     <ClInclude Include="RenderingEngine\CubeMap\CubeMap.h" />
     <ClInclude Include="OpenGLWrapper\FrameBuffer.h" />
@@ -532,6 +533,7 @@
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\ShowCaseScene\ShowCaseScene.h" />
     <ClInclude Include="ScreenSize.h" />
+    <ClInclude Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\assimp\Debug\assimp-vc143-mtd.dll" />
@@ -690,6 +692,7 @@
     <None Include="RenderingEngine\Shaders\Sun.shader" />
     <None Include="RenderingEngine\Shaders\Teapot.shader" />
     <None Include="RenderingEngine\Shaders\DefaultMesh.shader" />
+    <None Include="RenderingEngine\Shaders\Viewport.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="RenderingEngine\CubeMap\negx.jpg" />

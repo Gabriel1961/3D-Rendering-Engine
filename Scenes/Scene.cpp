@@ -2,6 +2,11 @@
 Scene* Scene::activeScene = 0;
 vector<Scene*>* Scene::availableScenes = 0;
 
+inline void Scene::SetWindowPtr(GLFWwindow* ptr)
+{
+	window = ptr;
+}
+
 Scene::Scene(const string& name)
 	:name(name)
 {
@@ -20,6 +25,20 @@ void Scene::SetActiveScene(Scene* scene, GLFWwindow* window)
 
 	if (scene == 0)
 		return;
+}
+
+void Scene::SetActiveScene(const std::string& sceneName, GLFWwindow* window)
+{
+	for (auto& s : *availableScenes)
+	{
+		if (s->name == sceneName)
+		{
+			SetActiveScene(s, window);
+			return;
+		}
+	}
+	cout << "Scene " << sceneName << "not found\n";
+	assert(false);
 }
 
 void Scene::UpdateActiveScene()
@@ -43,7 +62,10 @@ void Scene::StartActiveScene(GLFWwindow* window)
 	if (activeScene == 0)
 		return;
 	else
+	{
+		activeScene->SetWindowPtr(window);
 		activeScene->Start(window);
+	}
 }
 
 void Scene::TerminateActiveScene()

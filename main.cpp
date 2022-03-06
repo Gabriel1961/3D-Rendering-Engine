@@ -25,6 +25,8 @@ int main(void)
 		glfwTerminate();
 		return -1;
 	}
+	// Enable Vsync
+	glfwSwapInterval(1);
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 	{
@@ -43,6 +45,9 @@ int main(void)
 		PROJECT::Start(window);
 		while (!glfwWindowShouldClose(window))
 		{
+			/* Poll for and process events */
+			glfwPollEvents();
+
 			PROJECT::Update();
 #pragma region FrameCounter
 			double currentTime = glfwGetTime();
@@ -63,8 +68,6 @@ int main(void)
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);
 
-			/* Poll for and process events */
-			glfwPollEvents();
 		}
 		PROJECT::Terminate();
 	}
