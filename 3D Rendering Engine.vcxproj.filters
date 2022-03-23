@@ -87,10 +87,10 @@
     <ClCompile Include="RenderingEngine\Models\PreBuilt\CubeModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderingEngine\Camera.cpp">
+    <ClCompile Include="RenderingEngine\Modules\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderingEngine\Mesh.cpp">
+    <ClCompile Include="RenderingEngine\Modules\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.cpp">
@@ -102,7 +102,7 @@
     <ClCompile Include="OpenGLWrapper\FrameBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderingEngine\CubeMap\CubeMap.cpp">
+    <ClCompile Include="RenderingEngine\Modules\CubeMap\CubeMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\ShowCaseScene\ShowCaseScene.cpp">
@@ -115,6 +115,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingEngine\Modules\Gizmos\Gizmo2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingEngine\Modules\Lights\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingEngine\Modules\LitShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1073,10 +1082,10 @@
     <ClInclude Include="OpenGLWrapper\Input\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderingEngine\Camera.h">
+    <ClInclude Include="RenderingEngine\Modules\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderingEngine\Mesh.h">
+    <ClInclude Include="RenderingEngine\Modules\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderingEngine\Models\PreBuilt\CubeModel.h">
@@ -1127,7 +1136,7 @@
     <ClInclude Include="OpenGLWrapper\FrameBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderingEngine\CubeMap\CubeMap.h">
+    <ClInclude Include="RenderingEngine\Modules\CubeMap\CubeMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\ShowCaseScene\ShowCaseScene.h">
@@ -1146,6 +1155,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingEngine\Modules\Gizmos\Gizmo2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingEngine\Modules\Lights\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingEngine\Modules\LitShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1579,24 +1597,31 @@
     <None Include="RenderingEngine\Shaders\PrebuiltCube.shader" />
     <None Include="RenderingEngine\Shaders\CubeMap.shader" />
     <None Include="RenderingEngine\Shaders\Viewport.shader" />
+    <None Include="RenderingEngine\Shaders\DefaultLit.shader" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="RenderingEngine\CubeMap\posz.jpg">
+    <Image Include="RenderingEngine\Modules\CubeMap\posz.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RenderingEngine\CubeMap\negx.jpg">
+    <Image Include="RenderingEngine\Modules\CubeMap\negx.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RenderingEngine\CubeMap\negy.jpg">
+    <Image Include="RenderingEngine\Modules\CubeMap\negy.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RenderingEngine\CubeMap\negz.jpg">
+    <Image Include="RenderingEngine\Modules\CubeMap\negz.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RenderingEngine\CubeMap\posx.jpg">
+    <Image Include="RenderingEngine\Modules\CubeMap\posx.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="RenderingEngine\CubeMap\posy.jpg">
+    <Image Include="RenderingEngine\Modules\CubeMap\posy.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\PointLightGizmo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RenderingEngine\Modules\Gizmos\PointLightGizmo.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

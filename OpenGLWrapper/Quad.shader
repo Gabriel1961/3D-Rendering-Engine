@@ -7,7 +7,7 @@ out vec2 v_uv_coords;
 void main()
 {
 	v_uv_coords = uv_coords;
-	gl_Position.xy = (vec4(position, 1, 1) * transform).xy;
+	gl_Position = (transform* vec4(position, 0, 1));
 }
 
 #Fragment Shader

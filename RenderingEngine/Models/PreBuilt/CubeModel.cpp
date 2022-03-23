@@ -47,7 +47,7 @@ CubeModel::~CubeModel()
 	delete ib;
 }
 
-void CubeModel::Draw(const Camera& camera)
+void CubeModel::Render(const Camera& camera)
 {
 	sh->SetUniformMat4f("u_model", modelMat);
 	sh->SetUniformMat4f("u_view", viewMat);

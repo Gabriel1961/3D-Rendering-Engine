@@ -29,7 +29,8 @@ public:
 	glm::mat4 viewMat = glm::mat4(1);
 
 	Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures, Shader* shader);
-	void Draw(const Camera& camera);
+	Mesh() {}
+	void Render(const Camera& camera);
 	Mesh(Mesh&& o) noexcept;
 	~Mesh();
 protected:

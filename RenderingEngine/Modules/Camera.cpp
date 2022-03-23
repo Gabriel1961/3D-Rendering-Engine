@@ -1,19 +1,20 @@
 #include "Camera.h"
 #include "./Input/Input.h"
-Camera* ths;
-/// Fix janky mouse movement
 Camera::Camera(const glm::mat4& projMat, const glm::vec3& position, GLFWwindow* window) : projMat(projMat), position(position), window(window) {
-	// Event based movement of camera
-	/*Input::Mouse::MouseMove += [this](double speedX, double speedY) {
-		if (abs(speedX) > 1 || abs(Input::Mouse::SpeedY) > 1)
-			return;
-		this->rotation.x += speedX;
-		this->rotation.y += speedY;
-		if (this->rotation.y > pi / 2)
-			this->rotation.y = pi / 2;
-		if (this->rotation.y < -pi / 2)
-			this->rotation.y = -pi / 2;
-	};*/
+#pragma region Enable/Disable Cursor
+
+	Input::Keyboard::KeyDown += [this](int but,int ac)
+	{
+		if (but == GLFW_KEY_SPACE && ac == GLFW_PRESS)
+		{
+			if (isMouseLocked == false)
+				glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED), isMouseLocked = true;
+			else
+				glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL), isMouseLocked = false;
+		}
+	};
+
+#pragma endregion
 }
 
 static struct MPos { double x{}, y{}; };
@@ -40,17 +41,6 @@ void Camera::UpdateInput()
 
 #pragma endregion
 
-#pragma region Enable/Disable Cursor
-
-	if (glfwGetKey(window, GLFW_KEY_SPACE))
-	{
-		if (isMouseLocked == false)
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED), isMouseLocked = true;
-		else
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL), isMouseLocked = false;
-	}
-	
-#pragma endregion
 
 #pragma region KeyMovement
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))

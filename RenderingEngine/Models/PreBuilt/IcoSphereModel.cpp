@@ -73,7 +73,11 @@ vector<Vertex> GetVertices(int subdivisionLevel, IcoSphereModel* ico)
 }
 
 
-IcoSphereModel::IcoSphereModel(int subdivisionLevel, Shader* _shader) : Mesh(GetVertices(subdivisionLevel,this),*this->triangles, {}, _shader)
+IcoSphereModel::IcoSphereModel(int subdivisionLevel, Shader* _shader)
 {
-
+	vertexes = GetVertices(subdivisionLevel, this);
+	indexes = std::move( * triangles);
+	delete triangles;
+	sh = _shader;
+	SetupMesh();
 }

@@ -11,4 +11,5 @@ public:
 
 	Camera* cam{};
 	IcoSphereModel* ico{};
+	CubeModel* cube{};
 };

@@ -156,12 +156,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.cpp" />
+    <ClCompile Include="RenderingEngine\Modules\LitShader.cpp" />
+    <ClCompile Include="RenderingEngine\Modules\Lights\Light.cpp" />
+    <ClCompile Include="RenderingEngine\Modules\Gizmos\Gizmo2D.cpp" />
     <ClCompile Include="Scenes\BasicShapesScene\BasicShapesScene.cpp" />
-    <ClCompile Include="RenderingEngine\CubeMap\CubeMap.cpp" />
+    <ClCompile Include="RenderingEngine\Modules\CubeMap\CubeMap.cpp" />
     <ClCompile Include="OpenGLWrapper\FrameBuffer.cpp" />
     <ClCompile Include="OpenGLWrapper\vendor\irrXML\irrXML.cpp" />
     <ClCompile Include="RenderingEngine\Models\PreBuilt\CubeModel.cpp" />
-    <ClCompile Include="RenderingEngine\Camera.cpp" />
+    <ClCompile Include="RenderingEngine\Modules\Camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Dependencies\GLEW\include\GL\glm\detail\glm.cpp" />
     <ClCompile Include="OpenGLWrapper\ComputeShader.cpp" />
@@ -185,7 +188,7 @@
     <ClCompile Include="OpenGLWrapper\VertexArray.cpp" />
     <ClCompile Include="OpenGLWrapper\VertexBuffer.cpp" />
     <ClCompile Include="RenderingEngine\3DRenderingEngine.cpp" />
-    <ClCompile Include="RenderingEngine\Mesh.cpp" />
+    <ClCompile Include="RenderingEngine\Modules\Mesh.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Scenes\ShowCaseScene\ShowCaseScene.cpp" />
     <ClCompile Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.cpp" />
@@ -198,10 +201,13 @@
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrString.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrTypes.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.h" />
+    <ClInclude Include="RenderingEngine\Modules\LitShader.h" />
+    <ClInclude Include="RenderingEngine\Modules\Lights\Light.h" />
+    <ClInclude Include="RenderingEngine\Modules\Gizmos\Gizmo2D.h" />
     <ClInclude Include="RenderingEngine\3DRenderingEngineModules.h" />
     <ClInclude Include="Scenes\BasicShapesScene\BasicShapesScene.h" />
     <ClInclude Include="Dependencies\Nameof\Nameof.hpp" />
-    <ClInclude Include="RenderingEngine\CubeMap\CubeMap.h" />
+    <ClInclude Include="RenderingEngine\Modules\CubeMap\CubeMap.h" />
     <ClInclude Include="OpenGLWrapper\FrameBuffer.h" />
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\CXMLReaderImpl.h" />
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\fast_atof.h" />
@@ -210,7 +216,7 @@
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\irrString.h" />
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\irrTypes.h" />
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\irrXML.h" />
-    <ClInclude Include="RenderingEngine\Camera.h" />
+    <ClInclude Include="RenderingEngine\Modules\Camera.h" />
     <ClInclude Include="Dependencies\Action\Action.h" />
     <ClInclude Include="Dependencies\GLEW\include\GL\eglew.h" />
     <ClInclude Include="Dependencies\GLEW\include\GL\glew.h" />
@@ -528,7 +534,7 @@
     <ClInclude Include="OpenGLWrapper\VertexBuffer.h" />
     <ClInclude Include="OpenGLWrapper\VertexBufferLayout.h" />
     <ClInclude Include="RenderingEngine\3DRenderingEngine.h" />
-    <ClInclude Include="RenderingEngine\Mesh.h" />
+    <ClInclude Include="RenderingEngine\Modules\Mesh.h" />
     <ClInclude Include="RenderingEngine\Models\PreBuilt\CubeModel.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\ShowCaseScene\ShowCaseScene.h" />
@@ -688,6 +694,7 @@
     <None Include="OpenGLWrapper\Line.shader" />
     <None Include="OpenGLWrapper\PixelDisplay.shader" />
     <None Include="OpenGLWrapper\Quad.shader" />
+    <None Include="RenderingEngine\Shaders\DefaultLit.shader" />
     <None Include="RenderingEngine\Shaders\PrebuiltCube.shader" />
     <None Include="RenderingEngine\Shaders\Sun.shader" />
     <None Include="RenderingEngine\Shaders\Teapot.shader" />
@@ -695,12 +702,14 @@
     <None Include="RenderingEngine\Shaders\Viewport.shader" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="RenderingEngine\CubeMap\negx.jpg" />
-    <Image Include="RenderingEngine\CubeMap\negy.jpg" />
-    <Image Include="RenderingEngine\CubeMap\negz.jpg" />
-    <Image Include="RenderingEngine\CubeMap\posx.jpg" />
-    <Image Include="RenderingEngine\CubeMap\posy.jpg" />
-    <Image Include="RenderingEngine\CubeMap\posz.jpg" />
+    <Image Include="..\..\..\Downloads\PointLightGizmo.png" />
+    <Image Include="RenderingEngine\Modules\CubeMap\negx.jpg" />
+    <Image Include="RenderingEngine\Modules\CubeMap\negy.jpg" />
+    <Image Include="RenderingEngine\Modules\CubeMap\negz.jpg" />
+    <Image Include="RenderingEngine\Modules\CubeMap\posx.jpg" />
+    <Image Include="RenderingEngine\Modules\CubeMap\posy.jpg" />
+    <Image Include="RenderingEngine\Modules\CubeMap\posz.jpg" />
+    <Image Include="RenderingEngine\Modules\Gizmos\PointLightGizmo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

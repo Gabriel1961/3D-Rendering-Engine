@@ -8,6 +8,7 @@
 #include "../OpenGLWrapper/Renderer.h"
 #include "../OpenGLWrapper/Transform.h"
 #include "../OpenGLWrapper/Common.h"
+#include "../OpenGLWrapper/Quad.h"
 
 #include "../ScreenSize.h"
 #include "../../OpenGLWrapper/vendor/imgui/ImguiLib.h"
@@ -16,8 +17,10 @@
 #include <Input/Input.h>
 
 // Engine modules
-#include "Camera.h"
+#include "Modules/Camera.h"
 #include "Models/PreBuilt/CubeModel.h"
 #include "Models/PreBuilt/IcoSphereModel.h"
-#include "Mesh.h"
-#include "CubeMap/CubeMap.h"
+#include "Modules/Mesh.h"
+#include "Modules/CubeMap/CubeMap.h"
+#include "Modules/Gizmos/Gizmo2D.h"
+#include "Modules/LitShader.h"

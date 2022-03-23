@@ -10,7 +10,7 @@ uniform mat4 u_camMat;
 uniform mat3 u_normalMVMat;
 uniform highp vec3 u_camPos;
 out vec3 FragPos;
-out vec3 Norm;
+flat out vec3 Norm;
 void main()
 {
 	Norm = u_normalMVMat *normal;
@@ -22,19 +22,13 @@ void main()
 #Fragment Shader
 #version 330 core
 in vec3 FragPos;
-in vec3 Norm;
+flat in vec3 Norm;
 out vec4 FragColor;
 uniform highp vec3 u_camPos;
 uniform vec4 u_color = vec4(1);
 
 void main()
 {
-	//if (1 - length(FragPos) > 0.01)
-	//{
-	//	FragColor = vec4(1, 0, 0, 1);
-	//	return;
-	//}
-
 	float ambientStrength = 0.3;
 	vec3 ambient = u_color.xyz * ambientStrength;
 	vec3 diffuse = vec3(1) * max(dot(normalize(u_camPos - FragPos), Norm),0);

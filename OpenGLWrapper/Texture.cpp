@@ -130,8 +130,12 @@ void Texture::Unbind() const
 
 inline void TextureRef::Decrement(const std::string& path)
 {
-	if (glfwWindowShouldClose) // To avoid searching zombi hash_table when it gets destroyed
-		return;
+	/// <summary>
+	/// TODO FIX THIS GARBAGE
+	/// </summary>
+	/// <param name="path"></param>
+	/// 
+	return;
 	std::unordered_map<std::string, TextureRef>::iterator xref;
 	xref = textures.find(path);
 	if (--(*xref).second.refCount == 0)

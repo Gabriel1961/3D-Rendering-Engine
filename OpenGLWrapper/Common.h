@@ -81,8 +81,13 @@ struct Color
 {
 	//Constructors
 	Color() {}
-	Color(float r, float g, float b) :rgb(r, g, b) {}
-	Color(glm::vec3 color) :rgb(color) {}
+	Color(float r, float g, float b,float a=1) :rgba(r, g, b,a) {}
+	Color(glm::vec3 color) :rgba(color,1) {}
+	Color(glm::vec4 color) :rgba(color) {}
+	static Color FromRgb(uchar r, uchar g, uchar b)
+	{
+		return Color(r / 255.f, g / 255.f, b / 255.f);
+	}
 
 	//Static funcs
 	static Color Black() { return Color(0, 0, 0); };
@@ -123,6 +128,11 @@ struct Color
 	{
 		return { c.rgb * rgb };
 	}
+
 	// Public Fields
-	glm::vec3 rgb = glm::vec3(0);
+	union
+	{
+		glm::vec4 rgba = {1,1,1,1};
+		glm::vec3 rgb;
+	};
 };

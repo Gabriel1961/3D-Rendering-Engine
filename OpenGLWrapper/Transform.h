@@ -2,37 +2,14 @@
 #include "GL/glm/vec3.hpp"
 #include "GL/glm/mat3x3.hpp"
 #include <vector>
-//class Transform2D
-//{
-//private:
-//	glm::mat3 result = glm::mat3(1);
-//
-//	glm::mat3 aspect = glm::mat3(1);
-//	glm::mat3 scale = glm::mat3(1);
-//	glm::mat3 rotate = glm::mat3(1);
-//	glm::mat3 translate = glm::mat3(1);
-//
-//	void CalculateResult();
-//public:
-//	void SetScale(const glm::mat3&);
-//	void SetRotation(const glm::mat3&);
-//	void SetTranslation(const glm::mat3&);
-//	void SetAspectRatio(float ar);
-//
-//	float GetAspectRatio();
-//
-//	glm::mat3& GetMatrix();
-//	const glm::mat3& GetScaleMat() const { return scale; }
-//	const glm::mat3& GetTranslateMat() const { return //translate; }
-//	const glm::mat3& GetRotation() const { return rotate; }
-//	const glm::mat3& GetAspectMat() const { return aspect; }
-//};
+
 
 class Transform
 {
 protected:
 	glm::mat4 matrix = glm::mat4(1);
 public:
+	virtual glm::mat4& Matrix() { return matrix; }
 	virtual const glm::mat4& GetMatrix() { return matrix; }
 };
 

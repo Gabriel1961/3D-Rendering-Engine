@@ -22,7 +22,14 @@ Mesh::Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes
 	SetupMesh();
 }
 
-void Mesh::Draw(const Camera& camera)
+vec3 CalculateNormalAtIndex(std::vector<Vertex>& verts, int a, int b, int c)
+{
+	vec3 ac = verts[c].position - verts[a].position, ab = verts[b].position - verts[a].position;
+	return cross(ac, ab);
+}
+
+
+void Mesh::Render(const Camera& camera)
 {
 	uint diffuseStartIndex = 1, specularStartIndex = 1, slot = 0;
 	sh->Bind();
@@ -106,7 +113,7 @@ void Model::Draw(const Camera& camera)
 {
 	for (auto& mesh : meshes)
 	{
-		mesh.Draw(camera);
+		mesh.Render(camera);
 	}
 }
 

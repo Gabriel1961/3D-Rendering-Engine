@@ -41,7 +41,7 @@ void ShowCaseScene::Render()
 		m.viewMat = rotate(m.viewMat,0.05f , { 0,0.5,0.5 });
 	cam->UpdateInput();
 	cube->viewMat = translate(mat4(1), lightPos);
-	cube->Draw(*cam);
+	cube->Render(*cam);
 	sh->SetUniform3f("u_lightPos", lightPos);
 	sh->SetUniform1f("u_shininess", shininess);
 	sh->SetUniform1f("u_specularStrength", specularStrength);

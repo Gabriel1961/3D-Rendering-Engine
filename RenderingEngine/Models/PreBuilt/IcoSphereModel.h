@@ -1,5 +1,5 @@
 #pragma once
-#include "./Mesh.h"
+#include "Modules/Mesh.h"
 #include <3DRenderingEngine.h>
 static const float X = .525731112119133606f;
 static const float Z = .850650808352039932f;

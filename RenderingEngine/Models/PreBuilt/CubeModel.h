@@ -1,6 +1,6 @@
 #pragma once 
 #include <3DRenderingEngine.h>
-#include "Camera.h"
+#include "Modules/Camera.h"
 class CubeModel
 {
 
@@ -14,5 +14,5 @@ public:
 	Shader* sh;
 	CubeModel(const std::string& shader = SHADER_PATH "PrebuiltCube.shader");
 	~CubeModel();
-	void Draw(const Camera& cam);
+	void Render(const Camera& cam);
 };

@@ -2,7 +2,7 @@
 #include "Common.h"
 #include "Renderer.h"
 #include "vendor/stb_image/stb_image.h"
-#include "Camera.h"
+#include "Modules/Camera.h"
 #include "Models/PreBuilt/CubeModel.h"
 static const char* CUBE_SHADER_PATH = SHADER_PATH "CubeMap.shader";
 

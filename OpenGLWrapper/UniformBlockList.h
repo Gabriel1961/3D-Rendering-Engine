@@ -79,3 +79,52 @@ public:
 		glUnmapNamedBuffer(block.ID);
 	}
 };
+
+template<typename T>
+class SSBO_ObjectList
+{
+public:
+	uint id;
+	uint binding; // an index used in the shader to access this specific buffer
+	std::vector<T> data;
+
+	SSBO_ObjectList()
+	{}
+
+	SSBO_ObjectList(const std::vector<T>& objs,GLenum usage = GL_DYNAMIC_COPY, uint binding = 0) : data(objs),binding(binding)
+	{
+		gc(glGenBuffers(1, &id));
+		gc(glBindBuffer(GL_SHADER_STORAGE_BUFFER, id));
+		gc(glBufferData(GL_SHADER_STORAGE_BUFFER, data.size()*sizeof(T), (const void*)&data[0], GL_DYNAMIC_COPY));
+		std::cout << data.size() * sizeof(T);
+	}
+
+	void Bind() const 
+	{
+		gc(glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding, id));
+	}
+
+	void Unbind() const 
+	{
+		gc(glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0));
+	}
+	void operator=(SSBO_ObjectList&& o)
+	{
+		id = o.id;
+		binding = o.binding;
+		data = std::move(o.data);
+		o.id = 0;
+	}
+	SSBO_ObjectList(SSBO_ObjectList&& o)
+	{
+		id = o.id;
+		binding = o.binding;
+		data = std::move(o.data);
+		o.id = 0;
+	}
+
+	~SSBO_ObjectList()
+	{
+		gc(glDeleteBuffers(1, &id));
+	}
+};
