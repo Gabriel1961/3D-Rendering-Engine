@@ -20,6 +20,7 @@ void BasicShapesScene::Start(GLFWwindow* win)
 
 	lshader = new LitShader();
 	lshader->lights.push_back(Light(LightType::PointLight,{0,4,0}));
+	lshader->lights.push_back(Light(LightType::PointLight,{0,4,0}));
 	lshader->ApplyLights();
 
 	cube->sh = lshader;

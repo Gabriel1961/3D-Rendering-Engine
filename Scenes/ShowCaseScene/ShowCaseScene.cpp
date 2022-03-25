@@ -37,8 +37,7 @@ void ShowCaseScene::Render()
 {
 	lightPos = mat3(rotate(mat4(1), (float)pi / 160, vec3(0, 1, 0))) * lightPos;
 	cubeMap->Draw(*cam);
-	for (auto& m : model->meshes)
-		m.viewMat = rotate(m.viewMat,0.05f , { 0,0.5,0.5 });
+
 	cam->UpdateInput();
 	cube->viewMat = translate(mat4(1), lightPos);
 	cube->Render(*cam);

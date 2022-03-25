@@ -24,8 +24,8 @@
 // To add a scene create a new folder after the name of the scene and follow the prebuild scenes as a template
 /// Scenes will be automatically loaded if you create global instance of the object 
 // to select a scene you will need to select it from the Scene Selection Menu
-
 #define BASE_PATH "RenderingEngine/"
+#define MODULE_PATH BASE_PATH "Modules/"
 #define SHADER_PATH BASE_PATH "Shaders/"
 #define MODEL_PATH BASE_PATH "Models/"
 class RenderingEngine

@@ -48,17 +48,17 @@ void main()
 
 	float ambientStrength = 0.1;
 	float roughness = 0.2;
-	vec3 ambientColor = u_lightColor * ambientStrength;
+	vec3 fragToLight = normalize(u_lightPos - v_fragPos);
 	vec3 fragToCam = normalize(u_camPos - v_fragPos);
 
-	vec3 diffuseColor = max(dot(-fragToCam,v_normal),0.0f) * u_lightColor;
+	vec3 diffuseColor = max(dot(-fragToLight,v_normal),0.0f) * u_lightColor;
 
 	vec3 sampleColor = texture(texture_diffuse1, uv).rgb;
 
-	vec3 lightToFrag = normalize(u_lightPos - v_fragPos);
+	vec3 ambientColor = sampleColor * ambientStrength;
 
-	vec3 specular = u_lightColor * pow(max(dot(reflect(lightToFrag,v_normal), -fragToCam), 0.0f),u_shininess) * u_specularStrength;
+	vec3 specular = u_lightColor * pow(max(dot(reflect(fragToLight,v_normal), -fragToCam), 0.0f),u_shininess) * u_specularStrength;
 
-	FragColor.rgb = specular + sampleColor*(diffuseColor + ambientColor);
+	FragColor.rgb = specular + sampleColor*diffuseColor + ambientColor;
 	FragColor.a = 1;
 }
