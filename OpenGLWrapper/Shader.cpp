@@ -106,64 +106,64 @@ Shader::~Shader()
 	gc(glDeleteProgram(m_RendererID));
 }
 
-void Shader::Bind() const
+void Shader::Bind() 
 {
 	gc(glUseProgram(m_RendererID));
 	ApplyUniformBlocks();
 }
 
-void Shader::Unbind() const
+void Shader::Unbind() 
 {
 	gc(glUseProgram(0));
 }
 void Shader::SetUniform2f(const std::string& name, float v0, float v1)
 {
-	Bind();
+	Shader::Bind(); // to prevent stack overflow if bind is overriden
 	gc(glUniform2f(GetUniformLocation(name), v0, v1));
 }
 void Shader::SetUniform3f(const std::string& name, float v0, float v1, float v2)
 {
-	Bind();
+	Shader::Bind();
 	gc(glUniform3f(GetUniformLocation(name), v0, v1, v2));
 }
 void Shader::SetUniform3f(const std::string& name, const glm::vec3& vec)
 {
-	Bind();
+	Shader::Bind();
 	gc(glUniform3f(GetUniformLocation(name), vec.x, vec.y, vec.z));
 }
 void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
-	Bind();
+	Shader::Bind();
 	gc(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 }
 void Shader::SetUniform4f(const std::string& name, const glm::vec4& vec)
 {
-	Bind();
+	Shader::Bind();
 	gc(glUniform4f(GetUniformLocation(name), vec[0], vec[1], vec[2], vec[3]));
 }
 void Shader::SetUniform1f(const std::string& name, float v0)
 {
-	Bind();
+	Shader::Bind();
 	gc(glUniform1f(GetUniformLocation(name), v0));
 }
 void Shader::SetUniform1i(const std::string& name, int val)
 {
-	Bind();
+	Shader::Bind();
 	gc(glUniform1i(GetUniformLocation(name), val));
 }
 void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
 {
-	Bind();
+	Shader::Bind();
 	gc(glUniformMatrix4fv(GetUniformLocation(name), 1, false, &matrix[0][0]));
 }
 void Shader::SetUniformMat3f(const std::string& name, const glm::mat3& matrix)
 {
-	Bind();
+	Shader::Bind();
 	gc(glUniformMatrix3fv(GetUniformLocation(name), 1, false, &matrix[0][0]));
 }
 void Shader::SetUniformMat2f(const std::string& name, const glm::mat2& matrix)
 {
-	Bind();
+	Shader::Bind();
 	gc(glUniformMatrix2fv(GetUniformLocation(name), 1, false, &matrix[0][0]));
 }
 

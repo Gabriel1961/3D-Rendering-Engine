@@ -1,34 +1,51 @@
 #pragma once
 #include "Common.h"
+#include "Texture.h"
+#include "../ScreenSize.h"
 class FrameBuffer
 {
 private:
 	uint renderId = 0;
 public:
-	uint width, height;
-	FrameBuffer(int _witdth = 1000, int _height = 1000)
+	DepthTexture* depthTexture=0;
+	FrameBuffer()
 	{
-		width = _witdth;
-		height = _height;
-		gc(glGenFramebuffers(1, &renderId));
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-			width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT     ));
-		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT     ));
+		gc(glGenBuffers(1, &renderId));
 	}
+
+	void AttachDepthTexture(DepthTexture* tex)
+	{
+		delete depthTexture;
+		depthTexture = tex;
+		Bind();
+		gc(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, tex->GetRendeId(), 0));
+		
+		gc(glReadBuffer(GL_NONE)); // explicitly tell OpenGL not to render any color data
+		gc(glDrawBuffer(GL_NONE));
+
+		gc(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+		
+		Unbind();
+	}
+
 	void Bind()
 	{
+		gc(glViewport(0, 0, depthTexture->GetSize().x, depthTexture->GetSize().y));
 		gc(glBindFramebuffer(GL_FRAMEBUFFER,renderId));
 	}
+	void Clear()
+	{
+		gc(glClear(GL_DEPTH_BUFFER_BIT));
+	}
+
 	void Unbind()
 	{
+		gc(glViewport(0, 0, Window_Width, Window_Height));
 		gc(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 	~FrameBuffer()
 	{
+		delete depthTexture;
 		gc(glDeleteBuffers(1, &renderId));
 	}
 };

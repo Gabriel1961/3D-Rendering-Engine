@@ -14,7 +14,7 @@ out vec3 v_fragPos;
 out vec3 v_normal;
 void main()
 {
-	v_normal = -u_normalMVMat * normal;
+	v_normal = u_normalMVMat * normal;
 	v_fragPos = (u_view*u_model*vec4(position,1)).xyz;
 	v_uvCoords = uvCoords;
 	gl_Position = u_projection* u_camMat *vec4((u_view * u_model * vec4(position,1)).xyz - u_camPos,1);

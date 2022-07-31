@@ -5,12 +5,18 @@ Camera::Camera(const glm::mat4& projMat, const glm::vec3& position, GLFWwindow* 
 
 	Input::Keyboard::KeyDown += [this](int but,int ac)
 	{
-		if (but == GLFW_KEY_SPACE && ac == GLFW_PRESS)
+		if (!this->disabled && but == GLFW_KEY_SPACE && ac == GLFW_PRESS)
 		{
 			if (isMouseLocked == false)
-				glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED), isMouseLocked = true;
-			else
-				glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL), isMouseLocked = false;
+			{
+				glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
+				isMouseLocked = true;
+
+			}
+			else {
+				glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+				isMouseLocked = false;
+			}
 		}
 	};
 
@@ -23,21 +29,25 @@ void Camera::UpdateInput()
 #pragma region MouseMovement
 
 	// Loop based mouse movement
-	float sensitivity = 0.002;
-	static MPos prevMousePos{};
-	MPos curMousePos{};
-	glfwGetCursorPos(window, &curMousePos.x, &curMousePos.y);
-	MPos mouseSpeed = { curMousePos.x - prevMousePos.x, curMousePos.y - prevMousePos.y };
-	if (abs(mouseSpeed.x) < 200 && abs(mouseSpeed.y) < 200)
+	if (isMouseLocked == false || (Input::Mouse::RightPressed && isMouseLocked))
 	{
-		this->rotation.x += mouseSpeed.x* sensitivity;
-		this->rotation.y += mouseSpeed.y*-sensitivity;
-		if (this->rotation.y > pi / 2)
-			this->rotation.y = pi / 2;
-		if (this->rotation.y < -pi / 2)
-			this->rotation.y = -pi / 2;
+
+		float sensitivity = 0.002;
+		static MPos prevMousePos{};
+		MPos curMousePos{};
+		glfwGetCursorPos(window, &curMousePos.x, &curMousePos.y);
+		MPos mouseSpeed = { curMousePos.x - prevMousePos.x, curMousePos.y - prevMousePos.y };
+		if (abs(mouseSpeed.x) < 200 && abs(mouseSpeed.y) < 200)
+		{
+			this->rotation.x += mouseSpeed.x* sensitivity;
+			this->rotation.y += mouseSpeed.y*-sensitivity;
+			if (this->rotation.y > pi / 2)
+				this->rotation.y = pi / 2;
+			if (this->rotation.y < -pi / 2)
+				this->rotation.y = -pi / 2;
+		}
+		prevMousePos = curMousePos;
 	}
-	prevMousePos = curMousePos;
 
 #pragma endregion
 

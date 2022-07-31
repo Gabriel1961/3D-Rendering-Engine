@@ -12,8 +12,10 @@
 #include <vendor/imgui/ImguiLib.h>
 #include "../../Dependencies/Action/Action.h"
 #include "nameof.hpp"
+#include <AlignedVector.h>
+#include <memory>
 #define endl '\n'
-#define pi 3.14159265359
+#define pi 3.14159265359f
 #define null 0
 typedef unsigned int uint;
 typedef unsigned short ushort;

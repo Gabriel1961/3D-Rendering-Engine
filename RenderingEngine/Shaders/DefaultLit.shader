@@ -24,7 +24,7 @@ void main()
 #version 430 core
 out vec4 FragColor;
 uniform vec4 u_color = vec4(1);
-uniform bool useTex = false;
+uniform int useTex;
 uniform highp vec3 u_camPos;
 //Textures
 uniform sampler2D texture_diffuse1;
@@ -39,9 +39,9 @@ in vec3 v_normal;
 
 struct Light
 {
-	int type;
 	vec4 pos;
 	vec3 color;
+	int type;
 	float shininess;
 	float specularStrength;
 };
@@ -51,42 +51,38 @@ layout(std430, binding = 1) buffer LightList
 	Light lights[];
 };
 
-vec3 GetLightColor(inout Light l,inout vec3 fragToCam,inout vec3 sampleColor)
+vec3 GetLightColor(inout Light l, vec3 fragToCam, vec3 sampleColor)
 {
 	vec3 fragToLight = normalize(l.pos.xyz - v_fragPos);
 	vec3 diffuseColor = max(dot(-fragToLight, v_normal), 0.0f) * l.color;
 	vec3 specular = l.color * pow(max(dot(reflect(fragToLight, v_normal), -fragToCam), 0.0f), l.shininess) * l.specularStrength;
 	return specular + sampleColor * diffuseColor;
 }
-
+#define pi 3.14159265359
 void main()
 {
 	vec2 uv = v_uvCoords;
-	float ambientStrength = 0.1;
+	//uv = vec2( 0.5f + atan(v_fragPos.x, v_fragPos.z) / (2.0f * pi),.5f + asin(v_fragPos.y) / pi );
+	float ambientStrength = 0.4;
 	vec3 fragToCam = normalize(u_camPos - v_fragPos);
 	//uv.y = 1 - uv.y; // Flip v
 	vec3 sampleColor;
-	if (useTex)
+	if (useTex == 1)
+	{
 		sampleColor = texture(texture_diffuse1, uv).rgb;
+	}
 	else
 		sampleColor = u_color.rgb;
-
+	FragColor = vec4(sampleColor,1);
+	
 	vec3 ambientColor = sampleColor * ambientStrength;
 
-	vec3 addedLightColors = vec3(0);
+	vec3 addedLightColors = vec3(0,0,0);
 
-	if (lights[0].shininess == 32)
-	{
-		FragColor = vec4(1);
-		return;
-	}
-	return;
 	for (int i = 0; i < lights.length(); i++) // calculate for all lights
 	{
 		addedLightColors += GetLightColor(lights[i], fragToCam, sampleColor);
-
 	}
-	
 	FragColor.rgb = addedLightColors + ambientColor;
 	FragColor.a = 1;
 }

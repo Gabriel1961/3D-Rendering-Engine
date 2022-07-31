@@ -93,9 +93,6 @@
     <ClCompile Include="RenderingEngine\Modules\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OpenGLWrapper\vendor\irrXML\irrXML.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -124,6 +121,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderingEngine\Modules\LitShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingEngine\Models\PreBuilt\Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1166,6 +1166,12 @@
     <ClInclude Include="RenderingEngine\Modules\LitShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OpenGLWrapper\AlignedVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingEngine\Models\PreBuilt\Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\GLEW\doc\advanced.html" />
@@ -1598,6 +1604,8 @@
     <None Include="RenderingEngine\Shaders\CubeMap.shader" />
     <None Include="RenderingEngine\Shaders\Viewport.shader" />
     <None Include="RenderingEngine\Shaders\DefaultLit.shader" />
+    <None Include="RenderingEngine\Shaders\Normals.shader" />
+    <None Include="RenderingEngine\Shaders\DefaultLitFlat.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="RenderingEngine\Modules\CubeMap\posz.jpg">
@@ -1622,6 +1630,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="RenderingEngine\Modules\Gizmos\PointLightGizmo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\earth.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Scenes\BasicShapesScene\Assets\earth.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

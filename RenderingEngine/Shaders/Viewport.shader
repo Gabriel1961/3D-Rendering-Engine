@@ -31,7 +31,7 @@ void main()
 {
 	float ambientStrength = 0.3;
 	vec3 ambient = u_color.xyz * ambientStrength;
-	vec3 diffuse = vec3(1) * max(dot(normalize(u_camPos - FragPos), Norm),0);
+	vec3 diffuse = u_color.xyz * max(dot(normalize(u_camPos - FragPos), Norm),0);
 	
 	FragColor.xyz = ambient + diffuse*(1-ambientStrength);
 	FragColor.w = 1;

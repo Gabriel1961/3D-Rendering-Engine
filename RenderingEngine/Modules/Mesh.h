@@ -30,7 +30,7 @@ public:
 
 	Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures, Shader* shader);
 	Mesh() {}
-	void Render(const Camera& camera);
+	virtual void Render(const Camera& camera);
 	Mesh(Mesh&& o) noexcept;
 	~Mesh();
 protected:

@@ -86,17 +86,18 @@ class SSBO_ObjectList
 public:
 	uint id;
 	uint binding; // an index used in the shader to access this specific buffer
-	std::vector<T> data;
+	AlignedVector<sizeof(glm::vec4), T> data;
 
 	SSBO_ObjectList()
 	{}
 
-	SSBO_ObjectList(const std::vector<T>& objs,GLenum usage = GL_DYNAMIC_COPY, uint binding = 0) : data(objs),binding(binding)
+	SSBO_ObjectList(const std::vector<T>& objs,GLenum usage = GL_DYNAMIC_COPY, uint binding = 0) : binding(binding)
 	{
+		for (auto& c : objs)
+			data.push_back(c);
 		gc(glGenBuffers(1, &id));
 		gc(glBindBuffer(GL_SHADER_STORAGE_BUFFER, id));
-		gc(glBufferData(GL_SHADER_STORAGE_BUFFER, data.size()*sizeof(T), (const void*)&data[0], GL_DYNAMIC_COPY));
-		std::cout << data.size() * sizeof(T);
+		gc(glBufferData(GL_SHADER_STORAGE_BUFFER, data.SizeInBytes(), (const void*)&data[0], GL_DYNAMIC_COPY));
 	}
 
 	void Bind() const 

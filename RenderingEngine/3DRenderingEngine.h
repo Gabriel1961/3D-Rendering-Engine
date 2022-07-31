@@ -34,5 +34,6 @@ public:
 	static void Start(GLFWwindow* window);
 	static void Update(); // gets called before the render
 	static void Render();
+	static void UiRender(); // gets called after the render
 	static void Terminate();
 };

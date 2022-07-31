@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "../Action/Action.h"
 #include "./3DRenderingEngineModules.h"
+#include "./Modules/Camera.h"
 using namespace std;
 using namespace glm;
 using namespace EventSystem;
@@ -14,6 +15,7 @@ class Scene
 public:
 	static vector<Scene*>* availableScenes;
 	GLFWwindow* window{}; // after the scene has started it will be initialized to the correct window
+	Camera* mainCamera=0;
 	string name;
 
 	Scene(const string& name);
@@ -23,11 +25,13 @@ public:
 	static void StartActiveScene(GLFWwindow* window);
 	static void UpdateActiveScene();
 	static void RenderActiveScene();
+	static void UiRenderActiveScene();
 	static void TerminateActiveScene();
 
 
 	virtual void Start(GLFWwindow*) = 0;
 	virtual void Render() = 0;
+	virtual void UiRender() = 0;
 	virtual void Update() = 0;
 	virtual void Terminate() = 0;
 };

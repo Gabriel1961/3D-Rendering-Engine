@@ -9,7 +9,7 @@ public:
 	class Mouse
 	{
 	public:
-		static bool LeftPressed;
+		static bool LeftPressed,RightPressed;
 		static Action<double, double> MouseMove, MouseScroll;
 		static double Y, X, PrevX, PrevY, SpeedX, SpeedY;
 		static void ButtonCallBack(GLFWwindow* window, int button, int action, int mods);

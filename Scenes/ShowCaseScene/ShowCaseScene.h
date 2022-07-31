@@ -7,6 +7,7 @@ public:
 	ShowCaseScene() :Scene((string)NAMEOF_SHORT_TYPE(ShowCaseScene)) {}
 	void Start(GLFWwindow*) override;
 	void Render() override;
+	void UiRender() override;
 	void Update() override;
 	void Terminate() override ;
 	void GuiRender();

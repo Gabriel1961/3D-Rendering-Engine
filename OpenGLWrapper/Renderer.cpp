@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, unsigned int DrawMode)
+void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, Shader& shader, unsigned int DrawMode)
 {
 	shader.Bind();
 	va.Bind();
@@ -18,7 +18,7 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, Shader& shader
 	gc(glDrawElements(DrawMode, ib.GetCount(), ib.GetType(), nullptr));
 }
 
-void Renderer::DrawArray(const VertexArray& va, const Shader& shader, uint count, GLenum drawMode)
+void Renderer::DrawArray(const VertexArray& va, Shader& shader, uint count, GLenum drawMode)
 {
 	shader.Bind();
 	va.Bind();

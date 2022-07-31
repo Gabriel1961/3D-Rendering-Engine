@@ -49,6 +49,11 @@ void ShowCaseScene::Render()
 	GuiRender();
 }
 
+void ShowCaseScene::UiRender()
+{
+
+}
+
 void ShowCaseScene::Terminate()
 {
 }

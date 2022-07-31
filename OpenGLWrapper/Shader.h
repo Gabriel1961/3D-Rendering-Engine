@@ -17,8 +17,8 @@ public:
 	Shader() {}
 	Shader(const std::string& filepath);
 	~Shader();
-	virtual void Bind()const;
-	void Unbind()const;
+	virtual void Bind();
+	void Unbind();
 	const std::string& GetFilePath() { return m_FilePath; }
 	//Uniform
 	void SetUniform1f(const std::string& name, float v0);

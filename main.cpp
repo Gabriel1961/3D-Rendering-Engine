@@ -48,7 +48,6 @@ int main(void)
 			/* Poll for and process events */
 			glfwPollEvents();
 
-			PROJECT::Update();
 #pragma region FrameCounter
 			double currentTime = glfwGetTime();
 			nbFrames++;
@@ -61,8 +60,13 @@ int main(void)
 #pragma endregion
 			Renderer::Clear();
 			Imgui_NewFrame();
+			
+			PROJECT::Update();
+
 			/* Render here */
 			PROJECT::Render();
+
+			PROJECT::UiRender();
 
 			Imgui_Render();
 			/* Swap front and back buffers */

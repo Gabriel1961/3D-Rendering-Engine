@@ -26,7 +26,7 @@ Texture::Texture(const std::string& _FilePath)
 		return;
 	}
 	else
-	{ // Do normal init
+	{ // Do normal init 
 		m_FilePath = _FilePath;
 		DBG(std::cout << "Loaded " << m_FilePath << " " << m_RendererID << endl);
 		if (_FilePath.find(".bmp") == _FilePath.npos)
@@ -145,3 +145,7 @@ inline void TextureRef::Decrement(const std::string& path)
 		textures.erase(xref);
 	}
 }
+
+const ivec2& DepthTexture::GetSize()const { return size; }
+
+const uint& DepthTexture::GetRendeId()const { return renderId; }

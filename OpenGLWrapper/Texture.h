@@ -3,6 +3,7 @@
 #include <Common.h>
 #include <unordered_map>
 #include <../ScreenSize.h>
+using namespace glm;
 class Texture
 {
 private:
@@ -11,7 +12,7 @@ public:
 	std::string m_FilePath = "";
 	unsigned int m_RendererID;
 
-	std::string type;
+	std::string type = "texture_diffuse";
 
 	Texture(const std::string& _FilePath);
 	Texture(const Texture& o);
@@ -33,4 +34,27 @@ struct TextureRef
 	Texture ref;
 	int refCount;
 	static void Decrement(const std::string& path);
+};
+class DepthTexture
+{
+	uint renderId;
+	ivec2 size;
+public:
+	const ivec2& GetSize()const;
+	const uint& GetRendeId()const;
+	DepthTexture(ivec2 size) :size(size)
+	{
+		gc(glGenFramebuffers(1, &renderId));
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+			size.x, size.y, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+		gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+	}
+	~DepthTexture()
+	{
+		gc(glDeleteBuffers(1, &renderId));
+	}
 };

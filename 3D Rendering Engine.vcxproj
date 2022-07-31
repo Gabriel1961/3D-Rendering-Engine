@@ -155,7 +155,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.cpp" />
     <ClCompile Include="RenderingEngine\Modules\LitShader.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Lights\Light.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Gizmos\Gizmo2D.cpp" />
@@ -192,6 +191,7 @@
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Scenes\ShowCaseScene\ShowCaseScene.cpp" />
     <ClCompile Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.cpp" />
+    <ClCompile Include="RenderingEngine\Models\PreBuilt\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\CXMLReaderImpl.h" />
@@ -201,6 +201,7 @@
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrString.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrTypes.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.h" />
+    <ClInclude Include="OpenGLWrapper\AlignedVector.h" />
     <ClInclude Include="RenderingEngine\Modules\LitShader.h" />
     <ClInclude Include="RenderingEngine\Modules\Lights\Light.h" />
     <ClInclude Include="RenderingEngine\Modules\Gizmos\Gizmo2D.h" />
@@ -540,6 +541,7 @@
     <ClInclude Include="Scenes\ShowCaseScene\ShowCaseScene.h" />
     <ClInclude Include="ScreenSize.h" />
     <ClInclude Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.h" />
+    <ClInclude Include="RenderingEngine\Models\PreBuilt\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\assimp\Debug\assimp-vc143-mtd.dll" />
@@ -695,6 +697,8 @@
     <None Include="OpenGLWrapper\PixelDisplay.shader" />
     <None Include="OpenGLWrapper\Quad.shader" />
     <None Include="RenderingEngine\Shaders\DefaultLit.shader" />
+    <None Include="RenderingEngine\Shaders\DefaultLitFlat.shader" />
+    <None Include="RenderingEngine\Shaders\Normals.shader" />
     <None Include="RenderingEngine\Shaders\PrebuiltCube.shader" />
     <None Include="RenderingEngine\Shaders\Sun.shader" />
     <None Include="RenderingEngine\Shaders\Teapot.shader" />
@@ -702,6 +706,7 @@
     <None Include="RenderingEngine\Shaders\Viewport.shader" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\Downloads\earth.jpg" />
     <Image Include="..\..\..\Downloads\PointLightGizmo.png" />
     <Image Include="RenderingEngine\Modules\CubeMap\negx.jpg" />
     <Image Include="RenderingEngine\Modules\CubeMap\negy.jpg" />
@@ -710,6 +715,7 @@
     <Image Include="RenderingEngine\Modules\CubeMap\posy.jpg" />
     <Image Include="RenderingEngine\Modules\CubeMap\posz.jpg" />
     <Image Include="RenderingEngine\Modules\Gizmos\PointLightGizmo.png" />
+    <Image Include="Scenes\BasicShapesScene\Assets\earth.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

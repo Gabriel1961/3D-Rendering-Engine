@@ -33,6 +33,8 @@ void Mesh::Render(const Camera& camera)
 {
 	uint diffuseStartIndex = 1, specularStartIndex = 1, slot = 0;
 	sh->Bind();
+	if (textures.size() > 0)
+		sh->SetUniform1i("useTex", 1);
 	for (int i = 0; i < textures.size(); i++)
 	{
 		if (textures[i].type == SAMPLER_DIFFUSE_NAME)

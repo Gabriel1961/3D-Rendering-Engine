@@ -20,6 +20,7 @@
 #include "Modules/Camera.h"
 #include "Models/PreBuilt/CubeModel.h"
 #include "Models/PreBuilt/IcoSphereModel.h"
+#include "Models/PreBuilt/Sphere.h"
 #include "Modules/Mesh.h"
 #include "Modules/CubeMap/CubeMap.h"
 #include "Modules/Gizmos/Gizmo2D.h"

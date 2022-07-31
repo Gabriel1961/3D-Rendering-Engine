@@ -8,7 +8,9 @@ static const float N = 0.f;
 class IcoSphereModel : public Mesh
 {
 public:
+	glm::vec4 color = {1,1,1,1};
 	std::vector<uint>* triangles;
 	std::vector<glm::vec3>* vertexPositions;
 	IcoSphereModel(int subdivisionLevel,Shader*_shader );
+	void Render(const Camera& camera) override;
 };

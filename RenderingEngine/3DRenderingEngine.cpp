@@ -18,6 +18,11 @@ void RenderingEngine::Render()
 	Scene::RenderActiveScene();
 }
 
+void RenderingEngine::UiRender()
+{
+	Scene::UiRenderActiveScene();
+}
+
 void RenderingEngine::Update()
 {
 	Scene::UpdateActiveScene();

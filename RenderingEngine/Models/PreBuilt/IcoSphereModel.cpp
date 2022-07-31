@@ -1,4 +1,5 @@
 #include "IcoSphereModel.h"
+#include <math.h>
 using namespace std;
 
 
@@ -67,8 +68,11 @@ vector<Vertex> GetVertices(int subdivisionLevel, IcoSphereModel* ico)
 
 	SubDivide(subdivisionLevel,ico);
 	vector<Vertex> vertices((*ico->vertexPositions).size());
-	for (int i = 0; i < (*ico->vertexPositions).size(); i++)
-		vertices[i] = { (*ico->vertexPositions)[i],(*ico->vertexPositions)[i] };
+	for (int i = 0; i < (*ico->vertexPositions).size(); i++) {
+		auto& pos = (*ico->vertexPositions)[i];
+		vec2 uv = { 0.5f + atan2f(pos.x,pos.z)/(2.0f*pi),.5f+asin(pos.y)/pi};
+		vertices[i] = { (*ico->vertexPositions)[i],(*ico->vertexPositions)[i], uv};
+	}
 	return vertices;
 }
 
@@ -81,3 +85,10 @@ IcoSphereModel::IcoSphereModel(int subdivisionLevel, Shader* _shader)
 	sh = _shader;
 	SetupMesh();
 }
+
+void IcoSphereModel::Render(const Camera& camera)
+{
+	sh->SetUniform4f("u_color", color);
+	Mesh::Render(camera);
+}
+ 
