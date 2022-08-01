@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Scenes\Assignment\Assignment.cpp" />
     <ClCompile Include="RenderingEngine\Modules\LitShader.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Lights\Light.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Gizmos\Gizmo2D.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrString.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrTypes.h" />
     <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.h" />
+    <ClInclude Include="Scenes\Assignment\Assignment.h" />
     <ClInclude Include="OpenGLWrapper\AlignedVector.h" />
     <ClInclude Include="RenderingEngine\Modules\LitShader.h" />
     <ClInclude Include="RenderingEngine\Modules\Lights\Light.h" />

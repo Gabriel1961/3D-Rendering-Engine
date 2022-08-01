@@ -11,7 +11,7 @@ uniform mat3 u_normalMVMat;
 uniform highp vec3 u_camPos;
 out vec2 v_uvCoords;
 out vec3 v_fragPos;
-out vec3 v_normal;
+flat out vec3 v_normal;
 void main()
 {
 	v_normal = -u_normalMVMat * normal;
@@ -35,7 +35,7 @@ uniform sampler2D texture_specular2;
 
 in vec2 v_uvCoords;
 in vec3 v_fragPos;
-in vec3 v_normal;
+flat in vec3 v_normal;
 
 struct Light
 {

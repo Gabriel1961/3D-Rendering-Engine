@@ -2,13 +2,13 @@
 static float vertexes[]
 {/* pos      norm   uv */
 	-1,-1,-1, 0,-1,0, 0,0, // 0 
-	1,-1,-1,  1,0,0, 0,0, // 1
+	1,-1,-1,  1,0,0, 1,0, // 1
 	1,-1,1,   0,0,1, 0,0, // 2
-	-1,-1,1,  -1,0,0, 0,0, // 3
-	-1,1,-1,  0,1,0, 0,0, // 4
-	1,1,-1,	  0,0,-1, 0,0, // 5
-	1,1,1,	  0,0,0, 0,0, // 6
-	-1,1,1,	  0,0,0, 0,0, // 7
+	-1,-1,1,  -1,0,0, 1,0, // 3
+	-1,1,-1,  0,1,0, 0,1, // 4
+	1,1,-1,	  0,0,-1, 1,1, // 5
+	1,1,1,	  0,0,0, 0,1, // 6
+	-1,1,1,	  0,0,0, 1,1, // 7
 };
 static uint indexes[]
 {
@@ -50,7 +50,7 @@ CubeModel::~CubeModel()
 
 void CubeModel::Render(const Camera& camera)
 {
-	sh->SetUniform1i("useTex", 0);
+	sh->SetUniform1i("albedo", 0);
 	sh->SetUniformMat4f("u_model", modelMat);
 	sh->SetUniformMat4f("u_view", viewMat);
 	sh->SetUniformMat4f("u_projection", camera.projMat);

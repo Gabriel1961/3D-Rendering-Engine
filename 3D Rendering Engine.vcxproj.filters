@@ -126,6 +126,9 @@
     <ClCompile Include="RenderingEngine\Models\PreBuilt\Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\Assignment\Assignment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenSize.h">
@@ -1170,6 +1173,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderingEngine\Models\PreBuilt\Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Assignment\Assignment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
