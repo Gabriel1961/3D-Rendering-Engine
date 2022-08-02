@@ -5,6 +5,8 @@ static CubeModel* cube;
 static CubeModel* cube1;
 static Texture* tex;
 static Texture* tex1;
+static LitShader* lsh;
+static Sphere* sph;
 void Assignment::Start(GLFWwindow* win)
 {
 	float far = 100;
@@ -17,6 +19,11 @@ void Assignment::Start(GLFWwindow* win)
 	cube1->modelMat = glm::translate(mat4(1), { 3,0,0 });
 	tex = new Texture("Scenes/BasicShapesScene/Assets/earth.jpg");
 	tex1 = new Texture("Scenes/BasicShapesScene/Assets/3242sd.png");
+	lsh = new LitShader();
+	sph = new Sphere({ 10,10 });
+	sph->modelMat = glm::translate(mat4(1), { 0,2,0 });
+	sph->textures.push_back(*tex);
+	sph->sh = lsh;
 }
 
 void Assignment::Render()
@@ -26,7 +33,7 @@ void Assignment::Render()
 	cube->Render(*cam);
 	tex1->Bind(0);
 	cube1->Render(*cam);
-
+	sph->Render(*cam);
 }
 
 void Assignment::UiRender()
