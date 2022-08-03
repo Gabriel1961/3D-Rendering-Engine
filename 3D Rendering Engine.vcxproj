@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\GLEW\include;OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;RenderingEngine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\Nameof;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;$(SolutionDir)RenderingEngine;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,7 +107,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\GLEW\include;OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;RenderingEngine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\Nameof;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;$(SolutionDir)RenderingEngine;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,7 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\GLEW\include;OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;RenderingEngine;$(SolutionDir)Dependencies\Nameof</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\Nameof;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;$(SolutionDir)RenderingEngine;$(SolutionDir)Dependencies\Nameof</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -140,9 +140,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>CRT_SECURE_NO_WARNINGS;GLEW_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\GLEW\include;OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;RenderingEngine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\Nameof;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;$(SolutionDir)RenderingEngine;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -195,13 +195,6 @@
     <ClCompile Include="RenderingEngine\Models\PreBuilt\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\CXMLReaderImpl.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\fast_atof.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\heapsort.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrArray.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrString.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrTypes.h" />
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.h" />
     <ClInclude Include="Scenes\Assignment\Assignment.h" />
     <ClInclude Include="OpenGLWrapper\AlignedVector.h" />
     <ClInclude Include="RenderingEngine\Modules\LitShader.h" />
@@ -546,6 +539,9 @@
     <ClInclude Include="RenderingEngine\Models\PreBuilt\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
+    <None Include="assimp-vc143-mtd.dll" />
     <None Include="Dependencies\assimp\Debug\assimp-vc143-mtd.dll" />
     <None Include="Dependencies\GLEW\doc\advanced.html" />
     <None Include="Dependencies\GLEW\doc\basic.html" />
@@ -706,10 +702,9 @@
     <None Include="RenderingEngine\Shaders\Teapot.shader" />
     <None Include="RenderingEngine\Shaders\DefaultMesh.shader" />
     <None Include="RenderingEngine\Shaders\Viewport.shader" />
+    <None Include="zlib.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\Downloads\earth.jpg" />
-    <Image Include="..\..\..\Downloads\PointLightGizmo.png" />
     <Image Include="RenderingEngine\Modules\CubeMap\negx.jpg" />
     <Image Include="RenderingEngine\Modules\CubeMap\negy.jpg" />
     <Image Include="RenderingEngine\Modules\CubeMap\negz.jpg" />
@@ -717,6 +712,7 @@
     <Image Include="RenderingEngine\Modules\CubeMap\posy.jpg" />
     <Image Include="RenderingEngine\Modules\CubeMap\posz.jpg" />
     <Image Include="RenderingEngine\Modules\Gizmos\PointLightGizmo.png" />
+    <Image Include="Scenes\BasicShapesScene\Assets\3242sd.png" />
     <Image Include="Scenes\BasicShapesScene\Assets\earth.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

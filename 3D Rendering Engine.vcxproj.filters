@@ -1094,27 +1094,6 @@
     <ClInclude Include="RenderingEngine\Models\PreBuilt\CubeModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\CXMLReaderImpl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\fast_atof.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\heapsort.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrArray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrString.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\src\libs\irrxml-1.2\irrxml-1.2\src\irrXML.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OpenGLWrapper\vendor\irrXML\irrXML.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1612,6 +1591,10 @@
     <None Include="RenderingEngine\Shaders\DefaultLit.shader" />
     <None Include="RenderingEngine\Shaders\Normals.shader" />
     <None Include="RenderingEngine\Shaders\DefaultLitFlat.shader" />
+    <None Include="zlib.dll" />
+    <None Include="assimp-vc143-mtd.dll" />
+    <None Include=".gitignore" />
+    <None Include=".gitattributes" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="RenderingEngine\Modules\CubeMap\posz.jpg">
@@ -1632,16 +1615,13 @@
     <Image Include="RenderingEngine\Modules\CubeMap\posy.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\PointLightGizmo.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="RenderingEngine\Modules\Gizmos\PointLightGizmo.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\earth.jpg">
+    <Image Include="Scenes\BasicShapesScene\Assets\earth.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Scenes\BasicShapesScene\Assets\earth.jpg">
+    <Image Include="Scenes\BasicShapesScene\Assets\3242sd.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

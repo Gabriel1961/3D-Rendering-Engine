@@ -32,6 +32,10 @@ Texture::Texture(const std::string& _FilePath)
 		if (_FilePath.find(".bmp") == _FilePath.npos)
 			stbi_set_flip_vertically_on_load(1);
 		uchar* tempBuf = stbi_load(_FilePath.c_str(), &m_Width, &m_Height, &m_BPP, 4);
+		if (!tempBuf ) {
+			cout << "Texture file not found\n";
+			assert(false);
+		}
 		gc(glGenTextures(1, &m_RendererID));
 		gc(glBindTexture(GL_TEXTURE_2D, m_RendererID));
 

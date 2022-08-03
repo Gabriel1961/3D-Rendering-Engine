@@ -40,7 +40,6 @@ void Scene::SetActiveScene(Scene* scene, GLFWwindow* window)
 	
 	if (scene == 0)
 		return;
-	activeScene->mainCamera->disabled = false;
 }
 
 void Scene::SetActiveScene(const std::string& sceneName, GLFWwindow* window)
@@ -103,7 +102,6 @@ void Scene::TerminateActiveScene()
 		return;
 	else
 	{
-		activeScene->mainCamera->disabled = true;
 		activeScene->Terminate();
 	}
 }

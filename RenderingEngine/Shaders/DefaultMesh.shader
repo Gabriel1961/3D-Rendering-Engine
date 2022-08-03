@@ -44,7 +44,7 @@ in vec3 v_normal;
 void main()
 {
 	vec2 uv = v_uvCoords;
-	//uv.y = 1 - uv.y; // Flip v
+	uv.y = 1 - uv.y; // Flip v
 
 	float ambientStrength = 0.1;
 	float roughness = 0.2;

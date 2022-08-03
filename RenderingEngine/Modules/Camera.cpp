@@ -3,22 +3,6 @@
 Camera::Camera(const glm::mat4& projMat, const glm::vec3& position, GLFWwindow* window) : projMat(projMat), position(position), window(window) {
 #pragma region Enable/Disable Cursor
 
-	Input::Keyboard::KeyDown += [this](int but,int ac)
-	{
-		if (!this->disabled && but == GLFW_KEY_SPACE && ac == GLFW_PRESS)
-		{
-			if (isMouseLocked == false)
-			{
-				glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
-				isMouseLocked = true;
-
-			}
-			else {
-				glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-				isMouseLocked = false;
-			}
-		}
-	};
 
 #pragma endregion
 }
@@ -26,10 +10,23 @@ Camera::Camera(const glm::mat4& projMat, const glm::vec3& position, GLFWwindow* 
 static struct MPos { double x{}, y{}; };
 void Camera::UpdateInput()
 {
-#pragma region MouseMovement
 
-	// Loop based mouse movement
-	if (isMouseLocked == false || (Input::Mouse::RightPressed && isMouseLocked))
+#pragma region Cursor
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
+		isMouseLocked = true;
+		
+		glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_DISABLED); // set cursor to locked 
+	}
+	else {
+		isMouseLocked = false;
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+#pragma endregion
+
+	
+#pragma region MouseMovement
+	
+	if (isMouseLocked)
 	{
 
 		float sensitivity = 0.002;
@@ -57,28 +54,25 @@ void Camera::UpdateInput()
 		position.y += camSpeed;
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL))
 		position.y -= camSpeed;
+	vec3 delta = {0,0,0};
 	if (glfwGetKey(window, GLFW_KEY_A))
 	{
-		position.x -= cos(rotation.x) * camSpeed;
-		position.z -= sin(rotation.x) * camSpeed;
+		delta.x -= camSpeed;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D))
 	{
-		position.x += cos(rotation.x) * camSpeed;
-		position.z += sin(rotation.x) * camSpeed;
-	}
-	if (glfwGetKey(window, GLFW_KEY_S))
-	{
-		position.y -= sin(rotation.y) * camSpeed;
-		position.x -= sin(rotation.x) * camSpeed;
-		position.z += cos(rotation.x) * camSpeed;
+		delta.x += camSpeed;
 	}
 	if (glfwGetKey(window, GLFW_KEY_W))
 	{
-		position.y += sin(rotation.y) * camSpeed;
-		position.x += sin(rotation.x) * camSpeed;
-		position.z -= cos(rotation.x) * camSpeed;
+		delta.z -= camSpeed;
 	}
+	if (glfwGetKey(window, GLFW_KEY_S))
+	{
+		delta.z += camSpeed;
+	}
+	position = inverse(GetCamRotMat()) * translate(mat4(1), delta) * GetCamRotMat() * vec4(position, 1);
+
 #pragma endregion
 
 #pragma region CamSpeedChange
@@ -93,21 +87,6 @@ void Camera::UpdateInput()
 glm::mat4 Camera::GetCamRotMat() const
 {
 	using namespace glm;
-	mat4 camRot(1);
-	{
-		mat3 camRotX = mat3
-		(
-			cos(rotation.x), 0, sin(-rotation.x),
-			0, 1, 0,
-			sin(rotation.x), 0, cos(rotation.x)
-		);
-		mat3 camRotY = mat3
-		(
-			1, 0, 0,
-			0, cos(rotation.y), sin(-rotation.y),
-			0, sin(rotation.y), cos(rotation.y)
-		);
-		camRot = mat4(camRotY * camRotX);
-	}
+	mat4 camRot = rotate(rotate(mat4(1), -rotation.y, { 1,0,0 }), rotation.x, { 0,1,0 });
 	return camRot;
 }

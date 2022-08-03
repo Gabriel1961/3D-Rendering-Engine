@@ -9,8 +9,7 @@ static Sphere* sph = 0;
 
 void BasicShapesScene::Start(GLFWwindow* win)
 {
-	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // set cursor to locked 
-
+	mainCamera = new Camera(glm::perspective(pi/2,AspectR,0.01f,100.f),{0,0,0},win);
 	icoShader = new Shader(SHADER_PATH "Viewport.shader");
 	earthTex = new Texture(ASSETS_PATH "earth.jpg");
 	ico = new IcoSphereModel(3,icoShader);

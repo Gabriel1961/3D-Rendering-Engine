@@ -1,6 +1,6 @@
 #pragma once
 #include "../Scene.h"
-
+#define ASSETS "Scenes/Assignment/Assets/"
 class Assignment : public Scene
 {
 public:

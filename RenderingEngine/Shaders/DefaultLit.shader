@@ -11,13 +11,13 @@ uniform mat3 u_normalMVMat;
 uniform highp vec3 u_camPos;
 out vec2 v_uvCoords;
 out vec3 v_fragPos;
-flat out vec3 v_normal;
+out vec3 v_normal;
 void main()
 {
-	v_normal = -u_normalMVMat * normal;
+	v_normal = u_normalMVMat * normal;
 	v_fragPos = (u_view*u_model*vec4(position,1)).xyz;
 	v_uvCoords = uvCoords;
-	gl_Position = u_projection* u_camMat *vec4((u_view * u_model * vec4(position,1)).xyz - u_camPos,1);
+	gl_Position = u_projection* (u_camMat * vec4(v_fragPos- u_camPos,1) );
 }
 
 #Fragment Shader
@@ -34,8 +34,8 @@ uniform sampler2D texture_specular1;
 uniform sampler2D texture_specular2;
 
 in vec2 v_uvCoords;
-in vec3 v_fragPos;
-flat in vec3 v_normal;
+in vec3 v_fragPos; // not affected by the camera position
+in vec3 v_normal;
 
 struct Light
 {
@@ -54,7 +54,7 @@ layout(std430, binding = 1) buffer LightList
 vec3 GetLightColor(inout Light l, vec3 fragToCam, vec3 sampleColor)
 {
 	vec3 fragToLight = normalize(l.pos.xyz - v_fragPos);
-	vec3 diffuseColor = max(dot(-fragToLight, v_normal), 0.0f) * l.color;
+	vec3 diffuseColor = max(dot(fragToLight, v_normal), 0.0f) * l.color;
 	vec3 specular = l.color * pow(max(dot(reflect(fragToLight, v_normal), -fragToCam), 0.0f), l.shininess) * l.specularStrength;
 	return specular + sampleColor * diffuseColor;
 }
@@ -62,7 +62,6 @@ vec3 GetLightColor(inout Light l, vec3 fragToCam, vec3 sampleColor)
 void main()
 {
 	vec2 uv = v_uvCoords;
-	//uv = vec2( 0.5f + atan(v_fragPos.x, v_fragPos.z) / (2.0f * pi),.5f + asin(v_fragPos.y) / pi );
 	float ambientStrength = 0.4;
 	vec3 fragToCam = normalize(u_camPos - v_fragPos);
 	//uv.y = 1 - uv.y; // Flip v
