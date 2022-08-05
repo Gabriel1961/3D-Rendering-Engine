@@ -105,10 +105,7 @@ Texture::Texture(ARGBColor* buffer, GLenum antiAliasing)
 
 Texture::~Texture()
 {
-	if (m_FilePath.empty() == false)
-	{
-		TextureRef::Decrement(m_FilePath);
-	}
+	gc(glDeleteTextures(1, &m_RendererID));
 }
 
 Texture& Texture::operator=(const Texture& o)
@@ -119,6 +116,23 @@ Texture& Texture::operator=(const Texture& o)
 	textures[m_FilePath].refCount++;
 	DBG(cout << "Cache hit " << m_FilePath << " " << m_RendererID << endl);
 	return *this;
+}
+
+Texture::Texture(Texture&& o) noexcept
+{
+	m_Height = o.m_Height;
+	m_Width = o.m_Width;
+	m_BPP = o.m_BPP;
+	m_RendererID = o.m_RendererID;
+
+	o.m_RendererID = 0;
+}
+
+void Texture::SetScalingMode(GLenum wrapS, GLenum wrapT)
+{
+	Bind();
+	gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS));
+	gc(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT));
 }
 
 void Texture::Bind(unsigned int slot) const

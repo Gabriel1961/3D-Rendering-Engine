@@ -22,7 +22,9 @@ public:
 	~Texture();
 
 	Texture& operator=(const Texture& o);
+	Texture(Texture&& o) noexcept;
 
+	void SetScalingMode(GLenum wrapS, GLenum wrapT);
 	void Bind(unsigned int slot = 0) const;
 	void Unbind() const;
 

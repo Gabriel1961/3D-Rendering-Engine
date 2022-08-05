@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "Camera.h"
+#include "Modules/Material/Material.h"
 struct Vertex
 {
 	glm::vec3 position{};
@@ -24,11 +25,13 @@ public:
 	std::vector <Vertex> vertexes;
 	std::vector <uint> indexes;
 	std::vector <Texture> textures;
+	
+	Material* mat;
 
 	glm::mat4 modelMat = glm::mat4(1);
 	glm::mat4 viewMat = glm::mat4(1);
 
-	Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures, Shader* shader);
+	Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures,Material* mat, Shader* shader);
 	Mesh() {}
 	virtual void Render(const Camera& camera);
 	Mesh(Mesh&& o) noexcept;

@@ -24,7 +24,9 @@ typedef unsigned char uchar;
 #define gc(x) GLClearError();\
     x;\
     ASSERT(GLCheckError())
-
+#define gce(x)GLClearError();\
+    x;\
+    if(GLCheckError()==0){throw exception();}
 static void GLClearError()
 {
 	while (glGetError() != GL_NO_ERROR);

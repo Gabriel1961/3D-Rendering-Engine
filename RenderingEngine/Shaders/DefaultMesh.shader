@@ -3,7 +3,7 @@
 layout(location = 0)in vec3 position;
 layout(location = 1)in vec3 normal;
 layout(location = 2)in vec2 uvCoords;
-uniform mat4 u_projection;
+uniform mat4 u_proj;
 uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_camMat;
@@ -17,7 +17,7 @@ void main()
 	v_normal = u_normalMVMat * normal;
 	v_fragPos = (u_view*u_model*vec4(position,1)).xyz;
 	v_uvCoords = uvCoords;
-	gl_Position = u_projection* u_camMat *vec4((u_view * u_model * vec4(position,1)).xyz - u_camPos,1);
+	gl_Position = u_proj* u_camMat *vec4((u_view * u_model * vec4(position,1)).xyz - u_camPos,1);
 }
 
 #Fragment Shader
@@ -53,12 +53,12 @@ void main()
 
 	vec3 diffuseColor = max(dot(-fragToLight,v_normal),0.0f) * u_lightColor;
 
-	vec3 sampleColor = texture(texture_diffuse1, uv).rgb;
+	vec3 diffuse = texture(texture_diffuse1, uv).rgb;
 
-	vec3 ambientColor = sampleColor * ambientStrength;
+	vec3 ambientColor = diffuse * ambientStrength;
 
 	vec3 specular = u_lightColor * pow(max(dot(reflect(fragToLight,v_normal), -fragToCam), 0.0f),u_shininess) * u_specularStrength;
 
-	FragColor.rgb = specular + sampleColor*diffuseColor + ambientColor;
+	FragColor.rgb = specular + diffuse*diffuseColor + ambientColor;
 	FragColor.a = 1;
 }

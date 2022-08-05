@@ -50,10 +50,9 @@ CubeModel::~CubeModel()
 
 void CubeModel::Render(const Camera& camera)
 {
-	sh->SetUniform1i("albedo", 0);
 	sh->SetUniformMat4f("u_model", modelMat);
 	sh->SetUniformMat4f("u_view", viewMat);
-	sh->SetUniformMat4f("u_projection", camera.projMat);
+	sh->SetUniformMat4f("u_proj", camera.projMat);
 	sh->SetUniformMat4f("u_camMat", camera.GetCamRotMat());
 	sh->SetUniformMat3f("u_normalMVMat", transpose(inverse(mat3(modelMat))));
 	sh->SetUniform3f("u_camPos", camera.position);

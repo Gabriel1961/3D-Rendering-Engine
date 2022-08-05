@@ -12,12 +12,13 @@ using std::move;
 #define DBG(x)
 #endif // DEBUG
 
-#define SAMPLER_DIFFUSE_NAME string("texture_diffuse")
-#define SAMPLER_SPECULAR_NAME string("texture_specular")
+#define SAMPLER_DIFFUSE_NAME string("diffuseTex")
+#define SAMPLER_SPECULAR_NAME string("specularTex")
+#define SAMPLER_AMBIENT_NAME string("ambientTex")
 ///  Mesh  ///
 
-Mesh::Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures,Shader* shader)
-	: vertexes(vertexes), indexes(indexes), textures(textures),sh(shader)
+Mesh::Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures, Material* mat,Shader* shader)
+	: vertexes(vertexes), indexes(indexes), textures(textures),sh(shader),mat(mat)
 {
 	SetupMesh();
 }
@@ -31,42 +32,29 @@ vec3 CalculateNormalAtIndex(std::vector<Vertex>& verts, int a, int b, int c)
 
 void Mesh::Render(const Camera& camera)
 {
-	uint diffuseStartIndex = 1, specularStartIndex = 1, slot = 0;
+	viewMat = camera.GetViewMat();
 	sh->Bind();
-	if (textures.size() > 0)
-		sh->SetUniform1i("useTex", 1);
-	for (int i = 0; i < textures.size(); i++)
-	{
-		if (textures[i].type == SAMPLER_DIFFUSE_NAME)
-		{
-			textures[i].Bind(slot);
-			sh->SetUniform1i(SAMPLER_DIFFUSE_NAME + to_string(diffuseStartIndex), slot);
-			diffuseStartIndex++;
-			slot++;
-		}
-		else if (textures[i].type == SAMPLER_SPECULAR_NAME)
-		{
-			//textures[i].Bind(slot);
-			//sh->SetUniform1i(SAMPLER_SPECULAR_NAME + to_string(specularStartIndex), //slot);
-			//specularStartIndex++;
-			//slot++;
-		}
-	}
+	mat->Bind(sh);
 	sh->SetUniformMat4f("u_model", modelMat);
 	sh->SetUniformMat4f("u_view", viewMat);
-	sh->SetUniformMat4f("u_projection", camera.projMat);
-	sh->SetUniformMat4f("u_camMat", camera.GetCamRotMat());
-	sh->SetUniformMat3f("u_normalMVMat", transpose(inverse(mat3(viewMat*modelMat))));
-	sh->SetUniform3f("u_camPos", camera.position);
+	sh->SetUniformMat4f("u_proj", camera.projMat);
+	sh->SetUniformMat3f("u_normalMVMat", transpose(inverse(mat3(modelMat))));
+	sh->SetUniform3f("u_viewPos", camera.position);
+
+	//static Texture* t = new Texture("Scenes/BasicShapesScene/Assets/House/roof.jpg");
+	if(textures.size())
+	textures[0].Bind();
 	Renderer::Draw(*va, *ib, *sh);
 }
 
-Mesh::Mesh(Mesh&& o)noexcept
+
+Mesh::Mesh(Mesh&& o)noexcept // [source of all evil]
 {
 	vb = o.vb;
 	va = o.va;
 	ib = o.ib;
 	sh = o.sh;
+	mat = o.mat;
 
 	vertexes = move(o.vertexes);
 	indexes = move(o.indexes);
@@ -75,6 +63,7 @@ Mesh::Mesh(Mesh&& o)noexcept
 	modelMat = o.modelMat;
 	viewMat = o.viewMat;
 
+	o.mat = 0;
 	o.va = 0;
 	o.vb = 0;
 	o.ib = 0;
@@ -87,6 +76,7 @@ Mesh::~Mesh()
 	delete vb;
 	delete ib; 
 	delete va;
+	delete mat;
 }
 
 void Mesh::SetupMesh()
@@ -181,16 +171,42 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene,Shader* shader)
 		for (int j = 0; j < face.mNumIndices; j++)
 			indexes.push_back(face.mIndices[j]);
 	}
-
+	Material* material = new Material();
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+		
+		aiColor4D color;
+		mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+		material->diffuse = vec4(color.r,color.g,color.b,color.a);
+		mat->Get(AI_MATKEY_COLOR_AMBIENT, color);
+		material->ambient = vec3(color.r,color.g,color.b);
+		mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
+		material->specular = vec3(color.r,color.g,color.b);
+		mat->Get(AI_MATKEY_SHININESS, material->shininess);
+		
 		vector<Texture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, SAMPLER_DIFFUSE_NAME);
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+		
+		if(diffuseMaps.size() > 0)
+			material->diffuseTex = &*textures.rbegin();
+
+		vector<Texture> ambientMaps = LoadMaterialTextures(mat, aiTextureType_AMBIENT, SAMPLER_AMBIENT_NAME);
+		textures.insert(textures.end(), ambientMaps.begin(), ambientMaps.end());
+
+		if (ambientMaps.size() > 0)
+			material->ambientTex = &*textures.rbegin();
+		
 		vector<Texture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, SAMPLER_SPECULAR_NAME);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+		if (specularMaps.size() > 0)
+			material->specularTex = &*textures.rbegin();
+
+		
+
 	}
-	return Mesh(vertexes, indexes, textures,shader);
+	return Mesh(vertexes, indexes, textures,material,shader);
 }
 
 vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const string& typeName)

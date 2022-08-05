@@ -6,10 +6,10 @@ static LitShader* lshader = 0;
 static LitShader* lshaderFlat = 0;
 static Texture* earthTex = 0;
 static Sphere* sph = 0;
-
+static Model* house = 0;
 void BasicShapesScene::Start(GLFWwindow* win)
 {
-	mainCamera = new Camera(glm::perspective(pi/2,AspectR,0.01f,100.f),{0,0,0},win);
+	mainCamera = new Camera(glm::perspective(pi/2,AspectR,0.01f,100.f),{0,0,0},1,win);
 	icoShader = new Shader(SHADER_PATH "Viewport.shader");
 	earthTex = new Texture(ASSETS_PATH "earth.jpg");
 	ico = new IcoSphereModel(3,icoShader);
@@ -23,7 +23,7 @@ void BasicShapesScene::Start(GLFWwindow* win)
 	lshader = new LitShader();
 	lshaderFlat = new LitShader("DefaultLitFlat.shader");
 	auto l2 = make_shared<Light>(LightType::PointLight, vec3{ 5,1,0 });
-	auto l1 = make_shared<Light>(LightType::PointLight, vec3{ 0,2.5,0 });
+	auto l1 = make_shared<Light>(LightType::PointLight, vec3{ -2,2.5,0 });
 
 	l1->color = Color::White().rgb;
 	l2->color = Color::White().rgb;
@@ -33,22 +33,32 @@ void BasicShapesScene::Start(GLFWwindow* win)
 	lshader->lights.push_back(l1);
 	lshader->lights.push_back(l2);
 
-	lshaderFlat->ApplyLights();
-	lshader->ApplyLights();
+
 	ico->sh = lshader;
 	cube->sh = lshaderFlat;
 
 	sph = new Sphere({ 100,100 });
 	sph->textures.push_back(*earthTex);
 	sph->sh = lshader;
+
+	//loadinng a model
+	house = new Model(ASSETS_PATH "House/house.obj", lshader);
+	house->meshes[0].mat->texAngle = pi / 2;
+	house->meshes[0].textures.clear();
+	house->meshes[0].textures.push_back(Texture(ASSETS_PATH "House/containerDiffuse.png"));
+	house->meshes[0].textures.push_back(Texture(ASSETS_PATH "House/lighting_maps_specular_color.png"));
+	house->meshes[0].mat->diffuseTex = &house->meshes[0].textures[0];
+	house->meshes[0].mat->specularTex= &house->meshes[0].textures[1];
 }
 
 void BasicShapesScene::BasicRender()
 {
-	lshader->ApplyLights();
+	lshader->ApplyLights(*mainCamera);
+	lshaderFlat->ApplyLights(*mainCamera);
 	//ico->Render(*mainCamera);
 	cube->Render(*mainCamera);
-	sph->Render(*mainCamera);
+	//sph->Render(*mainCamera);
+	house->Draw(*mainCamera);
 }
 
 void BasicShapesScene::Render()
@@ -65,6 +75,13 @@ void BasicShapesScene::UiRender()
 void BasicShapesScene::Update()
 {
 	ImGui::SliderFloat3("Pos", (float*) & lshader->lights[0]->pos, -3.f, 3.f);
+	ImGui::SliderFloat2("Light params", (float*) & lshader->lights[0]->shininess, 0.f, 30.f);
+	ImGui::Text("Tex Params");
+	ImGui::SliderFloat("Angle",&house->meshes[0].mat->texAngle,0,2*pi);
+
+	ImGui::SliderFloat2("Scale", (float*) & house->meshes[0].mat->texScale, 0.0f, 10.0f);
+	ImGui::SliderFloat2("Offset", (float*) & house->meshes[0].mat->texOffset, 0, 10);
+	ImGui::SliderFloat2("Shininess", (float*) & house->meshes[0].mat->shininess, 0, 256);
 	mainCamera->UpdateInput(); 
 }
 

@@ -1,16 +1,14 @@
 #include "Camera.h"
 #include "./Input/Input.h"
-Camera::Camera(const glm::mat4& projMat, const glm::vec3& position, GLFWwindow* window) : projMat(projMat), position(position), window(window) {
-#pragma region Enable/Disable Cursor
+Camera::Camera(const glm::mat4& projMat, const glm::vec3& position,bool handleInput, GLFWwindow* window) : projMat(projMat), position(position), window(window),handleInput(handleInput) {
 
-
-#pragma endregion
 }
 
 static struct MPos { double x{}, y{}; };
 void Camera::UpdateInput()
 {
-
+	if (handleInput == false)
+		return;
 #pragma region Cursor
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
 		isMouseLocked = true;
@@ -26,13 +24,13 @@ void Camera::UpdateInput()
 	
 #pragma region MouseMovement
 	
+	static MPos prevMousePos{};
+	MPos curMousePos{};
+	glfwGetCursorPos(window, &curMousePos.x, &curMousePos.y);
 	if (isMouseLocked)
 	{
 
 		float sensitivity = 0.002;
-		static MPos prevMousePos{};
-		MPos curMousePos{};
-		glfwGetCursorPos(window, &curMousePos.x, &curMousePos.y);
 		MPos mouseSpeed = { curMousePos.x - prevMousePos.x, curMousePos.y - prevMousePos.y };
 		if (abs(mouseSpeed.x) < 200 && abs(mouseSpeed.y) < 200)
 		{
@@ -43,8 +41,8 @@ void Camera::UpdateInput()
 			if (this->rotation.y < -pi / 2)
 				this->rotation.y = -pi / 2;
 		}
-		prevMousePos = curMousePos;
 	}
+	prevMousePos = curMousePos;
 
 #pragma endregion
 
@@ -89,4 +87,9 @@ glm::mat4 Camera::GetCamRotMat() const
 	using namespace glm;
 	mat4 camRot = rotate(rotate(mat4(1), -rotation.y, { 1,0,0 }), rotation.x, { 0,1,0 });
 	return camRot;
+}
+
+glm::mat4 Camera::GetViewMat() const
+{
+	return translate(GetCamRotMat(), {-position});
 }

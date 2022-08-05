@@ -9,21 +9,21 @@ std::map<int, Shader*> Shader::shaderList;
 void ShaderCompilationErrorCheck(unsigned int shaderID, const std::string& name)
 {
 	int CompileStatus;
-	gc(glGetShaderiv(shaderID, GL_COMPILE_STATUS, &CompileStatus));
+	gce(glGetShaderiv(shaderID, GL_COMPILE_STATUS, &CompileStatus));
 	if (CompileStatus == GL_FALSE) {
 		int LogLenght;
 		int Type;
-		gc(glGetShaderiv(shaderID, GL_SHADER_TYPE, &Type);
-		gc(glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &LogLenght));
+		gce(glGetShaderiv(shaderID, GL_SHADER_TYPE, &Type);
+		gce(glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &LogLenght));
 		char* Message = (char*)alloca(sizeof(char) * LogLenght));
-		gc(glGetShaderInfoLog(shaderID, LogLenght, &LogLenght, Message));
+		gce(glGetShaderInfoLog(shaderID, LogLenght, &LogLenght, Message));
 		std::cout << "[Shader Error] Failed to compile " << (Type == GL_VERTEX_SHADER ? "Vertex Shader - " : "Fragment Shader - ") << " Name : " << name << "; " << Message << '\n';
 	}
 }
 void ShaderLinkErrorCheck(unsigned int program, const std::string& name)
 {
 	int ProgramLink;
-	gc(glGetProgramiv(program, GL_LINK_STATUS, &ProgramLink));
+	gce(glGetProgramiv(program, GL_LINK_STATUS, &ProgramLink));
 	if (ProgramLink == GL_FALSE)
 	{
 		char Message[1024];
@@ -34,9 +34,9 @@ void ShaderLinkErrorCheck(unsigned int program, const std::string& name)
 }
 unsigned int CreateProgam(std::string filepath)
 {
-	gc(unsigned int program = glCreateProgram());
-	gc(unsigned int vs = glCreateShader(GL_VERTEX_SHADER));
-	gc(unsigned int fs = glCreateShader(GL_FRAGMENT_SHADER));
+	gce(unsigned int program = glCreateProgram());
+	gce(unsigned int vs = glCreateShader(GL_VERTEX_SHADER));
+	gce(unsigned int fs = glCreateShader(GL_FRAGMENT_SHADER));
 
 	enum class e_Shader {
 		none = -1, vs = 1, fs = 2
@@ -68,24 +68,24 @@ unsigned int CreateProgam(std::string filepath)
 	std::string fs_source = ssfs.str();
 	const char* vs_src = vs_source.c_str();
 	const char* fs_src = fs_source.c_str();
-	gc(glShaderSource(vs, 1, &vs_src, nullptr));
-	gc(glShaderSource(fs, 1, &fs_src, nullptr));
-	gc(glCompileShader(vs));
-	gc(glCompileShader(fs));
+	gce(glShaderSource(vs, 1, &vs_src, nullptr));
+	gce(glShaderSource(fs, 1, &fs_src, nullptr));
+	gce(glCompileShader(vs));
+	gce(glCompileShader(fs));
 
 	ShaderCompilationErrorCheck(vs, filepath);
 	ShaderCompilationErrorCheck(fs, filepath);
 
-	gc(glAttachShader(program, vs));
-	gc(glAttachShader(program, fs));
-	gc(glLinkProgram(program));
+	gce(glAttachShader(program, vs));
+	gce(glAttachShader(program, fs));
+	gce(glLinkProgram(program));
 
 	ShaderLinkErrorCheck(program, filepath);
 
-	gc(glValidateProgram(program));
+	gce(glValidateProgram(program));
 
-	gc(glDeleteShader(vs));
-	gc(glDeleteShader(fs));
+	gce(glDeleteShader(vs));
+	gce(glDeleteShader(fs));
 	return program;
 }
 
@@ -96,7 +96,27 @@ Shader::Shader(const std::string& filepath) : m_RendererID(0), m_FilePath(filepa
 	programID = m_RendererID;
 	shaderList.insert({ m_RendererID, this });
 }
+/// returns if it succeded
+bool Shader::Recompile()
+{
+	uint newId=0;
+	try {
+		newId = CreateProgam(m_FilePath);
+		gce(glUseProgram(newId));
+	}
+	catch (const exception& ex) {
+		return 0;
+	}
+	if (newId == 0)
+		return 0;
 
+	gc(glDeleteProgram(m_RendererID));
+	programID = m_RendererID = newId;
+	for (auto x : uniformBlocks)
+		x.second->BindUniformBlock(m_RendererID);
+	m_UniformLocationCache.clear();
+	return 1;
+}
 
 Shader::~Shader()
 {

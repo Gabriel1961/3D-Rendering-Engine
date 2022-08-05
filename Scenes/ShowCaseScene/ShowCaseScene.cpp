@@ -10,7 +10,7 @@ void ShowCaseScene::Start(GLFWwindow* win)
 	float far = 100;
 	float near = 0.1;
 	float fov = pi / 4;
-	cam = new Camera(glm::perspective(fov, ((float)Window_Width / Window_Height), near, far), glm::vec3(0, 0, 10), win);
+	cam = new Camera(glm::perspective(fov, ((float)Window_Width / Window_Height), near, far), glm::vec3(0, 0, 10),1, win);
 
 	cubeMap = new CubeMap();
 	cube = new CubeModel();

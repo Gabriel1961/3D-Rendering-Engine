@@ -16,6 +16,7 @@ public:
 	int programID;
 	Shader() {}
 	Shader(const std::string& filepath);
+	bool Recompile();
 	~Shader();
 	virtual void Bind();
 	void Unbind();

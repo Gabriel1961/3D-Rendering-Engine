@@ -15,7 +15,7 @@ Camera* CreateDefaultCamera()
 	float far = 100;
 	float near = 0.1;
 	float fov = pi / 4;
-	mainCamera = new Camera(glm::perspective(fov, ((float)Window_Width / Window_Height), near, far), glm::vec3(0, 0, 10), 0);
+	mainCamera = new Camera(glm::perspective(fov, ((float)Window_Width / Window_Height), near, far), glm::vec3(0, 0, 10),1, 0);
 	return mainCamera;
 }
 

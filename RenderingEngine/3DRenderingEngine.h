@@ -13,7 +13,10 @@
 
 // Input
 #include <Input/Input.h>
-
+// standard libs
+#include <chrono>
+#include <future>
+#include <ctime>
 
 /// Architecture ///
 /// This header will contain the shared definitions between the core modules
@@ -36,4 +39,15 @@ public:
 	static void Render();
 	static void UiRender(); // gets called after the render
 	static void Terminate();
+	static void CheckRecompileAllShaders();
+
+	static float TimeNow() {
+		using std::chrono::duration_cast;
+		using std::chrono::milliseconds;
+		using std::chrono::seconds;
+		using std::chrono::system_clock;
+		long long d =  duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+		d = d % (long long)(1e6);
+		return d/1000.0f;
+	}
 };

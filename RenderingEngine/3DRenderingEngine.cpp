@@ -25,10 +25,28 @@ void RenderingEngine::UiRender()
 
 void RenderingEngine::Update()
 {
+	CheckRecompileAllShaders();
 	Scene::UpdateActiveScene();
 }
 
 void RenderingEngine::Terminate()
 {
 	Scene::TerminateActiveScene();
+}
+
+void RenderingEngine::CheckRecompileAllShaders()
+{
+	static uint lastState = GLFW_RELEASE;
+	uint state = glfwGetKey(window, GLFW_KEY_R);
+	if(state == GLFW_PRESS && lastState != GLFW_PRESS)
+	{
+		cout << "Recompiling Shaders...\n";
+		for (auto& sh : Shader::shaderList) {
+			if (sh.second->Recompile() == false) {
+				cout << "[Failed Compilation]: " << sh.second->GetFilePath() << "\a\n";
+			}
+		}
+		cout << "Recompiling done.\n";
+	}
+	lastState = state;
 }

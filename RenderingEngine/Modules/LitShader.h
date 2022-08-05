@@ -7,11 +7,18 @@ class LitShader : public Shader
 public:
 	vec4 color = {1,1,1,1};
 	std::vector<std::shared_ptr<Light>> lights;
-	void ApplyLights()
+	void ApplyLights(const Camera& cam)
 	{
+		// Fix gizmo transparancy 
+		sort(lights.begin(), lights.end(), [&cam](const auto& a, const auto& b) {
+			vec3 d1 = vec3(a->pos) - cam.position, d2 = vec3(b->pos) - cam.position;
+			return dot(d1, d1) > dot(d2, d2);
+			});
+
 		std::vector<Light::GPU_Light> newGpuLights;
 		for (auto& l : lights)
 			newGpuLights.push_back(l->GetGpuLight());
+		
 		gpuLights = SSBO_ObjectList<Light::GPU_Light>(newGpuLights, GL_DYNAMIC_COPY, 1);
 	}
 	LitShader() : Shader(SHADER_PATH "DefaultLit.shader")
