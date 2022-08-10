@@ -13,48 +13,60 @@ enum class LightType
 class Light
 {
 public:
+	
 	struct GPU_Light // struct used on the gpu for storage of the light data
 	{
-		vec4 pos;
+		vec3 pos;
+		float _p1{};
 		vec3 color;
+		float _p2{};
+		vec3 dir; // for directional light
+		float _p3{};
 		int type;
-		float shininess;
-		float specularStrength;
 	};
+public:
 	/// Shadows
-	FrameBuffer* shadowMapFrameBuffer=0;
-	std::function<void()> renderFunc;
-
-	LightType type;
-	vec4 pos;
-	vec3 color = {1,1,1};
-	float shininess=32;
-	float specularStrength=1;
-
 	Gizmo2D gizmo;
-	Light(LightType type,vec3 pos)
-		:type(type), pos(pos,1)
+	FrameBuffer* shadowMapFrameBuffer=0;
+	
+	vec3 pos{};
+	vec3 color = {1,1,1};
+protected:
+	vec3 dir{}; // for directional light
+	LightType type;
+
+	
+	Light(LightType type)
+		:type(type)
 	{
 		switch (type)
 		{
 		case LightType::PointLight:
 			gizmo = Gizmo2D(GizmoType::PointLight);
 			break;
+		case LightType::DirectionalLight:
+			gizmo = Gizmo2D(GizmoType::DirectionalLight);
+			break;
 		default:
 			break;
 		}
 	}
 
+public:
 	/// Gets coresponding gpu struct that contains the data in this class
 	GPU_Light GetGpuLight()
 	{
-		return { pos,color,(int)type,shininess,specularStrength};
+		GPU_Light l;
+		l.pos = pos;
+		l.color = color;
+		l.dir = dir;
+		l.type = (int)type;
+		return l;
 	}
 
 	void EnableShadow(std::function<void()> renderFunc, ivec2 shadowRes = {1024,1024}) {
 		delete shadowMapFrameBuffer;
 		shadowMapFrameBuffer = new FrameBuffer();
-		this->renderFunc = renderFunc;
 		shadowMapFrameBuffer->AttachDepthTexture(new DepthTexture(shadowRes));
 
 	}
@@ -69,3 +81,11 @@ public:
 	}
 };
 
+class PointLight : public Light 
+{
+public:
+	PointLight(vec3 pos, vec3 color = {1,1,1}) :Light(LightType::PointLight) {
+		this->color = color;
+		this->pos = vec3(pos);
+	}
+};

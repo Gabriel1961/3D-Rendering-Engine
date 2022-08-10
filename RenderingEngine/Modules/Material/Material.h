@@ -9,7 +9,7 @@ public:
 	Texture* ambientTex = 0;
 	vec3 specular{1,1,1};
 	Texture* specularTex = 0;
-	float shininess{};
+	float shininess{128};
 
 	vec2 texScale = {1,1};
 	vec2 texOffset = { 0.1,0.1 };

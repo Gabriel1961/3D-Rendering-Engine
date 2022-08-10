@@ -6,7 +6,8 @@ using namespace glm;
 enum class GizmoType
 {
 	None,
-	PointLight
+	PointLight,
+	DirectionalLight
 };
 
 class Gizmo2D
@@ -50,6 +51,9 @@ public:
 		{
 		case GizmoType::PointLight:
 			tex = new Texture( GIZMOS_PATH "PointLightGizmo.png");
+			break;
+		case GizmoType::DirectionalLight:
+			tex = new Texture(GIZMOS_PATH "DirectionalLightGizmo.png");
 			break;
 		default:
 			// type none 

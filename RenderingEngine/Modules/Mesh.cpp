@@ -38,7 +38,7 @@ void Mesh::Render(const Camera& camera)
 	sh->SetUniformMat4f("u_model", modelMat);
 	sh->SetUniformMat4f("u_view", viewMat);
 	sh->SetUniformMat4f("u_proj", camera.projMat);
-	sh->SetUniformMat3f("u_normalMVMat", transpose(inverse(mat3(modelMat))));
+	sh->SetUniformMat3f("u_normalMat", transpose(inverse(mat3(modelMat))));
 	sh->SetUniform3f("u_viewPos", camera.position);
 
 	//static Texture* t = new Texture("Scenes/BasicShapesScene/Assets/House/roof.jpg");

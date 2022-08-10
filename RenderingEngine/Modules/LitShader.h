@@ -10,7 +10,8 @@ public:
 	void ApplyLights(const Camera& cam)
 	{
 		// Fix gizmo transparancy 
-		sort(lights.begin(), lights.end(), [&cam](const auto& a, const auto& b) {
+		std::vector<std::shared_ptr<Light>> lightsSorted= lights;
+		sort(lightsSorted.begin(), lightsSorted.end(), [&cam](const auto& a, const auto& b) {
 			vec3 d1 = vec3(a->pos) - cam.position, d2 = vec3(b->pos) - cam.position;
 			return dot(d1, d1) > dot(d2, d2);
 			});

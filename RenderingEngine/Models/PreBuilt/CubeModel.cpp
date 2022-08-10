@@ -27,7 +27,7 @@ static uint indexes[]
 };
 CubeModel::CubeModel(const std::string& shader)
 {
-		
+	mat = new Material();
 	vb = new VertexBuffer(sizeof(vertexes), vertexes);
 	ib = new IndexBuffer(36, indexes, GL_UNSIGNED_INT);
 	va = new VertexArray();
@@ -50,12 +50,12 @@ CubeModel::~CubeModel()
 
 void CubeModel::Render(const Camera& camera)
 {
+	viewMat = camera.GetViewMat();
+	mat->Bind(sh);
 	sh->SetUniformMat4f("u_model", modelMat);
 	sh->SetUniformMat4f("u_view", viewMat);
 	sh->SetUniformMat4f("u_proj", camera.projMat);
-	sh->SetUniformMat4f("u_camMat", camera.GetCamRotMat());
-	sh->SetUniformMat3f("u_normalMVMat", transpose(inverse(mat3(modelMat))));
-	sh->SetUniform3f("u_camPos", camera.position);
-	sh->SetUniform4f("u_color", color);
+	sh->SetUniformMat3f("u_normalMat", transpose(inverse(mat3(modelMat))));
+	sh->SetUniform3f("u_viewPos", camera.position);
 	Renderer::Draw(*va, *ib, *sh);
 }

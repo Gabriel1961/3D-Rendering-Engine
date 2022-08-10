@@ -14,7 +14,6 @@ void ShowCaseScene::Start(GLFWwindow* win)
 
 	cubeMap = new CubeMap();
 	cube = new CubeModel();
-	cube->color = vec4(1);
 
 	sh = new Shader(SHADER_PATH "DefaultMesh.shader");
 	model = new Model(MODEL_PATH "Backpack/backpack.obj", sh);

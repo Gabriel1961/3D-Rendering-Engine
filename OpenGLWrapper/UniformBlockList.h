@@ -86,7 +86,7 @@ class SSBO_ObjectList
 public:
 	uint id;
 	uint binding; // an index used in the shader to access this specific buffer
-	AlignedVector<sizeof(glm::vec4), T> data;
+	AlignedVector<T,4> data;
 
 	SSBO_ObjectList()
 	{}

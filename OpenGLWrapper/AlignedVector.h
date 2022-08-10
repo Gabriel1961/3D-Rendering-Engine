@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-template<int alignment, typename T>
+template<typename T,int alignment = alignof(T)>
 class AlignedVector
 {
 private:

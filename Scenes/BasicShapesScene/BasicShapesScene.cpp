@@ -16,17 +16,17 @@ void BasicShapesScene::Start(GLFWwindow* win)
 	ico->textures.push_back(*earthTex);
 	
 	cube = new CubeModel();
-	cube->viewMat = scale(translate(mat4(1),{ 0, -2, 0 }), { 10,.1,10 });
-	cube->color = Color::FromRgb(52, 140, 49).rgba;
+	cube->modelMat = scale(translate(mat4(1),{ 0, -2, 0 }), { 10,.1,10 });
+	cube->mat->diffuse = Color::FromRgb(52, 140, 49).rgba;
+	cube->mat->ambient = .1f*Color::FromRgb(52, 140, 49).rgba;
 	ico->color = { 1,1,1,1 };
 
 	lshader = new LitShader();
 	lshaderFlat = new LitShader("DefaultLitFlat.shader");
-	auto l2 = make_shared<Light>(LightType::PointLight, vec3{ 5,1,0 });
-	auto l1 = make_shared<Light>(LightType::PointLight, vec3{ -2,2.5,0 });
+	auto l2 = make_shared<PointLight>( vec3{ 5,1,0 });
+	auto l1 = make_shared<PointLight>( vec3{ -2,2.5,0 });
 
-	l1->color = Color::White().rgb;
-	l2->color = Color::White().rgb;
+
 	// Add lights
 	lshaderFlat->lights.push_back(l1);
 	lshaderFlat->lights.push_back(l2);
@@ -74,8 +74,8 @@ void BasicShapesScene::UiRender()
 
 void BasicShapesScene::Update()
 {
-	ImGui::SliderFloat3("Pos", (float*) & lshader->lights[0]->pos, -3.f, 3.f);
-	ImGui::SliderFloat2("Light params", (float*) & lshader->lights[0]->shininess, 0.f, 30.f);
+	ImGui::SliderFloat3("Pos", (float*) & lshader->lights[1]->pos, -3.f, 3.f);
+
 	ImGui::Text("Tex Params");
 	ImGui::SliderFloat("Angle",&house->meshes[0].mat->texAngle,0,2*pi);
 
