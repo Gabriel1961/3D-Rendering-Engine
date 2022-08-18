@@ -9,13 +9,6 @@ public:
 	std::vector<std::shared_ptr<Light>> lights;
 	void ApplyLights(const Camera& cam)
 	{
-		// Fix gizmo transparancy 
-		std::vector<std::shared_ptr<Light>> lightsSorted= lights;
-		sort(lightsSorted.begin(), lightsSorted.end(), [&cam](const auto& a, const auto& b) {
-			vec3 d1 = vec3(a->pos) - cam.position, d2 = vec3(b->pos) - cam.position;
-			return dot(d1, d1) > dot(d2, d2);
-			});
-
 		std::vector<Light::GPU_Light> newGpuLights;
 		for (auto& l : lights)
 			newGpuLights.push_back(l->GetGpuLight());
@@ -32,7 +25,13 @@ public:
 	}
 	void RenderLightGizmos(Camera& cam)
 	{
-		for (auto& l : lights)
+		std::vector<std::shared_ptr<Light>> lightsSorted = lights;
+		sort(lightsSorted.begin(), lightsSorted.end(), [&cam](const auto& a, const auto& b) {
+			vec3 d1 = vec3(a->pos) - cam.position, d2 = vec3(b->pos) - cam.position;
+			return length(d1) > length(d2);
+			});
+
+		for (auto& l : lightsSorted)
 			l->RenderGizmo(cam);
 	}
 	void Bind() override

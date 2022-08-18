@@ -86,7 +86,7 @@ class SSBO_ObjectList
 public:
 	uint id;
 	uint binding; // an index used in the shader to access this specific buffer
-	AlignedVector<T,4> data;
+	AlignedVector<T,16> data;
 
 	SSBO_ObjectList()
 	{}

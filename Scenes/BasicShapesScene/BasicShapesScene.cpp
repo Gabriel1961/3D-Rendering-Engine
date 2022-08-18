@@ -23,8 +23,8 @@ void BasicShapesScene::Start(GLFWwindow* win)
 
 	lshader = new LitShader();
 	lshaderFlat = new LitShader("DefaultLitFlat.shader");
-	auto l2 = make_shared<PointLight>( vec3{ 5,1,0 });
 	auto l1 = make_shared<PointLight>( vec3{ -2,2.5,0 });
+	auto l2 = make_shared<PointLight>( vec3{ 5,1,0 });
 
 
 	// Add lights

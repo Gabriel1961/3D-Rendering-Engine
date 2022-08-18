@@ -56,9 +56,10 @@ struct Light
 	vec4 color;
 	vec4 dir; // for directional light
 	int type;
+	vec3 _al;
 };
 
-layout(std140, binding = 1) buffer LightList
+layout(std430, binding = 1) buffer LightList
 {
 	Light lights[];
 };
@@ -80,7 +81,9 @@ vec3 GetLightColor(inout Light l, vec3 fragToView, vec3 diffuse, vec3 ambient, v
 #define pi 3.14159265359
 void main()
 {
-
+	vec4 pos = lights[1].pos;
+	FragColor = vec4(pos.xyz, 1);
+	return;
 	vec2 uv = (mat.texTileMat*vec3(v_uvCoords,1)).xy;
 	vec3 fragToView = normalize(u_viewPos - v_fragPos);
 	vec3 diffuse,ambient, specular;
