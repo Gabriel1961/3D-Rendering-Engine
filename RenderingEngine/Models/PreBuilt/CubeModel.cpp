@@ -25,28 +25,21 @@ static uint indexes[]
 	2,3,0,
 	1,2,0,
 };
-CubeModel::CubeModel(const std::string& shader)
+CubeModel::CubeModel(std::shared_ptr<Material> mat,const std::string& shader)
+	:mat(mat)
 {
-	mat = new Material();
-	vb = new VertexBuffer(sizeof(vertexes), vertexes);
-	ib = new IndexBuffer(36, indexes, GL_UNSIGNED_INT);
-	va = new VertexArray();
+	vb = make_shared<VertexBuffer>(sizeof(vertexes), vertexes);
+	ib = make_shared<IndexBuffer>(36, indexes, GL_UNSIGNED_INT);
+	va = make_shared<VertexArray>();
 	VertexBufferLayout vbl;
 	vbl.Push<float>(3);
 	vbl.Push<float>(3);
 	vbl.Push<float>(2);
 	va->AddLayout(*vb, vbl);
 	if (shader != "")
-		sh = new Shader(shader);
+		sh = make_shared<Shader>(shader);
 }
 
-CubeModel::~CubeModel()
-{
-	delete va;
-	delete vb;
-	delete ib;
-	delete sh;
-}
 
 void CubeModel::Render(const Camera& camera)
 {
@@ -56,6 +49,7 @@ void CubeModel::Render(const Camera& camera)
 	sh->SetUniformMat4f("u_view", viewMat);
 	sh->SetUniformMat4f("u_proj", camera.projMat);
 	sh->SetUniformMat3f("u_normalMat", transpose(inverse(mat3(modelMat))));
+	vec3 v = transpose(inverse(mat3(modelMat))) * vec3(0, 1, 0);
 	sh->SetUniform3f("u_viewPos", camera.position);
 	Renderer::Draw(*va, *ib, *sh);
 }

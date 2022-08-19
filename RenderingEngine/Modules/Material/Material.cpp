@@ -1,6 +1,6 @@
 #include "Material.h"
 #include <iostream>
-void Material::Bind(Shader* sh) const {
+void Material::Bind(shared_ptr<Shader> sh) const {
 	if (diffuseTex) {
 		diffuseTex->Bind(0);
 		diffuseTex->SetScalingMode(texScalingMode, texScalingMode);

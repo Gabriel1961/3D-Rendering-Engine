@@ -20,6 +20,9 @@
 typedef unsigned int uint;
 typedef unsigned short ushort;
 typedef unsigned char uchar;
+using std::shared_ptr;
+using std::make_shared;
+using std::string;
 #define ASSERT(x) if (!(x)) assert(false)
 #define gc(x) GLClearError();\
     x;\

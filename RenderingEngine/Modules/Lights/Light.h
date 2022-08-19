@@ -17,12 +17,15 @@ public:
 	struct GPU_Light // struct used on the gpu for storage of the light data
 	{
 		vec3 pos;
-		float _p1{};
+		float _p1{33};
 		vec3 color;
-		float _p2{};
+		float _p2{33};
 		vec3 dir; // for directional light
-		float _p3{};
+		float _p3{33};
 		int type;
+		float lin{1};
+		float qua{1};
+		float _p4{33};
 	};
 public:
 	/// Shadows
@@ -31,8 +34,8 @@ public:
 	
 	vec3 pos{};
 	vec3 color = {1,1,1};
-protected:
 	vec3 dir{}; // for directional light
+protected:
 	LightType type;
 
 	

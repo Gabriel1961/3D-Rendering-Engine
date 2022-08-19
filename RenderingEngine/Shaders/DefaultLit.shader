@@ -49,14 +49,14 @@ uniform Material mat = Material(vec4(1,1,1,1),vec3(1,1,1),vec3(1,1,1),32,mat3(1)
 in vec2 v_uvCoords;
 in vec3 v_fragPos; // not affected by the camera position
 in vec3 v_normal;
-
+vec3 normal;
 struct Light
 {
 	vec4 pos; 
 	vec4 color;
 	vec4 dir; // for directional light
 	int type;
-	vec3 _al;
+	float f[3];
 };
 
 layout(std430, binding = 1) buffer LightList
@@ -71,8 +71,8 @@ vec3 GetLightColor(inout Light l, vec3 fragToView, vec3 diffuse, vec3 ambient, v
 		ambient = ambient * diffuse;
 		float attenuation = 1.0f;// TODO (Distance based)
 		vec3 fragToLight = normalize(l.pos.xyz - v_fragPos);
-		vec3 diff = max(dot(fragToLight, v_normal), 0.0f)*diffuse;
-		vec3 spec = pow(max(dot(-reflect(fragToLight, v_normal), fragToView), 0.0f), mat.shininess) * (specular);
+		vec3 diff = max(dot(fragToLight, normal), 0.0f)*diffuse;
+		vec3 spec = pow(max(dot(-reflect(fragToLight, normal), fragToView), 0.0f), mat.shininess) * (specular);
 
 		return (spec + diff + ambient) * l.color.rgb * attenuation;
 	}
@@ -81,9 +81,7 @@ vec3 GetLightColor(inout Light l, vec3 fragToView, vec3 diffuse, vec3 ambient, v
 #define pi 3.14159265359
 void main()
 {
-	vec4 pos = lights[1].pos;
-	FragColor = vec4(pos.xyz, 1);
-	return;
+	normal = normalize(v_normal);
 	vec2 uv = (mat.texTileMat*vec3(v_uvCoords,1)).xy;
 	vec3 fragToView = normalize(u_viewPos - v_fragPos);
 	vec3 diffuse,ambient, specular;

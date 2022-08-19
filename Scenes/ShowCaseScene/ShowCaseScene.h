@@ -19,5 +19,5 @@ public:
 	float shininess = 32;
 	float specularStrength = 1;
 	Model* model;
-	Shader* sh;
+	shared_ptr<Shader> sh;
 };

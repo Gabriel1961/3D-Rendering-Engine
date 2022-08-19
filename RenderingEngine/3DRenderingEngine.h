@@ -10,7 +10,7 @@
 
 #include "../ScreenSize.h"
 #include "../../OpenGLWrapper/vendor/imgui/ImguiLib.h"
-
+#include <memory>
 // Input
 #include <Input/Input.h>
 // standard libs

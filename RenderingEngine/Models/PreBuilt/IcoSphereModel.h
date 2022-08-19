@@ -11,6 +11,6 @@ public:
 	glm::vec4 color = {1,1,1,1};
 	std::vector<uint>* triangles;
 	std::vector<glm::vec3>* vertexPositions;
-	IcoSphereModel(int subdivisionLevel,Shader*_shader );
+	IcoSphereModel(int subdivisionLevel, shared_ptr<Shader>_shader );
 	void Render(const Camera& camera) override;
 };

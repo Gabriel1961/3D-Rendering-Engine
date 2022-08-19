@@ -15,7 +15,7 @@ void ShowCaseScene::Start(GLFWwindow* win)
 	cubeMap = new CubeMap();
 	cube = new CubeModel();
 
-	sh = new Shader(SHADER_PATH "DefaultMesh.shader");
+	sh = make_shared<Shader>(SHADER_PATH "DefaultMesh.shader");
 	model = new Model(MODEL_PATH "Backpack/backpack.obj", sh);
 	for (auto& m : model->meshes)
 		m.modelMat = translate(mat4(1),{0,0,2});

@@ -132,6 +132,9 @@
     <ClCompile Include="RenderingEngine\Modules\Material\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderingEngine\Modules\Gizmos\Gizmo3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenSize.h">
@@ -1161,6 +1164,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderingEngine\Modules\Material\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingEngine\Modules\Gizmos\Gizmo3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

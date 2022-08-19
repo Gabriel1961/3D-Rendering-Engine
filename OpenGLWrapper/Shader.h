@@ -11,10 +11,10 @@ protected:
 	std::string m_FilePath;
 	std::unordered_map<std::string, int>m_UniformLocationCache;
 public:
-	static std::map<int, Shader*> shaderList;
 	std::unordered_map<std::string, UniformBlock*> uniformBlocks;
+	static std::unordered_map<int, Shader*> shaderList;
 	int programID;
-	Shader() {}
+	Shader(){}
 	Shader(const std::string& filepath);
 	bool Recompile();
 	~Shader();
@@ -66,7 +66,6 @@ protected:
 class ComputeShader : public Shader
 {
 public:
-	ComputeShader() {};
 	ComputeShader(const std::string& str);
 	void Dispatch(uint groups_x, uint groups_y, uint groups_z);
 };

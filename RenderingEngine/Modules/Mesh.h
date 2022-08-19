@@ -17,21 +17,25 @@ class Mesh
 {
 public:
 
-	VertexBuffer* vb = 0;
-	IndexBuffer* ib = 0;
-	VertexArray* va = 0;
-	Shader* sh = 0;
+	shared_ptr<VertexBuffer> vb = 0;
+	shared_ptr<IndexBuffer> ib = 0;
+	shared_ptr<VertexArray> va = 0;
+	shared_ptr<Shader> sh = 0;
 
 	std::vector <Vertex> vertexes;
 	std::vector <uint> indexes;
-	std::vector <Texture> textures;
+	std::vector <shared_ptr<Texture>> textures;
 	
-	Material* mat;
+	shared_ptr<Material> mat;
 
 	glm::mat4 modelMat = glm::mat4(1);
 	glm::mat4 viewMat = glm::mat4(1);
 
-	Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures,Material* mat, Shader* shader);
+	Mesh(const std::vector<Vertex>& vertexes,
+		const std::vector<uint>& indexes,
+		const std::vector<shared_ptr<Texture>>& textures,
+		shared_ptr<Material> mat,
+		shared_ptr<Shader> shader);
 	Mesh() {}
 	virtual void Render(const Camera& camera);
 	Mesh(Mesh&& o) noexcept;
@@ -43,13 +47,13 @@ protected:
 class Model
 {
 public:
-	Model(const char* path,Shader* sh);
+	Model(const string& path,shared_ptr<Shader> sh);
 	void Draw(const Camera& camera);
 	std::vector<Mesh> meshes;
 	std::string directory;
 protected:
-	void LoadModel(const std::string& path,Shader* shader);
-	void ProcessNode(aiNode* node, const aiScene* scene,Shader* shader);
-	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, Shader* shader);
-	std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
+	void LoadModel(const std::string& path,shared_ptr<Shader> shader);
+	void ProcessNode(aiNode* node, const aiScene* scene, shared_ptr<Shader> shader);
+	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, shared_ptr<Shader> shader);
+	std::vector<shared_ptr<Texture>> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
 };

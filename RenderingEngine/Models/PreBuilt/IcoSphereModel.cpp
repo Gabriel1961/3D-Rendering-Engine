@@ -77,7 +77,7 @@ vector<Vertex> GetVertices(int subdivisionLevel, IcoSphereModel* ico)
 }
 
 
-IcoSphereModel::IcoSphereModel(int subdivisionLevel, Shader* _shader)
+IcoSphereModel::IcoSphereModel(int subdivisionLevel, shared_ptr<Shader> _shader)
 {
 	vertexes = GetVertices(subdivisionLevel, this);
 	indexes = std::move( * triangles);

@@ -17,7 +17,11 @@ using std::move;
 #define SAMPLER_AMBIENT_NAME string("ambientTex")
 ///  Mesh  ///
 
-Mesh::Mesh(const std::vector<Vertex>& vertexes, const std::vector<uint>& indexes, const std::vector<Texture>& textures, Material* mat,Shader* shader)
+Mesh::Mesh(const std::vector<Vertex>& vertexes,
+	const std::vector<uint>& indexes,
+	const std::vector<shared_ptr<Texture>>& textures,
+	shared_ptr<Material> mat,
+	shared_ptr<Shader> shader)
 	: vertexes(vertexes), indexes(indexes), textures(textures),sh(shader),mat(mat)
 {
 	SetupMesh();
@@ -41,9 +45,8 @@ void Mesh::Render(const Camera& camera)
 	sh->SetUniformMat3f("u_normalMat", transpose(inverse(mat3(modelMat))));
 	sh->SetUniform3f("u_viewPos", camera.position);
 
-	//static Texture* t = new Texture("Scenes/BasicShapesScene/Assets/House/roof.jpg");
 	if(textures.size())
-	textures[0].Bind();
+	textures[0]->Bind();
 	Renderer::Draw(*va, *ib, *sh);
 }
 
@@ -73,28 +76,24 @@ Mesh::Mesh(Mesh&& o)noexcept // [source of all evil]
 Mesh::~Mesh()
 {
 	DBG(print("Deleted mesh"));
-	delete vb;
-	delete ib; 
-	delete va;
-	delete mat;
 }
 
 void Mesh::SetupMesh()
 {
-	vb = new VertexBuffer(sizeof(Vertex) * vertexes.size(), &vertexes[0]);
-	ib = new IndexBuffer(indexes.size(), &indexes[0], GL_UNSIGNED_INT, GL_STATIC_DRAW);
+	vb = make_shared<VertexBuffer>(sizeof(Vertex) * vertexes.size(), &vertexes[0]);
+	ib = make_shared<IndexBuffer>(indexes.size(), &indexes[0], GL_UNSIGNED_INT, GL_STATIC_DRAW);
 	VertexBufferLayout vbl;
 	vbl.Push<float>(3);
 	vbl.Push<float>(3);
 	vbl.Push<float>(2);
-	va = new VertexArray();
+	va = make_shared<VertexArray>();
 	va->AddLayout(*vb, vbl);
 	va->Bind();
 }
 
 ///  Model  ///
 
-Model::Model(const char* path,Shader* shader)
+Model::Model(const string& path,shared_ptr<Shader> shader)
 {
 	print("Loading Started");
 	LoadModel(path,shader);
@@ -109,7 +108,7 @@ void Model::Draw(const Camera& camera)
 	}
 }
 
-void Model::LoadModel(const std::string& path,Shader* shader)
+void Model::LoadModel(const std::string& path,shared_ptr<Shader> shader)
 {
 	static Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -122,7 +121,7 @@ void Model::LoadModel(const std::string& path,Shader* shader)
 	ProcessNode(scene->mRootNode, scene,shader);
 }
 
-void Model::ProcessNode(aiNode* node, const aiScene* scene,Shader* shader)
+void Model::ProcessNode(aiNode* node, const aiScene* scene,shared_ptr<Shader> shader)
 {
 	for (int i = 0; i < node->mNumMeshes; i++)
 	{
@@ -136,11 +135,11 @@ void Model::ProcessNode(aiNode* node, const aiScene* scene,Shader* shader)
 	}
 }
 
-Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene,Shader* shader)
+Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene,shared_ptr<Shader> shader)
 {
 	vector <Vertex> vertexes(mesh->mNumVertices);
 	vector <uint> indexes;
-	vector <Texture> textures;
+	vector <shared_ptr<Texture>> textures;
 
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -171,7 +170,7 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene,Shader* shader)
 		for (int j = 0; j < face.mNumIndices; j++)
 			indexes.push_back(face.mIndices[j]);
 	}
-	Material* material = new Material();
+	auto material = make_shared<Material>();
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
@@ -185,23 +184,23 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene,Shader* shader)
 		material->specular = vec3(color.r,color.g,color.b);
 		mat->Get(AI_MATKEY_SHININESS, material->shininess);
 		
-		vector<Texture> diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, SAMPLER_DIFFUSE_NAME);
+		auto diffuseMaps = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, SAMPLER_DIFFUSE_NAME);
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 		
 		if(diffuseMaps.size() > 0)
-			material->diffuseTex = &*textures.rbegin();
+			material->diffuseTex = *textures.rbegin();
 
-		vector<Texture> ambientMaps = LoadMaterialTextures(mat, aiTextureType_AMBIENT, SAMPLER_AMBIENT_NAME);
+		auto ambientMaps = LoadMaterialTextures(mat, aiTextureType_AMBIENT, SAMPLER_AMBIENT_NAME);
 		textures.insert(textures.end(), ambientMaps.begin(), ambientMaps.end());
 
 		if (ambientMaps.size() > 0)
-			material->ambientTex = &*textures.rbegin();
+			material->ambientTex = *textures.rbegin();
 		
-		vector<Texture> specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, SAMPLER_SPECULAR_NAME);
+		auto specularMaps = LoadMaterialTextures(mat, aiTextureType_SPECULAR, SAMPLER_SPECULAR_NAME);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
 		if (specularMaps.size() > 0)
-			material->specularTex = &*textures.rbegin();
+			material->specularTex = *textures.rbegin();
 
 		
 
@@ -209,16 +208,16 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene,Shader* shader)
 	return Mesh(vertexes, indexes, textures,material,shader);
 }
 
-vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const string& typeName)
+vector<shared_ptr<Texture>> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const string& typeName)
 {
-	vector<Texture> textures;
+	vector<shared_ptr<Texture>> textures;
 	for (int i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString name;
 		mat->GetTexture(type, i, &name);
-		Texture texture(directory + "/" + name.C_Str());
-		texture.type = typeName;
-		textures.push_back(texture);
+		shared_ptr<Texture> tex = make_shared<Texture>(directory + "/" + name.C_Str());
+		tex->type = typeName;
+		textures.push_back(tex);
 	}
 	return textures;
 }

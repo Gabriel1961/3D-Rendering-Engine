@@ -33,8 +33,8 @@ CubeMap::CubeMap(const std::vector<std::string>& textures,const std::string& sha
 	
 
 	/// Load the shader
-	shader = new Shader(shaderPath);
-	cube = new CubeModel("");
+	shader = make_shared<Shader>(shaderPath);
+	cube = new CubeModel(std::make_shared<Material>(), std::string(""));
 	cube->sh = shader;
 }
 
@@ -51,5 +51,4 @@ void CubeMap::Draw(const Camera& cam)
 
 CubeMap::~CubeMap()
 {
-	delete shader;
 }

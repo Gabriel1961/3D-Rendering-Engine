@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RenderingEngine\Modules\Gizmos\Gizmo3D.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Material\Material.cpp" />
     <ClCompile Include="Scenes\Assignment\Assignment.cpp" />
     <ClCompile Include="RenderingEngine\Modules\LitShader.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="RenderingEngine\Models\PreBuilt\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RenderingEngine\Modules\Gizmos\Gizmo3D.h" />
     <ClInclude Include="RenderingEngine\Modules\Material\Material.h" />
     <ClInclude Include="Scenes\Assignment\Assignment.h" />
     <ClInclude Include="OpenGLWrapper\AlignedVector.h" />
