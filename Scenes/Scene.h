@@ -17,6 +17,8 @@ public:
 	GLFWwindow* window{}; // after the scene has started it will be initialized to the correct window
 	Camera* mainCamera=0;
 	string name;
+	vector<shared_ptr<Model>> models;
+	void DrawModels();
 
 	Scene(const string& name);
 	/// <param name="scene"> if scene is null the current loaded scene will be disposed </param>

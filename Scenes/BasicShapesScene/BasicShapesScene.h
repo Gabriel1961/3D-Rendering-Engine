@@ -12,6 +12,4 @@ public:
 	void Update() override;
 	void Terminate() override;
 
-	IcoSphereModel* ico{};
-	CubeModel* cube{};
 };

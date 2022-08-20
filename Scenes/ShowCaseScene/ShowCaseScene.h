@@ -13,7 +13,7 @@ public:
 	void GuiRender();
 	Camera* cam;
 	CubeMap* cubeMap;
-	CubeModel* cube;
+	shared_ptr<CubeModel> cube;
 
 	vec3 lightPos = { 0,2.5,-5 };
 	float shininess = 32;

@@ -1,7 +1,7 @@
 #include "Sphere.h"
 #include <math.h>
 using namespace std;
-std::vector<Vertex> Sphere::CreateVertexes(ivec2 size)
+std::vector<Vertex> SphereModel::CreateVertexes(ivec2 size)
 {
 	std::vector<Vertex> verts;
 	float thetaStep = 2 * pi / size.x,phiStep = pi/size.y;
@@ -27,7 +27,7 @@ std::vector<Vertex> Sphere::CreateVertexes(ivec2 size)
 	return verts;
 }
 
-std::vector<uint> Sphere::CreateIndexes(ivec2 size)
+std::vector<uint> SphereModel::CreateIndexes(ivec2 size, vector<Vertex>& vertexes)
 {
 	std::vector<uint> indexes;
 	uint upIdx = vertexes.size(),downIdx = upIdx +1;
@@ -61,14 +61,11 @@ std::vector<uint> Sphere::CreateIndexes(ivec2 size)
 	return indexes;
 }
 
-Sphere::Sphere(ivec2 size)
+SphereModel::SphereModel(ivec2 size, shared_ptr<Material> mat,shared_ptr<Shader> sh)
 {
-	vertexes = CreateVertexes(size);
-	indexes = CreateIndexes(size);
-	SetupMesh();
+	auto vertexes = CreateVertexes(size);
+	auto indexes = CreateIndexes(size,vertexes);
+	meshes.push_back(Mesh(vertexes, indexes, {}, mat, sh));
+	m = &meshes[0];
 }
 
-void Sphere::Render(const Camera& camera)
-{
-	Mesh::Render(camera);
-}

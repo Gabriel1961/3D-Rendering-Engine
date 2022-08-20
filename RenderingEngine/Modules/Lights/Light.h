@@ -45,10 +45,10 @@ protected:
 		switch (type)
 		{
 		case LightType::PointLight:
-			gizmo = Gizmo2D(GizmoType::PointLight);
+			gizmo = Gizmo2D(Gizmo2DType::PointLight);
 			break;
 		case LightType::DirectionalLight:
-			gizmo = Gizmo2D(GizmoType::DirectionalLight);
+			gizmo = Gizmo2D(Gizmo2DType::DirectionalLight);
 			break;
 		default:
 			break;
@@ -74,10 +74,9 @@ public:
 
 	}
 
-	void RenderGizmo(Camera& cam)
+	void UpdateGizmoPos()
 	{
 		gizmo.SetPosition(pos);
-		gizmo.Render(cam);
 	}
 	~Light() {
 		delete shadowMapFrameBuffer;

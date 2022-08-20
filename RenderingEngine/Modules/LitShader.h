@@ -11,7 +11,7 @@ public:
 	{
 		std::vector<Light::GPU_Light> newGpuLights;
 		for (auto& l : lights)
-			newGpuLights.push_back(l->GetGpuLight());
+			newGpuLights.push_back(l->GetGpuLight()),l->UpdateGizmoPos();
 		
 		gpuLights = SSBO_ObjectList<Light::GPU_Light>(newGpuLights, GL_DYNAMIC_COPY, 1);
 	}
@@ -22,17 +22,6 @@ public:
 	LitShader(const std::string& path) : Shader(SHADER_PATH + path)
 	{
 
-	}
-	void RenderLightGizmos(Camera& cam)
-	{
-		std::vector<std::shared_ptr<Light>> lightsSorted = lights;
-		sort(lightsSorted.begin(), lightsSorted.end(), [&cam](const auto& a, const auto& b) {
-			vec3 d1 = vec3(a->pos) - cam.position, d2 = vec3(b->pos) - cam.position;
-			return length(d1) > length(d2);
-			});
-
-		for (auto& l : lightsSorted)
-			l->RenderGizmo(cam);
 	}
 	void Bind() override
 	{

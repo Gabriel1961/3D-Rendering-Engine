@@ -34,6 +34,13 @@ static void GLClearError()
 {
 	while (glGetError() != GL_NO_ERROR);
 }
+
+template<typename T>
+float sqrMag(const T& v)
+{
+	return glm::dot(v, v);
+}
+
 template<typename T>
 inline float Det(const T& a, const T& b)
 {

@@ -1,4 +1,5 @@
 #include "CubeModel.h"
+#include "Modules/Mesh.h"
 static float vertexes[]
 {/* pos      norm   uv */
 	-1,-1,-1, 0,-1,0, 0,0, // 0 
@@ -10,7 +11,7 @@ static float vertexes[]
 	1,1,1,	  0,0,0, 0,1, // 6
 	-1,1,1,	  0,0,0, 1,1, // 7
 };
-static uint indexes[]
+static std::vector<uint> indexes
 {
 	0,4,5,
 	1,0,5,
@@ -25,31 +26,17 @@ static uint indexes[]
 	2,3,0,
 	1,2,0,
 };
-CubeModel::CubeModel(std::shared_ptr<Material> mat,const std::string& shader)
-	:mat(mat)
+CubeModel::CubeModel(std::shared_ptr<Material> mat,std::shared_ptr<Shader>shader)
+	:Model()
 {
-	vb = make_shared<VertexBuffer>(sizeof(vertexes), vertexes);
-	ib = make_shared<IndexBuffer>(36, indexes, GL_UNSIGNED_INT);
-	va = make_shared<VertexArray>();
-	VertexBufferLayout vbl;
-	vbl.Push<float>(3);
-	vbl.Push<float>(3);
-	vbl.Push<float>(2);
-	va->AddLayout(*vb, vbl);
-	if (shader != "")
-		sh = make_shared<Shader>(shader);
-}
+	using namespace std;
+	vector<Vertex> verts;
+	for (int i = 0; i < sizeof(vertexes) / 4; i++) {
+		verts.push_back({});
+		memcpy(&*verts.rbegin(), vertexes + i * 8, sizeof(Vertex));
+	}
+	Mesh cubeMesh(verts, indexes, {}, mat, shader);
 
-
-void CubeModel::Render(const Camera& camera)
-{
-	viewMat = camera.GetViewMat();
-	mat->Bind(sh);
-	sh->SetUniformMat4f("u_model", modelMat);
-	sh->SetUniformMat4f("u_view", viewMat);
-	sh->SetUniformMat4f("u_proj", camera.projMat);
-	sh->SetUniformMat3f("u_normalMat", transpose(inverse(mat3(modelMat))));
-	vec3 v = transpose(inverse(mat3(modelMat))) * vec3(0, 1, 0);
-	sh->SetUniform3f("u_viewPos", camera.position);
-	Renderer::Draw(*va, *ib, *sh);
+	meshes.push_back(cubeMesh);
+	m = &meshes[0];
 }

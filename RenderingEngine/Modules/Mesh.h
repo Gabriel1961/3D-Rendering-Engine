@@ -36,9 +36,9 @@ public:
 		const std::vector<shared_ptr<Texture>>& textures,
 		shared_ptr<Material> mat,
 		shared_ptr<Shader> shader);
-	Mesh() {}
+	Mesh();
 	virtual void Render(const Camera& camera);
-	Mesh(Mesh&& o) noexcept;
+	virtual void Render(const Camera& camera, const mat4& rootModelMat);
 	~Mesh();
 protected:
 	void SetupMesh();
@@ -48,9 +48,11 @@ class Model
 {
 public:
 	Model(const string& path,shared_ptr<Shader> sh);
-	void Draw(const Camera& camera);
+	Model();
+	void Render(const Camera& camera);
 	std::vector<Mesh> meshes;
 	std::string directory;
+	glm::mat4 modelMat = glm::mat4(1);
 protected:
 	void LoadModel(const std::string& path,shared_ptr<Shader> shader);
 	void ProcessNode(aiNode* node, const aiScene* scene, shared_ptr<Shader> shader);

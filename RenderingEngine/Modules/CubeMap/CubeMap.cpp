@@ -34,8 +34,7 @@ CubeMap::CubeMap(const std::vector<std::string>& textures,const std::string& sha
 
 	/// Load the shader
 	shader = make_shared<Shader>(shaderPath);
-	cube = new CubeModel(std::make_shared<Material>(), std::string(""));
-	cube->sh = shader;
+	cube = make_shared<CubeModel>(std::make_shared<Material>(),shader);
 }
 
 void CubeMap::Draw(const Camera& cam)
@@ -45,7 +44,7 @@ void CubeMap::Draw(const Camera& cam)
 	gc(glBindTexture(GL_TEXTURE_CUBE_MAP, renderId));
 	
 	shader->SetUniformMat4f("camMat", cam.projMat * cam.GetCamRotMat());
-	Renderer::Draw(*cube->va, *cube->ib, *cube->sh);
+	cube->Render(cam);
 	glDepthMask(GL_TRUE);
 }
 

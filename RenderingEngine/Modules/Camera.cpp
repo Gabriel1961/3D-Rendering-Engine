@@ -1,6 +1,9 @@
 #include "Camera.h"
 #include "./Input/Input.h"
-Camera::Camera(const glm::mat4& projMat, const glm::vec3& position,bool handleInput, GLFWwindow* window) : projMat(projMat), position(position), window(window),handleInput(handleInput) {
+#include "Modules/Physics/BoundingBox.h"
+
+Camera::Camera(float fov, float ar, float znear, float zfar, const glm::vec3& position, bool handleInput, GLFWwindow* window) : position(position), window(window),handleInput(handleInput),znear(znear),zfar(zfar),ar(ar),fov(fov),projMat(glm::perspective(fov,ar,znear,zfar))
+{
 
 }
 
@@ -92,4 +95,23 @@ glm::mat4 Camera::GetCamRotMat() const
 glm::mat4 Camera::GetViewMat() const
 {
 	return translate(GetCamRotMat(), {-position});
+}
+
+Physics::Ray Camera::GetMouseRay()
+{
+	double x, y;
+	int height,width;
+	glfwGetWindowSize(window, &width, &height);
+	glfwGetCursorPos(window, &x, &y);
+	
+	vec3 v((2*x-width)/height, (-2.*y + height)/height,-1);
+	v = normalize(v);
+	mat4 viewToWorld = inverse(mat3(GetViewMat()));
+	std::cout << v.x << " " << v.y << " " << v.z << "\n";
+	v = viewToWorld * vec4(v,1);
+	return Physics::Ray(position, v);
+}
+
+void Camera::DrawSelectedOutline()
+{
 }

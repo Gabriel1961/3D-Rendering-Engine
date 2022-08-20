@@ -24,5 +24,7 @@
 #include "Modules/Mesh.h"
 #include "Modules/CubeMap/CubeMap.h"
 #include "Modules/Gizmos/Gizmo2D.h"
+#include "Modules/Gizmos/Gizmo3D.h"
 #include "Modules/LitShader.h"
 #include "Modules/Material/Material.h"
+#include "Modules/Physics/BoundingBox.h"

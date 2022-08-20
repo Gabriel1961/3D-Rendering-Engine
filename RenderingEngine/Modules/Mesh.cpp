@@ -27,6 +27,8 @@ Mesh::Mesh(const std::vector<Vertex>& vertexes,
 	SetupMesh();
 }
 
+ Mesh::Mesh() {}
+
 vec3 CalculateNormalAtIndex(std::vector<Vertex>& verts, int a, int b, int c)
 {
 	vec3 ac = verts[c].position - verts[a].position, ab = verts[b].position - verts[a].position;
@@ -50,27 +52,20 @@ void Mesh::Render(const Camera& camera)
 	Renderer::Draw(*va, *ib, *sh);
 }
 
-
-Mesh::Mesh(Mesh&& o)noexcept // [source of all evil]
+void Mesh::Render(const Camera& camera, const mat4& rootModelMat)
 {
-	vb = o.vb;
-	va = o.va;
-	ib = o.ib;
-	sh = o.sh;
-	mat = o.mat;
+	viewMat = camera.GetViewMat();
+	sh->Bind();
+	mat->Bind(sh);
+	sh->SetUniformMat4f("u_model", rootModelMat*modelMat);
+	sh->SetUniformMat4f("u_view", viewMat);
+	sh->SetUniformMat4f("u_proj", camera.projMat);
+	sh->SetUniformMat3f("u_normalMat", transpose(inverse(mat3(rootModelMat * modelMat))));
+	sh->SetUniform3f("u_viewPos", camera.position);
 
-	vertexes = move(o.vertexes);
-	indexes = move(o.indexes);
-	textures = move(o.textures);
-	
-	modelMat = o.modelMat;
-	viewMat = o.viewMat;
-
-	o.mat = 0;
-	o.va = 0;
-	o.vb = 0;
-	o.ib = 0;
-	o.sh = 0;
+	if (textures.size())
+		textures[0]->Bind();
+	Renderer::Draw(*va, *ib, *sh);
 }
 
 Mesh::~Mesh()
@@ -100,11 +95,13 @@ Model::Model(const string& path,shared_ptr<Shader> shader)
 	print("Loading Complete");
 }
 
-void Model::Draw(const Camera& camera)
+Model::Model() {}
+
+void Model::Render(const Camera& camera)
 {
 	for (auto& mesh : meshes)
 	{
-		mesh.Render(camera);
+		mesh.Render(camera,modelMat);
 	}
 }
 

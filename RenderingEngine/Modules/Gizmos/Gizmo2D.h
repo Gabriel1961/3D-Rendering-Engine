@@ -2,15 +2,16 @@
 #include <Quad.h>
 #include "../Camera.h"
 #define GIZMOS_PATH "RenderingEngine/Modules/Gizmos/"
+#include "Gizmo3D.h"
 using namespace glm;
-enum class GizmoType
+enum class Gizmo2DType
 {
 	None,
 	PointLight,
 	DirectionalLight
 };
 
-class Gizmo2D
+class Gizmo2D : public Gizmo
 {
 	Texture* tex;
 	Quad* quad;
@@ -37,22 +38,23 @@ public:
 	
 	void SetPosition(const vec3& pos)
 	{
+		this->pos = pos;
 		viewMat = translate(mat4(1), pos);
 	}
 	vec3 GetPosition()
 	{
 		return { viewMat[0][3],viewMat[1][3],viewMat[2][3] };
 	}
-	Gizmo2D(GizmoType type = GizmoType::None)
+	Gizmo2D(Gizmo2DType type = Gizmo2DType::None)
 	{
 		quad = new Quad(1, 0);
 		quad->transform.Transforms().push_back(MatrixTransform(mat4(1)));
 		switch (type)
 		{
-		case GizmoType::PointLight:
+		case Gizmo2DType::PointLight:
 			tex = new Texture( GIZMOS_PATH "PointLightGizmo.png");
 			break;
-		case GizmoType::DirectionalLight:
+		case Gizmo2DType::DirectionalLight:
 			tex = new Texture(GIZMOS_PATH "DirectionalLightGizmo.png");
 			break;
 		default:
@@ -62,7 +64,7 @@ public:
 			break;
 		}
 	}
-	void Render(Camera& cam)
+	void DrawGizmo(const Camera& cam) override
 	{
 		quad->transform.Transforms()[0].Matrix() = cam.projMat * cam.GetCamRotMat() * viewMat * translate(mat4(1), -cam.position) * inverse(cam.GetCamRotMat());
 		tex->Bind(0);

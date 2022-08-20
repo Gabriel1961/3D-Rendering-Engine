@@ -11,7 +11,7 @@ class CubeMap
 	uint renderId;
 	static const std::vector<std::string> defaultCubeMapPaths;
 public:
-	CubeModel* cube;
+	shared_ptr<CubeModel> cube;
 	shared_ptr<Shader>shader{};
 	CubeMap(const std::vector<std::string>& textures = defaultCubeMapPaths, const std::string& shader = CUBE_SHADER_PATH);
 	void Draw(const Camera& cam);

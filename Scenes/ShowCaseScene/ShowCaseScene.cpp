@@ -10,12 +10,12 @@ void ShowCaseScene::Start(GLFWwindow* win)
 	float far = 100;
 	float near = 0.1;
 	float fov = pi / 4;
-	cam = new Camera(glm::perspective(fov, ((float)Window_Width / Window_Height), near, far), glm::vec3(0, 0, 10),1, win);
+	cam = new Camera(fov, ((float)Window_Width / Window_Height), near, far, glm::vec3(0, 0, 10),1, win);
 
 	cubeMap = new CubeMap();
-	cube = new CubeModel();
-
 	sh = make_shared<Shader>(SHADER_PATH "DefaultMesh.shader");
+	cube = make_shared<CubeModel>(make_shared<Material>(), sh);
+
 	model = new Model(MODEL_PATH "Backpack/backpack.obj", sh);
 	for (auto& m : model->meshes)
 		m.modelMat = translate(mat4(1),{0,0,2});
@@ -38,12 +38,12 @@ void ShowCaseScene::Render()
 	cubeMap->Draw(*cam);
 
 	cam->UpdateInput();
-	cube->viewMat = translate(mat4(1), lightPos);
+	cube->m->viewMat = translate(mat4(1), lightPos);
 	cube->Render(*cam);
 	sh->SetUniform3f("u_lightPos", lightPos);
 	sh->SetUniform1f("u_shininess", shininess);
 	sh->SetUniform1f("u_specularStrength", specularStrength);
-	model->Draw(*cam);
+	model->Render(*cam);
 
 	GuiRender();
 }

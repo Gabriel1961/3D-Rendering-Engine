@@ -199,6 +199,7 @@
   <ItemGroup>
     <ClInclude Include="RenderingEngine\Modules\Gizmos\Gizmo3D.h" />
     <ClInclude Include="RenderingEngine\Modules\Material\Material.h" />
+    <ClInclude Include="RenderingEngine\Modules\Physics\BoundingBox.h" />
     <ClInclude Include="Scenes\Assignment\Assignment.h" />
     <ClInclude Include="OpenGLWrapper\AlignedVector.h" />
     <ClInclude Include="RenderingEngine\Modules\LitShader.h" />
@@ -694,14 +695,15 @@
     <None Include="Dependencies\GLEW\include\GL\glm\gtx\vector_query.inl" />
     <None Include="Dependencies\GLEW\include\GL\glm\gtx\wrap.inl" />
     <None Include="imgui.ini" />
+    <None Include="RenderingEngine\Models\Gizmo\ArrowGizmo.fbx" />
     <None Include="RenderingEngine\Shaders\CubeMap.shader" />
     <None Include="OpenGLWrapper\Line.shader" />
     <None Include="OpenGLWrapper\PixelDisplay.shader" />
     <None Include="OpenGLWrapper\Quad.shader" />
     <None Include="RenderingEngine\Shaders\DefaultLit.shader" />
     <None Include="RenderingEngine\Shaders\DefaultLitFlat.shader" />
+    <None Include="RenderingEngine\Shaders\Gizmo3D.shader" />
     <None Include="RenderingEngine\Shaders\Normals.shader" />
-    <None Include="RenderingEngine\Shaders\PrebuiltCube.shader" />
     <None Include="RenderingEngine\Shaders\Sun.shader" />
     <None Include="RenderingEngine\Shaders\Teapot.shader" />
     <None Include="RenderingEngine\Shaders\DefaultMesh.shader" />
