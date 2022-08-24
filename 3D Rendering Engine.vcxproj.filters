@@ -135,6 +135,12 @@
     <ClCompile Include="RenderingEngine\Modules\Gizmos\Gizmo3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderingEngine\Modules\Physics\BoundingBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenSize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenSize.h">
@@ -1611,6 +1617,7 @@
     <None Include=".gitattributes" />
     <None Include="RenderingEngine\Models\Gizmo\ArrowGizmo.fbx" />
     <None Include="RenderingEngine\Shaders\Gizmo3D.shader" />
+    <None Include="RenderingEngine\Shaders\Shadow.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="RenderingEngine\Modules\CubeMap\posz.jpg">

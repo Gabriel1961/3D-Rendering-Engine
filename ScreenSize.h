@@ -1,4 +1,7 @@
 #pragma once
-#define Window_Width 800
-#define Window_Height 600
-const float AspectR = (float)Window_Width / Window_Height;
+extern int Window_Width;
+extern int Window_Height;
+extern float AspectR;
+struct GLFWwindow;
+extern bool isAppClosed;
+void UpdateScreenResize(GLFWwindow* win);

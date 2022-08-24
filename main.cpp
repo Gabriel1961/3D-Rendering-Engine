@@ -1,5 +1,5 @@
-#include "ScreenSize.h"
 #include <Common.h>
+#include "ScreenSize.h"
 #include <Renderer.h>
 #include <fstream>
 #include <string>
@@ -28,6 +28,8 @@ int main(void)
 	// Enable Vsync
 	glfwSwapInterval(1);
 	/* Make the window's context current */
+
+	
 	glfwMakeContextCurrent(window);
 	{
 		if (glewInit() != GLEW_OK) {
@@ -39,8 +41,6 @@ int main(void)
 		double lastTime = glfwGetTime();
 		int nbFrames = 0;
 		/// ///////////////////////////////////////////
-		gc(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-		gc(glEnable(GL_BLEND));
 #define PROJECT RenderingEngine
 		PROJECT::Start(window);
 		while (!glfwWindowShouldClose(window))
@@ -58,7 +58,17 @@ int main(void)
 				lastTime += 1.0;
 			}
 #pragma endregion
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_BLEND);
+			glEnable(GL_CULL_FACE);
+			glFrontFace(GL_CCW);
+			glCullFace(GL_BACK);
+			glEnable(GL_DEPTH_TEST);
+
+			UpdateScreenResize(window);
+
 			Renderer::Clear();
+
 			Imgui_NewFrame();
 			
 			PROJECT::Update();
@@ -73,6 +83,7 @@ int main(void)
 			glfwSwapBuffers(window);
 
 		}
+		isAppClosed = true;
 		PROJECT::Terminate();
 	}
 	Imgui_Close();

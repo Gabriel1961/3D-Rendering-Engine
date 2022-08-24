@@ -23,21 +23,28 @@ public:
 		vec3 dir; // for directional light
 		float _p3{33};
 		int type;
-		float lin{1};
-		float qua{1};
+		float lin{.7};
+		float qua{.2};
 		float _p4{33};
 	};
 public:
+	
+	
+	FrameBuffer fb;
 	/// Shadows
-	Gizmo2D gizmo;
-	FrameBuffer* shadowMapFrameBuffer=0;
+	std::shared_ptr<Gizmo2D> gizmo=0;
 	
 	vec3 pos{};
 	vec3 color = {1,1,1};
 	vec3 dir{}; // for directional light
+	void EnableShadows(ivec2 res)
+	{
+		castShadows = true;
+		fb.AttachDepthTexture(make_shared<DepthTexture>(res));
+	}
 protected:
 	LightType type;
-
+	bool castShadows = false;
 	
 	Light(LightType type)
 		:type(type)
@@ -45,10 +52,10 @@ protected:
 		switch (type)
 		{
 		case LightType::PointLight:
-			gizmo = Gizmo2D(Gizmo2DType::PointLight);
+			gizmo = make_shared<Gizmo2D>(Gizmo2DType::PointLight);
 			break;
 		case LightType::DirectionalLight:
-			gizmo = Gizmo2D(Gizmo2DType::DirectionalLight);
+			gizmo = make_shared<Gizmo2D>(Gizmo2DType::DirectionalLight);
 			break;
 		default:
 			break;
@@ -67,19 +74,11 @@ public:
 		return l;
 	}
 
-	void EnableShadow(std::function<void()> renderFunc, ivec2 shadowRes = {1024,1024}) {
-		delete shadowMapFrameBuffer;
-		shadowMapFrameBuffer = new FrameBuffer();
-		shadowMapFrameBuffer->AttachDepthTexture(new DepthTexture(shadowRes));
-
-	}
-
 	void UpdateGizmoPos()
 	{
-		gizmo.SetPosition(pos);
+		gizmo->SetPosition(pos);
 	}
 	~Light() {
-		delete shadowMapFrameBuffer;
 	}
 };
 
@@ -88,6 +87,22 @@ class PointLight : public Light
 public:
 	PointLight(vec3 pos, vec3 color = {1,1,1}) :Light(LightType::PointLight) {
 		this->color = color;
-		this->pos = vec3(pos);
+		this->pos = pos;
+	}
+};
+
+class DirectionalLight : public Light
+{
+public:
+	vec3 dir;
+	DirectionalLight(vec3 pos, vec3 dir, vec3 color ={1,1,1}) :Light(LightType::DirectionalLight) {
+		this->pos = pos;
+		this->color = color;
+		this->dir = normalize(dir);
+	}
+
+	mat4 GetWP()
+	{
+		return ortho<float>(-20, 20, -20, 20, 1, 30) * lookAt(10.f*dir, {}, {0,1,0});
 	}
 };

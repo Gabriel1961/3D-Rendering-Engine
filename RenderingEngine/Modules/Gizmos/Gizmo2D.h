@@ -13,8 +13,8 @@ enum class Gizmo2DType
 
 class Gizmo2D : public Gizmo
 {
-	Texture* tex;
-	Quad* quad;
+	Texture* tex{};
+	Quad* quad{};
 public:
 
 	mat4 viewMat = mat4(1);
@@ -27,7 +27,7 @@ public:
 		o.tex = 0;
 	}
 
-	Gizmo2D(Gizmo2D&& o)
+	Gizmo2D(Gizmo2D&& o) noexcept
 	{
 		quad =o. quad;
 		tex = o.tex;
@@ -45,7 +45,7 @@ public:
 	{
 		return { viewMat[0][3],viewMat[1][3],viewMat[2][3] };
 	}
-	Gizmo2D(Gizmo2DType type = Gizmo2DType::None)
+	Gizmo2D(Gizmo2DType type = Gizmo2DType::None) 
 	{
 		quad = new Quad(1, 0);
 		quad->transform.Transforms().push_back(MatrixTransform(mat4(1)));

@@ -7,14 +7,19 @@ uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_proj;
 uniform mat3 u_normalMat;
+uniform mat4 lightMat;
+
 out vec2 v_uvCoords;
 out vec3 v_fragPos;
 flat out vec3 v_normal;
+out vec4 fragPoslight;
+
 void main()
 {
 	v_uvCoords = uvCoords;
 	v_normal = u_normalMat * normal;
 	v_fragPos = (u_model * vec4(position, 1)).xyz;
+	fragPoslight = lightMat * vec4(v_fragPos,1);
 	gl_Position = u_proj * u_view * vec4(v_fragPos, 1);
 }
 
@@ -27,6 +32,9 @@ uniform highp vec3 u_viewPos;
 uniform sampler2D diffuseTex;
 uniform sampler2D ambientTex;
 uniform sampler2D specularTex;
+uniform sampler2D shadowMap;
+uniform vec3 lightDir;// todo : move to light struct
+
 uniform int useDiffuseTex = 0;
 uniform int useAmbientTex = 0;
 uniform int useSpecularTex = 0;
@@ -48,7 +56,9 @@ uniform Material mat = Material(vec4(1, 1, 1, 1), vec3(1, 1, 1), vec3(1, 1, 1), 
 
 in vec2 v_uvCoords;
 in vec3 v_fragPos; // not affected by the camera position
+in vec4 fragPoslight;
 flat in vec3 v_normal;
+
 vec3 normal;
 struct Light
 {
@@ -82,6 +92,18 @@ vec3 GetLightColor(inout Light l, vec3 fragToView, vec3 diffuse, vec3 ambient, v
 	return vec3(1, 0, 1);
 }
 #define pi 3.14159265359
+
+float GetShadow()
+{
+	// Perspective devide
+	vec3 p = fragPoslight.xyz / fragPoslight.w;
+	p = .5 * p + .5;
+	float closest = texture(shadowMap, p.xy).r;
+	float current = p.z;
+	float bias = max(0.005 * (1.0 - dot(normal, lightDir)), 0.0001);
+	return closest < current - bias ? 1 : 0;
+}
+
 void main()
 {
 	normal = normalize(v_normal);
@@ -107,8 +129,9 @@ void main()
 	// calculate for all lights
 	vec3 addedLightColors = vec3(0, 0, 0);
 
+	float shadow = GetShadow();
 	for (int i = 0; i < lights.length(); i++)
 		addedLightColors += GetLightColor(lights[i], fragToView, diffuse, ambient, specular);
-	FragColor.rgb = addedLightColors;
+	FragColor.rgb = addedLightColors * (1-shadow);
 	FragColor.a = 1;
 }

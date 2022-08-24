@@ -21,7 +21,10 @@ typedef unsigned int uint;
 typedef unsigned short ushort;
 typedef unsigned char uchar;
 using std::shared_ptr;
+using std::weak_ptr;
+using std::unique_ptr;
 using std::make_shared;
+using std::make_unique;
 using std::string;
 #define ASSERT(x) if (!(x)) assert(false)
 #define gc(x) GLClearError();\
@@ -30,6 +33,7 @@ using std::string;
 #define gce(x)GLClearError();\
     x;\
     if(GLCheckError()==0){throw exception();}
+static bool GLCheckError();
 static void GLClearError()
 {
 	while (glGetError() != GL_NO_ERROR);

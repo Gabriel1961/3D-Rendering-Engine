@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <map>
 #include <vector>
+#include <functional>
 #include <UniformBlockList.h>
 class Shader
 {
@@ -32,6 +33,8 @@ public:
 	void SetUniformMat4f(const std::string& name, const glm::mat4&);
 	void SetUniformMat3f(const std::string& name, const glm::mat3& matrix);
 	void SetUniformMat2f(const std::string& name, const glm::mat2& matrix);
+
+	std::function<void(Shader*)> preRender;
 
 	template<typename T>
 	void AddUniformBlockList(const std::string& name, std::vector<T>& val)

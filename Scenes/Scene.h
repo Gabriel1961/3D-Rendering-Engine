@@ -15,10 +15,12 @@ class Scene
 public:
 	static vector<Scene*>* availableScenes;
 	GLFWwindow* window{}; // after the scene has started it will be initialized to the correct window
-	Camera* mainCamera=0;
+
+	shared_ptr<Camera> mainCamera=0;
 	string name;
 	vector<shared_ptr<Model>> models;
-	void DrawModels();
+	vector<shared_ptr<Gizmo>> gizmos;
+	void DrawModels(const Camera& cam, shared_ptr<Shader> shOverr=0);
 
 	Scene(const string& name);
 	/// <param name="scene"> if scene is null the current loaded scene will be disposed </param>

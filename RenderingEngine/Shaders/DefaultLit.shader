@@ -24,12 +24,15 @@ out vec4 FragColor;
 
 uniform highp vec3 u_viewPos;
 //Textures
+uniform sampler2D shadowMap;
 uniform sampler2D diffuseTex;
 uniform sampler2D ambientTex;
 uniform sampler2D specularTex;
 uniform int useDiffuseTex = 0;
 uniform int useAmbientTex = 0;
 uniform int useSpecularTex = 0;
+
+uniform mat4 lightMat;
 
 
 struct Material {
@@ -78,6 +81,14 @@ vec3 GetLightColor(inout Light l, vec3 fragToView, vec3 diffuse, vec3 ambient, v
 	}
 	return vec3(1, 0, 1);
 }
+
+float GetShadow()
+{
+	// todo transform on the fragment shader 
+	vec4 p = lightMat * vec4(v_fragPos,1);
+	float depth = texture(shadowMap, p.xy).x;
+	return 0;
+}
 #define pi 3.14159265359
 void main()
 {
@@ -85,6 +96,9 @@ void main()
 	vec2 uv = (mat.texTileMat*vec3(v_uvCoords,1)).xy;
 	vec3 fragToView = normalize(u_viewPos - v_fragPos);
 	vec3 diffuse,ambient, specular;
+
+	
+
 	if (useDiffuseTex == 1)
 		diffuse = texture(diffuseTex, uv).rgb;
 	else
@@ -94,8 +108,8 @@ void main()
 		ambient = texture(ambientTex, uv).rgb;
 	else
 		ambient = mat.ambient;
-	//FragColor = vec4(ambient, 1);
-	//return;
+	
+
 	if (useSpecularTex == 1)
 		specular = texture(specularTex, uv).rgb;
 	else
@@ -103,9 +117,10 @@ void main()
 
 	// calculate for all lights
 	vec3 addedLightColors = vec3(0, 0, 0);
+	float shadow = GetShadow();
 
 	for (int i = 0; i < lights.length(); i++)
 		addedLightColors += GetLightColor(lights[i], fragToView, diffuse, ambient, specular);
-	FragColor.rgb = addedLightColors;
+	FragColor.rgb = addedLightColors * shadow;
 	FragColor.a = 1;
 }

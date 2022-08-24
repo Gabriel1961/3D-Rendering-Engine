@@ -7,30 +7,27 @@ class FrameBuffer
 private:
 	uint renderId = 0;
 public:
-	DepthTexture* depthTexture=0;
+	shared_ptr<DepthTexture> depthTexture;
 	FrameBuffer()
 	{
-		gc(glGenBuffers(1, &renderId));
+		gc(glGenFramebuffers(1, &renderId));
 	}
 
-	void AttachDepthTexture(DepthTexture* tex)
+	void AttachDepthTexture(shared_ptr<DepthTexture> tex)
 	{
-		delete depthTexture;
 		depthTexture = tex;
-		Bind();
-		gc(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, tex->GetRendeId(), 0));
+		gc(glBindFramebuffer(GL_FRAMEBUFFER, renderId));
+		gc(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture->renderId, 0));
 		
-		gc(glReadBuffer(GL_NONE)); // explicitly tell OpenGL not to render any color data
 		gc(glDrawBuffer(GL_NONE));
+		gc(glReadBuffer(GL_NONE)); // explicitly tell OpenGL not to render any color data
 
-		gc(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-		
-		Unbind();
+		gc(glBindFramebuffer(GL_FRAMEBUFFER, 0)); 
 	}
 
 	void Bind()
 	{
-		gc(glViewport(0, 0, depthTexture->GetSize().x, depthTexture->GetSize().y));
+		gc(glViewport(0, 0, depthTexture->GetWidth(), depthTexture->GetHeight()));
 		gc(glBindFramebuffer(GL_FRAMEBUFFER,renderId));
 	}
 	void Clear()
@@ -40,13 +37,12 @@ public:
 
 	void Unbind()
 	{
-		gc(glViewport(0, 0, Window_Width, Window_Height));
 		gc(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+		gc(glViewport(0, 0, Window_Width, Window_Height));
 	}
 	~FrameBuffer()
 	{
-		delete depthTexture;
-		gc(glDeleteBuffers(1, &renderId));
+		gc(glDeleteFramebuffers(1, &renderId));
 	}
 };
 

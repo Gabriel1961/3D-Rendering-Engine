@@ -17,6 +17,11 @@ using std::move;
 #define SAMPLER_AMBIENT_NAME string("ambientTex")
 ///  Mesh  ///
 
+void Mesh::CalculateBoundingBox(const mat4& rootMat )
+{
+	boundingBox = Physics::BoundingBox(vertexes,rootMat * modelMat);
+}
+
 Mesh::Mesh(const std::vector<Vertex>& vertexes,
 	const std::vector<uint>& indexes,
 	const std::vector<shared_ptr<Texture>>& textures,
@@ -52,20 +57,25 @@ void Mesh::Render(const Camera& camera)
 	Renderer::Draw(*va, *ib, *sh);
 }
 
-void Mesh::Render(const Camera& camera, const mat4& rootModelMat)
+void Mesh::Render(const Camera& camera, const mat4& rootModelMat, shared_ptr<Shader> shOverr)
 {
+	shared_ptr<Shader> shh = sh;
+	if (shOverr)
+	{
+		shh = shOverr;
+	}
 	viewMat = camera.GetViewMat();
-	sh->Bind();
-	mat->Bind(sh);
-	sh->SetUniformMat4f("u_model", rootModelMat*modelMat);
-	sh->SetUniformMat4f("u_view", viewMat);
-	sh->SetUniformMat4f("u_proj", camera.projMat);
-	sh->SetUniformMat3f("u_normalMat", transpose(inverse(mat3(rootModelMat * modelMat))));
-	sh->SetUniform3f("u_viewPos", camera.position);
-
+	shh->Bind();
+	mat->Bind(shh);
+	shh->SetUniformMat4f("u_model", rootModelMat*modelMat);
+	shh->SetUniformMat4f("u_view", viewMat);
+	shh->SetUniformMat4f("u_proj", camera.projMat);
+	shh->SetUniformMat3f("u_normalMat", transpose(inverse(mat3(rootModelMat * modelMat))));
+	shh->SetUniform3f("u_viewPos", camera.position);
+	
 	if (textures.size())
 		textures[0]->Bind();
-	Renderer::Draw(*va, *ib, *sh);
+	Renderer::Draw(*va, *ib, *shh);
 }
 
 Mesh::~Mesh()
@@ -97,12 +107,22 @@ Model::Model(const string& path,shared_ptr<Shader> shader)
 
 Model::Model() {}
 
-void Model::Render(const Camera& camera)
+void Model::Render(const Camera& camera, shared_ptr<Shader> shOverr)
 {
 	for (auto& mesh : meshes)
 	{
-		mesh.Render(camera,modelMat);
+		mesh.Render(camera,modelMat,shOverr);
 	}
+}
+
+void Model::CalculateBoundingBox()
+{
+	vector<Physics::BoundingBox*> bbs;
+	for (int i = 0; i < meshes.size(); i++) {
+		meshes[i].CalculateBoundingBox(modelMat);
+		bbs.push_back(&meshes[i].boundingBox);
+	}
+	boundingBox = Physics::BoundingBox(bbs);
 }
 
 void Model::LoadModel(const std::string& path,shared_ptr<Shader> shader)

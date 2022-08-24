@@ -29,9 +29,10 @@ static std::vector<uint> indexes
 CubeModel::CubeModel(std::shared_ptr<Material> mat,std::shared_ptr<Shader>shader)
 	:Model()
 {
+
 	using namespace std;
 	vector<Vertex> verts;
-	for (int i = 0; i < sizeof(vertexes) / 4; i++) {
+	for (int i = 0; i < 8; i++) {
 		verts.push_back({});
 		memcpy(&*verts.rbegin(), vertexes + i * 8, sizeof(Vertex));
 	}
@@ -39,4 +40,5 @@ CubeModel::CubeModel(std::shared_ptr<Material> mat,std::shared_ptr<Shader>shader
 
 	meshes.push_back(cubeMesh);
 	m = &meshes[0];
+	m->sh = shader;
 }

@@ -12,7 +12,7 @@ void Assignment::Start(GLFWwindow* win)
 	float far = 100;
 	float near = 0.1;
 	float fov = pi / 4;
-	cam = new Camera(fov, ((float)Window_Width / Window_Height), near, far, glm::vec3(0, 0, 10),1, win);
+	cam = new Camera(1, win,this, glm::vec3(0, 0, 10));
 	
 	auto lsh = make_shared<LitShader>();
 	

@@ -1,13 +1,21 @@
 #include "Camera.h"
 #include "./Input/Input.h"
 #include "Modules/Physics/BoundingBox.h"
-
-Camera::Camera(float fov, float ar, float znear, float zfar, const glm::vec3& position, bool handleInput, GLFWwindow* window) : position(position), window(window),handleInput(handleInput),znear(znear),zfar(zfar),ar(ar),fov(fov),projMat(glm::perspective(fov,ar,znear,zfar))
+#include "Modules/Mesh.h"
+#include "Modules/Gizmos/Gizmo3D.h"
+#include "../Scenes/Scene.h"
+Camera::Camera(bool handleInput, GLFWwindow* window, Scene* s, const glm::vec3& position, const mat4& proj) : position(position), window(window),handleInput(handleInput),projMat(proj),s(s)
 {
-
+	transformGizmo = make_shared<TransformGizmo3D>();
+	transformGizmo->enabled = false;
+	if (s)
+		s->gizmos.push_back(transformGizmo);
 }
 
 static struct MPos { double x{}, y{}; };
+Camera::Camera(const glm::mat4& proj) : projMat(proj),handleInput(0),s(0),window(),position(0)
+{
+}
 void Camera::UpdateInput()
 {
 	if (handleInput == false)
@@ -85,6 +93,45 @@ void Camera::UpdateInput()
 
 }
 
+void Camera::UpdateClickSelectInput(const std::vector<shared_ptr<Model>>& models)
+{
+	using namespace Physics;
+	
+	if (glfwGetMouseButton(window,0) == GLFW_PRESS)
+	{
+		for (auto c : models)
+			c->CalculateBoundingBox();
+
+		Ray r = GetMouseRay();
+		float closestDist = INFINITY;
+		Rayhit hit;
+		shared_ptr<Model> md = 0;
+
+		Rayhit rh{};
+		for (auto c : models)
+			if (c->boundingBox.Intersect(r, rh))
+			{
+				if (rh.dist < closestDist) {
+					closestDist = rh.dist;
+					hit = rh;
+					md = c;
+				}
+			}
+		clickSelectTgt = md;
+		if (clickSelectTgt)
+		{
+			transformGizmo->enabled = true;
+			transformGizmo->parentModel = md;
+			transformGizmo->HandleMouseInput(md, r, *this);
+		}
+		else
+		{
+			transformGizmo->enabled = false;
+			transformGizmo->prevInputPos = vec3(INFINITY, INFINITY, INFINITY);
+		}
+	}
+}
+
 glm::mat4 Camera::GetCamRotMat() const
 {
 	using namespace glm;
@@ -107,11 +154,7 @@ Physics::Ray Camera::GetMouseRay()
 	vec3 v((2*x-width)/height, (-2.*y + height)/height,-1);
 	v = normalize(v);
 	mat4 viewToWorld = inverse(mat3(GetViewMat()));
-	std::cout << v.x << " " << v.y << " " << v.z << "\n";
 	v = viewToWorld * vec4(v,1);
 	return Physics::Ray(position, v);
 }
 
-void Camera::DrawSelectedOutline()
-{
-}

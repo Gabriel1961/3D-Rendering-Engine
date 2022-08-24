@@ -22,5 +22,7 @@ void main()
 	if (useTex == 0)
 		v_color = color;
 	else
+	{
 		v_color = texture(samp, v_uv_coords);
+	}
 }

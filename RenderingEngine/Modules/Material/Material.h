@@ -16,7 +16,7 @@ public:
 	float texAngle = 0;
 	GLenum texScalingMode = GL_REPEAT;
 
-	Material(vec4 dif = {1,.6,0,1}, float amb = .1, float shiny = 128.0f, vec3 spec = {1,1,1})
+	Material(vec4 dif = {1,1,1,1}, float amb = .1, float shiny = 128.0f, vec3 spec = {1,1,1})
 		:diffuse( dif), ambient(amb* dif),shininess(shiny),specular(spec)
 	{
 	}

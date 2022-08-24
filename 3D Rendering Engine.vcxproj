@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\Nameof;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;$(SolutionDir)RenderingEngine;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\Nameof;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;$(SolutionDir)RenderingEngine;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -125,7 +125,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\Nameof;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;$(SolutionDir)RenderingEngine;$(SolutionDir)Dependencies\Nameof</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,7 +143,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW;$(SolutionDir)Dependencies\Nameof;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)OpenGLWrapper;$(SolutionDir)Dependencies\GLEW\include\GL;$(SolutionDir)RenderingEngine;</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="RenderingEngine\Modules\Gizmos\Gizmo3D.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Material\Material.cpp" />
+    <ClCompile Include="RenderingEngine\Modules\Physics\BoundingBox.cpp" />
     <ClCompile Include="Scenes\Assignment\Assignment.cpp" />
     <ClCompile Include="RenderingEngine\Modules\LitShader.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Lights\Light.cpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="Scenes\ShowCaseScene\ShowCaseScene.cpp" />
     <ClCompile Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.cpp" />
     <ClCompile Include="RenderingEngine\Models\PreBuilt\Sphere.cpp" />
+    <ClCompile Include="ScreenSize.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingEngine\Modules\Gizmos\Gizmo3D.h" />
@@ -704,6 +706,7 @@
     <None Include="RenderingEngine\Shaders\DefaultLitFlat.shader" />
     <None Include="RenderingEngine\Shaders\Gizmo3D.shader" />
     <None Include="RenderingEngine\Shaders\Normals.shader" />
+    <None Include="RenderingEngine\Shaders\Shadow.shader" />
     <None Include="RenderingEngine\Shaders\Sun.shader" />
     <None Include="RenderingEngine\Shaders\Teapot.shader" />
     <None Include="RenderingEngine\Shaders\DefaultMesh.shader" />
