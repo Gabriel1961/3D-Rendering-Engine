@@ -54,14 +54,14 @@ void BasicShapesScene::Start(GLFWwindow* win)
 	sph->m->sh = lshader;
 
 	//loadinng a model
-	house = make_shared<Model>(ASSETS_PATH "House/house.obj", lshader);
+	/*house = make_shared<Model>(ASSETS_PATH "House/house.obj", lshader);
 	house->meshes[0].mat->texAngle = pi / 2;
 	house->meshes[0].textures.clear();
 	house->meshes[0].textures.push_back(make_shared<Texture>(ASSETS_PATH "House/containerDiffuse.png"));
 	house->meshes[0].textures.push_back(make_shared<Texture>(ASSETS_PATH "House/containerSpecular.png"));
 	house->meshes[0].mat->diffuseTex = house->meshes[0].textures[0];
 	house->meshes[0].mat->specularTex = house->meshes[0].textures[1];
-	house->modelMat *= scale(mat4(1), { .1,.1,.1 });
+	house->modelMat *= scale(mat4(1), { .1,.1,.1 });*/
 
 	// add models to vector
 	//models.push_back(house);
@@ -71,7 +71,7 @@ void BasicShapesScene::Start(GLFWwindow* win)
 
 	//shadow
 	shadowSh = make_shared<Shader>(SHADER_PATH "Shadow.shader");
-	ldir = make_shared<DirectionalLight>(vec3{ 10,20,10 }, vec3{ -2.0f, 4.0f, -1.0f });
+	ldir = make_shared<DirectionalLight>(vec3{ 10,20,10 }, vec3{ -2.0f, 4.0, -1.0f });
 	lshaderFlat->preRender = [](Shader* sh) {
 		sh->SetUniform1i("shadowMap", 5);
 		sh->SetUniformMat4f("lightMat", ldir->GetWP());
@@ -117,12 +117,12 @@ void BasicShapesScene::UiRender()
 	ImGui::SliderFloat3("Pos", (float*)&lshader->lights[0]->pos, -3.f, 3.f);
 	ImGui::SliderFloat3("Pos2", (float*)&lshader->lights[1]->pos, -3.f, 3.f);
 	ImGui::Text("Tex Params");
-	ImGui::SliderFloat("Angle", &house->meshes[0].mat->texAngle, 0, 2 * pi);
+	//ImGui::SliderFloat("Angle", &house->meshes[0].mat->texAngle, 0, 2 * pi);
 
-	glCullFace(GL_BACK);
-	ImGui::SliderFloat2("Scale", (float*)&house->meshes[0].mat->texScale, 0.0f, 10.0f);
-	ImGui::SliderFloat2("Offset", (float*)&house->meshes[0].mat->texOffset, 0, 10);
-	ImGui::SliderFloat2("Shininess", (float*)&house->meshes[0].mat->shininess, 0, 256);
+	//glCullFace(GL_BACK);
+	//ImGui::SliderFloat2("Scale", (float*)&house->meshes[0].mat->texScale, 0.0f, 10.0f);
+	//ImGui::SliderFloat2("Offset", (float*)&house->meshes[0].mat->texOffset, 0, 10);
+	//ImGui::SliderFloat2("Shininess", (float*)&house->meshes[0].mat->shininess, 0, 256);
 	cube->m->mat->GetImgui("cube");
 }
 

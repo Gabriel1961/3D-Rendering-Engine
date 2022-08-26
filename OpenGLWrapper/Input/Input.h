@@ -17,9 +17,12 @@ public:
 		static void PositionCallBack(GLFWwindow* window, const double Xpos, const double Ypos);
 
 		static void ScrollCallBack(GLFWwindow* window, double offsetX, double offsetY);
+
+
 	};
 	class Keyboard
 	{
+
 	public:
 		/// <summary>
 		/// Activates on keypress 

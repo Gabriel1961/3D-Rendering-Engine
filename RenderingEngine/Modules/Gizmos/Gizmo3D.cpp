@@ -73,8 +73,23 @@ void TransformGizmo3D::DrawGizmo(const Camera& cam)
 	axis.Render(cam);
 }
 
+void TransformGizmo3D::UpdateModelTransform(glm::vec3 moveVec, const glm::mat4& cameraMat, int axis)
+{
+	if (axis == -1)
+		return;
+	if (shared_ptr<Model> m = parentModel.lock())
+	{
+		vec3 axs[]={{1,0,0},{0,1,0},{0,0,1}};
+		vec3 size = { m->modelMat[0][0],m->modelMat[1][1],m->modelMat[2][2] };
+		vec3 ax = axs[axis];
+		vec3 camPos = GetPosFromMat(cameraMat);
+		float delta = length(camPos-GetPosFromMat(m->modelMat)) * SumComponents(moveVec*ax);
+		m->modelMat = translate(m->modelMat, 1.f / size * delta * ax) ;
+	}
+}
+
 using namespace Physics;
-bool TransformGizmo3D::HandleMouseInput(shared_ptr<Model> m,const Ray& r, Camera& cam)
+int TransformGizmo3D::GetIntersectedAxis(const Ray& r)
 {
 	BoundingBox bbs[3];
 	mat4 rot = glm::rotate(rotMat, 0.0f, { 0,1,0 });
@@ -94,7 +109,7 @@ bool TransformGizmo3D::HandleMouseInput(shared_ptr<Model> m,const Ray& r, Camera
 	
 
 	float dist = INFINITY;
-	int idx = -1;
+	int axis = -1;
 	Rayhit rhd;
 	for (int i = 0; i < 3; i++) {
 		Rayhit rh;
@@ -102,32 +117,11 @@ bool TransformGizmo3D::HandleMouseInput(shared_ptr<Model> m,const Ray& r, Camera
 		{
 			if (dist > rh.dist) {
 				dist = rh.dist;
-				idx = i;
+				axis = i;
 				rhd = rh;
 			}
 		}
 	}
-
-	static int prevAxis = -1;
-
-	if (idx == -1)
-		return idx;
-	if (idx != prevAxis)
-	{
-		prevInputPos = vec3{ INFINITY,INFINITY ,INFINITY };
-		prevAxis = idx;
-		return -1;
-	}
-	if(isinf(prevInputPos.x))
-		prevInputPos = rhd.pos;
-
-	vec2 speed = { Input::Mouse::SpeedX,Input::Mouse::SpeedY };
-	vec3 vs[] = { {1,0,0},{0,1,0},{0,0,1} };
-	vec3 v = vs[idx];
-	vec3 delta = rhd.pos - prevInputPos;
-	prevInputPos = rhd.pos;
 	
-	prevAxis = idx;
-	m->modelMat = translate(m->modelMat, delta * v);
-	return idx;
+	return axis;
 }

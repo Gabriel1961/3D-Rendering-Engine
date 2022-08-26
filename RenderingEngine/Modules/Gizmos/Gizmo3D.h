@@ -26,20 +26,39 @@ public:
 };
 
 
-class TransformGizmo3D : public Gizmo
+class IMovableGizmo
+{
+public:
+	inline virtual void SetParentModel(weak_ptr<Model> v) = 0;
+	inline virtual void SetEnabled(bool v) = 0;
+	virtual int GetIntersectedAxis(const Physics::Ray& r) = 0;
+	/// <param name="moveVec"> in world space </param>
+	/// <param name="axis"></param>
+	virtual void UpdateModelTransform(glm::vec3 moveVec,const glm::mat4& cameraMat,int axis) = 0;
+};
+
+class TransformGizmo3D : public Gizmo,public IMovableGizmo
 {
 	Gizmo3D axis;
 	mat4 rotMat;
 public:
-	vec3 prevInputPos = vec3(INFINITY, INFINITY, INFINITY);
 	bool enabled = true;
 	mat4 scaleMat = scale(mat4(1), { .2,.2,.2 });
 	
-	std::weak_ptr<Model> parentModel ;
+	std::weak_ptr<Model> parentModel;
 
 	TransformGizmo3D();
 	/// Returns false if ray missed
-	bool HandleMouseInput(shared_ptr<Model> m, const Physics::Ray& r, Camera& cam);
+	int GetIntersectedAxis(const Physics::Ray& r);
 	void DrawGizmo(const Camera& cam) override;
+	void UpdateModelTransform(glm::vec3 moveVec, const glm::mat4& cameraMat, int axis);
+	inline void SetEnabled(bool v)
+	{
+		enabled = v;
+	}
+	inline void SetParentModel(weak_ptr<Model> v)
+	{
+		parentModel = v;
+	}
 
 };

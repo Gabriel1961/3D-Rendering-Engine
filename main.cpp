@@ -10,6 +10,7 @@
 #define _USE_MATH_DEFINES
 
 #include "3DRenderingEngine.h"
+#include "WindowsSpecific.h"
 
 int main(void)
 {
@@ -19,6 +20,8 @@ int main(void)
 		return -1;
 	/* Create a windowed mode window and its OpenGL context */
 	glfwWindowHint(GLFW_SAMPLES, 4);
+	std::cout << glfwGetVersionString() << endl;
+	
 	window = glfwCreateWindow(Window_Width, Window_Height, "OpenGLPractice", NULL, NULL);
 	if (!window)
 	{
@@ -26,7 +29,9 @@ int main(void)
 		return -1;
 	}
 	// Enable Vsync
-	glfwSwapInterval(1);
+	glfwSwapInterval(0);
+	EnableVSync();
+
 	/* Make the window's context current */
 
 	

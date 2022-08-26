@@ -6,10 +6,11 @@
 #include "../Scenes/Scene.h"
 Camera::Camera(bool handleInput, GLFWwindow* window, Scene* s, const glm::vec3& position, const mat4& proj) : position(position), window(window),handleInput(handleInput),projMat(proj),s(s)
 {
-	transformGizmo = make_shared<TransformGizmo3D>();
-	transformGizmo->enabled = false;
+	shared_ptr<TransformGizmo3D> giz= make_shared<TransformGizmo3D>();;
+	currentMovableGizmo = giz;
+	currentMovableGizmo->SetEnabled(false);
 	if (s)
-		s->gizmos.push_back(transformGizmo);
+		s->gizmos.push_back(giz);
 }
 
 static struct MPos { double x{}, y{}; };
@@ -96,8 +97,10 @@ void Camera::UpdateInput()
 void Camera::UpdateClickSelectInput(const std::vector<shared_ptr<Model>>& models)
 {
 	using namespace Physics;
-	
-	if (glfwGetMouseButton(window,0) == GLFW_PRESS)
+	static vec2 prevMousePos;
+	static int prevLeftPressed = glfwGetMouseButton(window,0);
+	static int selctedAxis = -1;
+	if (glfwGetMouseButton(window, 0) == GLFW_PRESS)
 	{
 		for (auto c : models)
 			c->CalculateBoundingBox();
@@ -117,19 +120,44 @@ void Camera::UpdateClickSelectInput(const std::vector<shared_ptr<Model>>& models
 					md = c;
 				}
 			}
-		clickSelectTgt = md;
-		if (clickSelectTgt)
-		{
-			transformGizmo->enabled = true;
-			transformGizmo->parentModel = md;
-			transformGizmo->HandleMouseInput(md, r, *this);
+
+		vec2 curMousePos = { Input::Mouse::X,Input::Mouse::Y };
+		if (prevLeftPressed == false)
+		{ // first press
+
+			if (md == 0)
+			{
+				currentMovableGizmo->SetEnabled(false);
+				return;
+			}
+			
+			selctedAxis = currentMovableGizmo->GetIntersectedAxis(r);
+			clickSelectTgt = md;
+			currentMovableGizmo->SetEnabled(false);
+			currentMovableGizmo->SetParentModel(weak_ptr<Model>());
+		}
+		else if (clickSelectTgt)
+		{ // held down 
+			float sensitivity = 6;
+			vec2 delta = curMousePos - prevMousePos;
+			ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
+			currentMovableGizmo->SetParentModel(clickSelectTgt);
+			currentMovableGizmo->SetEnabled(true);
+			currentMovableGizmo->UpdateModelTransform(VectorToWorld(vec3(delta,0)),projMat * GetViewMat(), selctedAxis);
 		}
 		else
 		{
-			transformGizmo->enabled = false;
-			transformGizmo->prevInputPos = vec3(INFINITY, INFINITY, INFINITY);
+			ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 		}
+		prevMousePos = curMousePos;
+		prevLeftPressed = true;
 	}
+	else prevLeftPressed = false;
+}
+vec3 Camera::VectorToWorld(vec3 pt)
+{
+	mat3 icamRot = rotate(rotate(mat4(1), -rotation.x, { 0,1,0 }), rotation.y, { 1,0,0 });
+	return icamRot * pt;
 }
 
 glm::mat4 Camera::GetCamRotMat() const

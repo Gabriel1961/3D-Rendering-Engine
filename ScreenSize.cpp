@@ -1,4 +1,5 @@
 #include "ScreenSize.h"
+
 #include "Common.h"
 int Window_Width = 800;
 int Window_Height = 600;

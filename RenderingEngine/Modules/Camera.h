@@ -8,9 +8,10 @@ namespace Physics
 class Scene;
 class Model;
 class TransformGizmo3D;
+class IMovableGizmo;
 class Camera
 {
-	shared_ptr<TransformGizmo3D> transformGizmo = 0;
+	shared_ptr<IMovableGizmo> currentMovableGizmo = 0;
 	
 public:
 	GLFWwindow* window;
@@ -23,6 +24,8 @@ public:
 	
 	void UpdateClickSelectInput(const std::vector<shared_ptr<Model>>& models);
 	
+	glm::vec3 VectorToWorld(glm::vec3 pt);
+
 	float camSpeed = 0.1;
 	bool handleInput;
 	bool isMouseLocked = false;

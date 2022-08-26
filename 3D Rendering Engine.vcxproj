@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RenderingEngine\Modules\EngineMath.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Gizmos\Gizmo3D.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Material\Material.cpp" />
     <ClCompile Include="RenderingEngine\Modules\Physics\BoundingBox.cpp" />
@@ -197,8 +198,10 @@
     <ClCompile Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.cpp" />
     <ClCompile Include="RenderingEngine\Models\PreBuilt\Sphere.cpp" />
     <ClCompile Include="ScreenSize.cpp" />
+    <ClCompile Include="WindowsSpecific.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RenderingEngine\Modules\EngineMath.h" />
     <ClInclude Include="RenderingEngine\Modules\Gizmos\Gizmo3D.h" />
     <ClInclude Include="RenderingEngine\Modules\Material\Material.h" />
     <ClInclude Include="RenderingEngine\Modules\Physics\BoundingBox.h" />
@@ -544,6 +547,7 @@
     <ClInclude Include="ScreenSize.h" />
     <ClInclude Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.h" />
     <ClInclude Include="RenderingEngine\Models\PreBuilt\Sphere.h" />
+    <ClInclude Include="WindowsSpecific.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />

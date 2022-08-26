@@ -17,6 +17,7 @@
 #include <Input/Input.h>
 
 // Engine modules
+#include "Modules/EngineMath.h"
 #include "Modules/Camera.h"
 #include "Models/PreBuilt/CubeModel.h"
 #include "Models/PreBuilt/IcoSphereModel.h"
