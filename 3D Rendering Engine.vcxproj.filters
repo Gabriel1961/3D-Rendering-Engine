@@ -141,9 +141,6 @@
     <ClCompile Include="ScreenSize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WindowsSpecific.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderingEngine\Modules\EngineMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1184,9 +1181,6 @@
     <ClInclude Include="RenderingEngine\Modules\Physics\BoundingBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WindowsSpecific.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RenderingEngine\Modules\EngineMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1657,6 +1651,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Scenes\BasicShapesScene\Assets\3242sd.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RenderingEngine\Modules\Gizmos\DirectionalLightGizmo.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

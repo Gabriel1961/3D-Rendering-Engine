@@ -10,7 +10,6 @@
 #define _USE_MATH_DEFINES
 
 #include "3DRenderingEngine.h"
-#include "WindowsSpecific.h"
 
 int main(void)
 {
@@ -29,8 +28,7 @@ int main(void)
 		return -1;
 	}
 	// Enable Vsync
-	glfwSwapInterval(0);
-	EnableVSync();
+	glfwSwapInterval(1);
 
 	/* Make the window's context current */
 

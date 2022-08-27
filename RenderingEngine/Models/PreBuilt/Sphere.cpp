@@ -39,19 +39,19 @@ std::vector<uint> SphereModel::CreateIndexes(ivec2 size, vector<Vertex>& vertexe
 	for (int i = 0; i < size.y-2; i++) {
 		for (int j = 0; j < size.x; j++) {
 			indexes.push_back(i*m+j+1);
-			indexes.push_back((i + 1) * m + j+1);
 			indexes.push_back(i*m+j);
+			indexes.push_back((i + 1) * m + j+1);
 
 			indexes.push_back((i + 1) * m + j+1);
-			indexes.push_back((i + 1) * m + j);
 			indexes.push_back(i * m + j);
+			indexes.push_back((i + 1) * m + j);
 		}
 	}
 
 	for (int i = 0; i < size.x; i++) {
 		indexes.push_back(upIdx);
-		indexes.push_back(i+1);
 		indexes.push_back(i);
+		indexes.push_back(i+1);
 	}
 	for (int i = 0; i < size.x; i++) {
 		indexes.push_back(downIdx);

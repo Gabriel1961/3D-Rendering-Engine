@@ -198,7 +198,6 @@
     <ClCompile Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.cpp" />
     <ClCompile Include="RenderingEngine\Models\PreBuilt\Sphere.cpp" />
     <ClCompile Include="ScreenSize.cpp" />
-    <ClCompile Include="WindowsSpecific.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingEngine\Modules\EngineMath.h" />
@@ -547,7 +546,6 @@
     <ClInclude Include="ScreenSize.h" />
     <ClInclude Include="RenderingEngine\Models\PreBuilt\IcoSphereModel.h" />
     <ClInclude Include="RenderingEngine\Models\PreBuilt\Sphere.h" />
-    <ClInclude Include="WindowsSpecific.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
@@ -724,6 +722,7 @@
     <Image Include="RenderingEngine\Modules\CubeMap\posx.jpg" />
     <Image Include="RenderingEngine\Modules\CubeMap\posy.jpg" />
     <Image Include="RenderingEngine\Modules\CubeMap\posz.jpg" />
+    <Image Include="RenderingEngine\Modules\Gizmos\DirectionalLightGizmo.png" />
     <Image Include="RenderingEngine\Modules\Gizmos\PointLightGizmo.png" />
     <Image Include="Scenes\BasicShapesScene\Assets\3242sd.png" />
     <Image Include="Scenes\BasicShapesScene\Assets\earth.jpg" />

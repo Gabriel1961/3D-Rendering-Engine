@@ -28,7 +28,7 @@ void BasicShapesScene::Start(GLFWwindow* win)
 	auto earthTex = make_shared<Texture>(ASSETS_PATH "earth.jpg");
 	
 	cube = make_shared<CubeModel>();
-	cube->modelMat = scale(translate(mat4(1),{ 0, -2, 0 }), { 10,.1,10 });
+	cube->modelMat = scale(translate(mat4(1),{ 0, -2, 0 }), { 100,.1,100 });
 	cube->m->mat = make_shared<Material>(vec4{ 1,.6,0,1 });
 	cube->m->sh = lshaderFlat;
 
@@ -39,10 +39,10 @@ void BasicShapesScene::Start(GLFWwindow* win)
 	auto l2 = make_shared<PointLight>( vec3{ 5,1,0});
 
 
-	lshaderFlat->lights.push_back(l1);
-	lshaderFlat->lights.push_back(l2);
-	lshader->lights.push_back(l1);
-	lshader->lights.push_back(l2);
+	//lshaderFlat->lights.push_back(l1);
+	//lshaderFlat->lights.push_back(l2);
+	//lshader->lights.push_back(l1);
+	//lshader->lights.push_back(l2);
 
 	// Add gizmos
 	gizmos.push_back(l1->gizmo);
@@ -52,30 +52,27 @@ void BasicShapesScene::Start(GLFWwindow* win)
 	sph = make_shared<SphereModel>(vec2{ 100,100 },make_shared<Material>(), lshader);
 	sph->m->textures.push_back(earthTex);
 	sph->m->sh = lshader;
+	sph->m->modelMat = translate(mat4(1), {1,1.5,1});
 
-	//loadinng a model
-	/*house = make_shared<Model>(ASSETS_PATH "House/house.obj", lshader);
-	house->meshes[0].mat->texAngle = pi / 2;
-	house->meshes[0].textures.clear();
-	house->meshes[0].textures.push_back(make_shared<Texture>(ASSETS_PATH "House/containerDiffuse.png"));
-	house->meshes[0].textures.push_back(make_shared<Texture>(ASSETS_PATH "House/containerSpecular.png"));
-	house->meshes[0].mat->diffuseTex = house->meshes[0].textures[0];
-	house->meshes[0].mat->specularTex = house->meshes[0].textures[1];
-	house->modelMat *= scale(mat4(1), { .1,.1,.1 });*/
+	house = make_shared<Model>(GIZMOS_PATH "ArrowGizmo.fbx",lshaderFlat);
 
 	// add models to vector
-	//models.push_back(house);
-	//models.push_back(sph);
+	models.push_back(house);
+	models.push_back(sph);
 	models.push_back(cube);
 	models.push_back(cube2);
 
 	//shadow
 	shadowSh = make_shared<Shader>(SHADER_PATH "Shadow.shader");
 	ldir = make_shared<DirectionalLight>(vec3{ 10,20,10 }, vec3{ -2.0f, 4.0, -1.0f });
+	gizmos.push_back(ldir->gizmo);
+	lshader->lights.push_back(ldir);
+	lshaderFlat->lights.push_back(ldir);
 	lshaderFlat->preRender = [](Shader* sh) {
 		sh->SetUniform1i("shadowMap", 5);
-		sh->SetUniformMat4f("lightMat", ldir->GetWP());
+		sh->SetUniformMat4f("lightMat", ldir->GetViewProj());
 	};
+	lshader->preRender = lshaderFlat->preRender;
 	shadowSh->preRender = [](Shader* sh) {
 		sh->SetUniform3f("lightDir", ldir->dir);
 	};
@@ -97,7 +94,7 @@ void BasicShapesScene::Render()
 	glClear(GL_DEPTH_BUFFER_BIT);
 	fb->depthTexture->Bind(5);
 	glCullFace(GL_FRONT);
-	BasicRender(Camera(ldir->GetWP()), shadowSh);
+	BasicRender(Camera(ldir->GetViewProj()), shadowSh);
 
 
 	glCullFace(GL_BACK);
@@ -114,9 +111,9 @@ void BasicShapesScene::UiRender()
 	mainCamera->UpdateClickSelectInput(models);
 	using namespace Physics;
 
-	ImGui::SliderFloat3("Pos", (float*)&lshader->lights[0]->pos, -3.f, 3.f);
-	ImGui::SliderFloat3("Pos2", (float*)&lshader->lights[1]->pos, -3.f, 3.f);
-	ImGui::Text("Tex Params");
+	//ImGui::SliderFloat3("Pos", (float*)&lshader->lights[0]->pos, -3.f, 3.f);
+	//ImGui::SliderFloat3("Pos2", (float*)&lshader->lights[1]->pos, -3.f, 3.f);
+	//ImGui::Text("Tex Params");
 	//ImGui::SliderFloat("Angle", &house->meshes[0].mat->texAngle, 0, 2 * pi);
 
 	//glCullFace(GL_BACK);

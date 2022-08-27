@@ -14,12 +14,14 @@ out vec3 v_fragPos;
 flat out vec3 v_normal;
 out vec4 fragPoslight;
 
+
+
 void main()
 {
 	v_uvCoords = uvCoords;
 	v_normal = u_normalMat * normal;
 	v_fragPos = (u_model * vec4(position, 1)).xyz;
-	fragPoslight = lightMat * vec4(v_fragPos,1);
+	fragPoslight = lightMat * vec4(v_fragPos, 1);
 	gl_Position = u_proj * u_view * vec4(v_fragPos, 1);
 }
 
@@ -47,7 +49,7 @@ struct Material {
 	float shininess;
 	mat3 texTileMat;
 };
-
+#define pi 3.14159265359
 #define LIGHT_TYPE_NONE 0
 #define LIGHT_TYPE_POINT 1
 #define LIGHT_TYPE_DIRECTIONAL 2
@@ -62,6 +64,7 @@ flat in vec3 v_normal;
 vec3 normal;
 struct Light
 {
+	mat4 matl;
 	vec4 pos;
 	vec4 color;
 	vec4 dir; // for directional light
@@ -76,6 +79,32 @@ layout(std430, binding = 1) buffer LightList
 	Light lights[];
 };
 
+float GetShadow()
+{
+	// Perspective devide
+
+	vec3 p = fragPoslight.xyz / fragPoslight.w;
+	p = .5 * p + .5;
+	float currentDepth = p.z;
+	float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+	float bias = max(0.005 * (1.0 - dot(normal, lightDir)), 0.0001);
+	int blur = 9;
+	int bh = blur / 2;
+	if (p.z > 1.)
+		return 0;
+	for (int x = -bh; x < bh + 1; ++x)
+	{
+		for (int y = -bh; y < bh + 1; ++y)
+		{
+			float pcfDepth = texture(shadowMap, p.xy + vec2(x, y) * texelSize).r;
+			shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+		}
+	}
+	shadow /= blur * blur;
+	return shadow;
+}
+
 vec3 GetLightColor(inout Light l, vec3 fragToView, vec3 diffuse, vec3 ambient, vec3 specular)
 {
 	if (l.type == LIGHT_TYPE_POINT)
@@ -83,25 +112,20 @@ vec3 GetLightColor(inout Light l, vec3 fragToView, vec3 diffuse, vec3 ambient, v
 		ambient = ambient * diffuse;
 		vec3 fragToLight = normalize(l.pos.xyz - v_fragPos);
 		float d = length(fragToLight);
-		float attenuation = 1 / (1 + l.lin*d + l.qua*d*d) ;
+		float attenuation = 1 / (1 + l.lin * d + l.qua * d * d);
 		vec3 diff = max(dot(fragToLight, normal), 0.0f) * diffuse;
-		vec3 spec = pow(max(dot(-reflect(fragToLight, normal), fragToView), 0.0f), mat.shininess) * (specular);
+		vec3 spec = pow(max(dot(-reflect(fragToLight, normal), fragToView), 0.0f), mat.shininess) * specular;
 
 		return (spec + diff + ambient) * l.color.rgb * attenuation;
 	}
+	else if (l.type == LIGHT_TYPE_DIRECTIONAL)
+	{
+		ambient = ambient * diffuse;
+		vec3 diff = max(dot(l.dir.xyz, normal), 0.0f) * diffuse;
+		vec3 spec = pow(max(dot(-reflect(l.dir.xyz, normal), fragToView), 0.0f), mat.shininess) * specular;
+		return ((spec + diff) * (1 - GetShadow()) + ambient) * l.color.rgb;
+	}
 	return vec3(1, 0, 1);
-}
-#define pi 3.14159265359
-
-float GetShadow()
-{
-	// Perspective devide
-	vec3 p = fragPoslight.xyz / fragPoslight.w;
-	p = .5 * p + .5;
-	float closest = texture(shadowMap, p.xy).r;
-	float current = p.z;
-	float bias = max(0.005 * (1.0 - dot(normal, lightDir)), 0.0001);
-	return closest < current - bias ? 1 : 0;
 }
 
 void main()
@@ -128,10 +152,8 @@ void main()
 
 	// calculate for all lights
 	vec3 addedLightColors = vec3(0, 0, 0);
-
-	float shadow = GetShadow();
 	for (int i = 0; i < lights.length(); i++)
 		addedLightColors += GetLightColor(lights[i], fragToView, diffuse, ambient, specular);
-	FragColor.rgb = addedLightColors * (1-shadow);
+	FragColor.rgb = addedLightColors;
 	FragColor.a = 1;
 }
